@@ -101,6 +101,13 @@
 			<artifactId>azure-storage-file-datalake</artifactId>
 			<version>12.0.0-preview.6</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 	<repositories>

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
  
-@RestController
+//@RestController
 @RequestMapping("blob")
 public class BlobController {
 
@@ -41,13 +41,14 @@ public class BlobController {
 		
 //		DefaultEndpointsProtocol=https;AccountName=tmlwallet;AccountKey=+vtsTAqOnh9dcV+jIkPG6mgRLsRTgpyMKlSrotUD3xznW2EvunXGsjVY+qoj96Q//A3DmhqAqQ0njj6VeIGyqQ==;EndpointSuffix=core.windows.net
 		BlobContainerClient containerClient=null;
-		String yourSasToken = "+vtsTAqOnh9dcV+jIkPG6mgRLsRTgpyMKlSrotUD3xznW2EvunXGsjVY+qoj96Q//A3DmhqAqQ0njj6VeIGyqQ==";
+		String yourSasToken = 
+				"+vtsTAqOnh9dcV+jIkPG6mgRLsRTgpyMKlSrotUD3xznW2EvunXGsjVY+qoj96Q//A3DmhqAqQ0njj6VeIGyqQ==";
 		/* Create a new BlobServiceClient with a SAS Token */
 		BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 		    .endpoint("https://tmlwallet.core.windows.net")
 		    .sasToken(yourSasToken)
 		    .buildClient();
-
+		
 		/* Create a new container client */
 		try {
 		    containerClient = blobServiceClient.createBlobContainer("image");
