@@ -28,12 +28,13 @@ import java.nio.charset.Charset;
 public class BlobController {
 
 	@Value("${blob}")
-	private Resource blobFile;
+	private Resource blobfiles;
 
+	
 	@GetMapping
 	public String readBlobFile() throws IOException {
 		
-		return StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset());
+		return StreamUtils.copyToString(this.blobfiles.getInputStream(), Charset.defaultCharset());
 	}
 
 	@PostMapping

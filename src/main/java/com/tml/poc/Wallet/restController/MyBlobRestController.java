@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/blob")
+@RequestMapping("/api/blobfile")
 @RequiredArgsConstructor
 @Slf4j
 public class MyBlobRestController {
