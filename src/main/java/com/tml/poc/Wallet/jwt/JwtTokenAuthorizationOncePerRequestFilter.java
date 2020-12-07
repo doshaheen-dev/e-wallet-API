@@ -34,13 +34,14 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
-
-    
+    		
     /**
      * this filter method call for authenticate user for every Non Public Request
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+    		HttpServletResponse response,
+    		FilterChain chain) throws ServletException, IOException {
         logger.debug("Authentication Request For '{}'", request.getRequestURL());
 
         final String requestTokenHeader = request.getHeader(this.tokenHeader);

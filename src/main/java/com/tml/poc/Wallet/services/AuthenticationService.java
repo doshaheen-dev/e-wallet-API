@@ -96,7 +96,7 @@ public class AuthenticationService {
 					
 
 					userEntity.setJwToken(token);
-					return dataReturnUtils.setDataAndReturnResponseForRestAPI(userEntity);
+					return dataReturnUtils.setDataAndReturnResponseForRestAPI(userEntity);	
 				} else {
 					return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "Wrong OTP");
 				}
