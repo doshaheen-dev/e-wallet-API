@@ -8,7 +8,11 @@ import java.util.Base64;
 import java.util.Random;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import org.springframework.stereotype.Service;
  
+
+@Service
 public class PasswordUtils {
     
     private static final Random RANDOM = new SecureRandom();
@@ -16,14 +20,14 @@ public class PasswordUtils {
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
     
-     public static String getSalt(int length) {
+     public  String getSalt(int length) {
         StringBuilder returnValue = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
         }
         return new String(returnValue);
     }
-    public static byte[] hash(char[] password, byte[] salt) {
+    public  byte[] hash(char[] password, byte[] salt) {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
         try {
@@ -35,7 +39,7 @@ public class PasswordUtils {
             spec.clearPassword();
         }
     }
-    public static String generateSecurePassword(String password, String salt) {
+    public  String generateSecurePassword(String password, String salt) {
         String returnValue = null;
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
  
@@ -44,7 +48,7 @@ public class PasswordUtils {
         return returnValue;
     }
     
-    public static boolean verifyUserPassword(String providedPassword,
+    public  boolean verifyUserPassword(String providedPassword,
             String securedPassword, String salt)
     {
         boolean returnValue = false;
@@ -57,4 +61,25 @@ public class PasswordUtils {
         
         return returnValue;
     }
+    
+    
+    public  String generatePassword(int length) {
+        String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        String specialCharacters = "!@#$";
+        String numbers = "1234567890";
+        String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
+        Random random = new Random();
+        char[] password = new char[length];
+
+        password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
+        password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
+        password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
+        password[3] = numbers.charAt(random.nextInt(numbers.length()));
+     
+        for(int i = 4; i< length ; i++) {
+           password[i] = combinedChars.charAt(random.nextInt(combinedChars.length()));
+        }
+        return password+"";
+     }
 }

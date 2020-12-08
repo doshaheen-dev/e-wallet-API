@@ -16,6 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Pattern.Flag;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,6 +30,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.tml.poc.Wallet.utils.Constants;
 
 @Entity
 @Table(name = "Employee")
@@ -34,8 +40,15 @@ public class EmployeeModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private long accountId;
+	
 	private int countrycode;
 	private String mobileNumber;
+	
+	@NotEmpty
+	@Email
+	@Size(max = 100)
+	@Column(unique = true)
+    @Pattern(regexp = Constants.EMAIL_REGEX, flags = Flag.UNICODE_CASE)
 	private String emailid;
 	private boolean isKYC;
 						
@@ -43,6 +56,8 @@ public class EmployeeModel {
 
 	private String firstname;
 	private String lastname;
+	
+	@JsonIgnore
 	private String password;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -50,7 +65,6 @@ public class EmployeeModel {
 	private String gender;
 	private String profile_image;
 	
-//	@OneToOne(cascade=CascadeType.ALL,optional=true)
 	@ManyToOne(fetch=FetchType.LAZY, cascade = {
             CascadeType.MERGE,
             CascadeType.REFRESH
@@ -79,6 +93,13 @@ public class EmployeeModel {
 
 	@Transient
 	private String jwToken;
+	
+	
+	
+
+	public EmployeeModel() {
+		super();
+	}
 
 	public long getId() {
 		return id;
@@ -239,5 +260,14 @@ public class EmployeeModel {
 	public void setJwToken(String jwToken) {
 		this.jwToken = jwToken;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 
 }

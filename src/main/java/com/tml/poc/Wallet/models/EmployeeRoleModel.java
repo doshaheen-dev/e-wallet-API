@@ -53,6 +53,13 @@ public class EmployeeRoleModel {
 	boolean isActive;
 	
 	
+	
+	
+	
+
+	public EmployeeRoleModel() {
+		super();
+	}
 
 	public EmployeeRoleModel(long id) {
 		super();
