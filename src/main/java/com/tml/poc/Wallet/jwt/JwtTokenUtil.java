@@ -70,6 +70,13 @@ public class JwtTokenUtil implements Serializable {
     Map<String, Object> claims = new HashMap<>();
     return doGenerateToken(claims, mobilenumber);
   }
+  
+  public String generateToken(String mobilenumber,String password,String role) {
+	    Map<String, Object> claims = new HashMap<>();
+	    claims.put("password",password);
+	    claims.put("role",role);
+	    return doGenerateToken(claims, mobilenumber);
+	  }
 
   private String doGenerateToken(Map<String, Object> claims, String subject) {
     final Date createdDate = clock.now();

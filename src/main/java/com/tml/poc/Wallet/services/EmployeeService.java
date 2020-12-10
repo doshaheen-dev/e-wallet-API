@@ -90,4 +90,29 @@ public class EmployeeService {
 		
 	}
 	
+	public ResponseEntity deleteEmployee(long employeeIdDelete) throws ResourceNotFoundException{
+		
+		if(employeeIdDelete==0)
+		{
+			throw new  ResourceNotFoundException("No Employee Found");
+		}
+		Optional<EmployeeModel> employeeModelOpt=employeeRepository.findAllByIdAndIsActive(employeeIdDelete,true);
+		if(employeeModelOpt.isPresent()) {
+			
+			EmployeeModel employeModel=employeeModelOpt.get();
+			employeModel.setActive(false);
+			return  ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(
+					employeeRepository.save(employeModel)));
+		}else {
+			throw new  ResourceNotFoundException("User Not Found");
+			
+			/**
+			 * send it by Email
+			 */
+			
+		}
+		
+		
+	}
+	
 }

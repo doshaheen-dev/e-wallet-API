@@ -1,12 +1,14 @@
 package com.tml.poc.Wallet.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,6 +44,9 @@ public class PrivilageMasterModel {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	@OneToMany
+	private List<PrivilageMasterModel> privilageMaster;
+	
 	@JsonIgnore
 	boolean isActive;
 
@@ -126,7 +131,16 @@ public class PrivilageMasterModel {
 		this.roleId = roleId;
 	}
 
-	
+//	public List<PrivilageMasterModel> getPrivilageMaster() {
+//		return privilageMaster;
+//	}
+//
+//	public void setPrivilageMaster(List<PrivilageMasterModel> privilageMaster) {
+//		this.privilageMaster = privilageMaster;
+//	}
+//
+//	
+//	
 	
 	
 }

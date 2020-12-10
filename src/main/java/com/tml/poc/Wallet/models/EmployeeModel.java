@@ -42,7 +42,7 @@ public class EmployeeModel {
 	private long accountId;
 	
 	private int countrycode;
-	private String mobileNumber;
+	private String mobileNumber;	
 	
 	@NotEmpty
 	@Email
@@ -65,7 +65,7 @@ public class EmployeeModel {
 	private String gender;
 	private String profile_image;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade = {
+	@ManyToOne(fetch=FetchType.EAGER, cascade = {
             CascadeType.MERGE,
             CascadeType.REFRESH
         })
@@ -204,7 +204,7 @@ public class EmployeeModel {
 	public void setRoleId(long roleId) {
 	      this.roleId = new EmployeeRoleModel (roleId);
 	}
-	
+		
 	public String getCreatedBy() {
 		return createdBy;
 	}

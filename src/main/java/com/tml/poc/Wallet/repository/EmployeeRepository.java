@@ -14,8 +14,10 @@ public interface EmployeeRepository extends JpaRepository<EmployeeModel, Long> {
 
 	List<EmployeeModel> findAll();
 	Optional<EmployeeModel> findAllById(long id);
+	Optional<EmployeeModel> findAllByIdAndIsActive(long id,boolean isActive);
 	Optional<EmployeeModel> findAllByMobileNumber(String mobile);
 	Optional<EmployeeModel> findAllByEmailid(String emailid);
+	Optional<EmployeeModel> findAllByEmailidAndIsActive(String emailid,boolean isActive);
 	
 	
 }

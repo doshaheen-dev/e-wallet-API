@@ -9,6 +9,10 @@ public class UserRegistrationModel {
 	int countrycode;
 	@NotEmpty
 	String mobileNumber;
+	
+	@NotEmpty
+	String emailid;
+	
 	private String OTP;
 	
 	public int getCountrycode() {
@@ -29,6 +33,14 @@ public class UserRegistrationModel {
 	public void setOTP(String oTP) {
 		OTP = oTP;
 	}
+	public String getEmailid() {
+		return emailid;
+	}
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
+	}
+	
+	
 	
 	
 	

@@ -51,11 +51,6 @@ public class EmployeeRoleModel {
 
 	@JsonIgnore
 	boolean isActive;
-	
-	
-	
-	
-	
 
 	public EmployeeRoleModel() {
 		super();

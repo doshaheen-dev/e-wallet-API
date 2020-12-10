@@ -46,7 +46,9 @@ public class UserService {
 				UserModel userEntity = new UserModel();
 				userEntity.setCountrycode(userRegistrationModel.getCountrycode());
 				userEntity.setMobileNumber(userRegistrationModel.getMobileNumber());
-				userEntity.setOtp(userRegistrationModel.getOTP());
+				userEntity.setEmailid(userRegistrationModel.getEmailid()); 	
+				userEntity.setOtp(userRegistrationModel.getOTP()); 	
+					
 				userEntity = userRepository.save(userEntity);
 //				userEntity.setOtp(null);
 				return dataReturnUtils.setDataAndReturnResponseForRestAPI(userEntity);
@@ -58,7 +60,7 @@ public class UserService {
 
 		return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "No Object Found");
 	}
-
+				
 	/**
 	 * after registration check mobile number is already present and then checking
 	 * OTP
@@ -77,8 +79,7 @@ public class UserService {
 					userEntity.setMobileVerified(true);
 					userEntity = userRepository.save(userEntity);
 					final String token = jwtTokenUtil.generateToken1(userRegistrationModel.getMobileNumber());
-					userEntity.setJwToken(token);
-					return dataReturnUtils.setDataAndReturnResponseForRestAPI(userEntity, "User Verified Successfully");
+					return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(userEntity, token);
 				} else {
 					return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "Wrong OTP");
 				}
@@ -88,12 +89,17 @@ public class UserService {
 		}
 		return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "No Object Found");
 	}
-		
+			
+	/**
+	 * update user as per given usermodel from controller
+	 * @param id
+	 * @param userModel
+	 * @return
+	 */
 	public Object doUserUpdate(long id, UserModel userModel) {
 		DataModelResponce dataModelResponce = new DataModelResponce();
 		if (userModel != null) {
 			Optional<UserModel> userModelEntity = userRepository.findById(id);
-
 			if (userModelEntity.isPresent()) {
 				UserModel userModelDB=userModelEntity.get();
 				userModel.setId(userModelDB.getId());
@@ -107,7 +113,13 @@ public class UserService {
 			return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "No Object Found");
 		}
 	}
-
+				
+	/**
+	 * get User By Id
+	 * which one called from another service
+	 * @param id
+	 * @return
+	 */
 	public Object doGetUserById(long id) {
 		DataModelResponce dataModelResponce = new DataModelResponce();
 		if (id >0) {
@@ -116,6 +128,51 @@ public class UserService {
 				UserModel userModelDB=userModelEntity.get();
 				userModelDB.setOtp("");
 				return dataReturnUtils.setDataAndReturnResponseForRestAPI(userModelDB);
+			} else {			
+				return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "User Not Found");
+			}
+		} else {
+			return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "Id not Found");
+		}
+	}
+		
+	/**
+	 * delete user here
+	 * user will not delete directly but it will soft delete from DB
+	 * @param id
+	 * @return
+	 */
+	public Object doDeleteUserById(long id) {
+		DataModelResponce dataModelResponce = new DataModelResponce();
+		if (id >0) {
+			Optional<UserModel> userModelEntity = userRepository.findById(id);
+			if (userModelEntity.isPresent()) {
+				UserModel userModelDB=userModelEntity.get();
+				
+				userModelDB.setActive(false);
+				return dataReturnUtils.setDataAndReturnResponseForRestAPI(userRepository.save(userModelDB));
+			} else {			
+				return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "User Not Found");
+			}
+		} else {
+			return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "Id not Found");
+		}
+	}
+	
+	/**
+	 * images will be remove from DB table user
+	 * @param id
+	 * @return
+	 */
+	public Object doRemoveImageUserById(long id) {
+		DataModelResponce dataModelResponce = new DataModelResponce();
+		if (id >0) {
+			Optional<UserModel> userModelEntity = userRepository.findById(id);
+			if (userModelEntity.isPresent()) {
+				UserModel userModelDB=userModelEntity.get();
+				
+				userModelDB.setProfile_image("");
+				return dataReturnUtils.setDataAndReturnResponseForRestAPI(userRepository.save(userModelDB));
 			} else {			
 				return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "User Not Found");
 			}

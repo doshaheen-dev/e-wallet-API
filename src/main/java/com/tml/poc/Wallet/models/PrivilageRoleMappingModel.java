@@ -2,10 +2,16 @@ package com.tml.poc.Wallet.models;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,17 +20,31 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+@Entity
+@Table(name = "privilage_role_mapper")
 public class PrivilageRoleMappingModel {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
+	@ManyToOne(fetch=FetchType.EAGER, cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+        })
+	@JoinColumn(name = "employee")
+	private EmployeeRoleModel role;
 	
-	private String privilageName;
-	private String privilageDiscription;
-									
-	private String createdBy;
-	private String updatedBy;
+	@ManyToOne(fetch=FetchType.EAGER, cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+        })
+	@JoinColumn(name = "privilageMaster")
+	private PrivilageMasterModel privilage;
+
+	private boolean isRead;
+	private boolean isWrite;
 
 	@CreatedDate
 	@CreationTimestamp
@@ -38,6 +58,10 @@ public class PrivilageRoleMappingModel {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	@Column(nullable = false, updatable = false)
+	private String createdBy;
+	private String updatedBy;
+
 	@JsonIgnore
 	boolean isActive;
 
@@ -49,21 +73,37 @@ public class PrivilageRoleMappingModel {
 		this.id = id;
 	}
 
-	
-	public String getCreatedBy() {
-		return createdBy;
+	public EmployeeRoleModel getRole() {
+		return role;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setRole(long role) {
+		this.role = new EmployeeRoleModel (role);
+		
 	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
+	public PrivilageMasterModel getPrivilage() {
+		return privilage;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setPrivilage(PrivilageMasterModel privilage) {
+		this.privilage = privilage;
+	}
+
+	public boolean isRead() {
+		return isRead;
+	}
+
+	public void setRead(boolean isRead) {
+		this.isRead = isRead;
+	}
+
+	public boolean isWrite() {
+		return isWrite;
+	}
+
+	public void setWrite(boolean isWrite) {
+		this.isWrite = isWrite;
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -82,6 +122,22 @@ public class PrivilageRoleMappingModel {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -90,23 +146,7 @@ public class PrivilageRoleMappingModel {
 		this.isActive = isActive;
 	}
 
-	public String getPrivilageName() {
-		return privilageName;
-	}
+	
+	
 
-	public void setPrivilageName(String privilageName) {
-		this.privilageName = privilageName;
-	}
-
-	public String getPrivilageDiscription() {
-		return privilageDiscription;
-	}
-
-	public void setPrivilageDiscription(String privilageDiscription) {
-		this.privilageDiscription = privilageDiscription;
-	}
-	
-	
-	
-	
 }

@@ -19,7 +19,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.tml.poc.Wallet.exception.JWTokenException;
+
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 
 @Component
 public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFilter {
@@ -41,7 +45,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Override
     protected void doFilterInternal(HttpServletRequest request,
     		HttpServletResponse response,
-    		FilterChain chain) throws ServletException, IOException {
+    		FilterChain chain) 
+    				throws ServletException, IOException,ExpiredJwtException , JwtException{
         logger.debug("Authentication Request For '{}'", request.getRequestURL());
 
         final String requestTokenHeader = request.getHeader(this.tokenHeader);
@@ -57,11 +62,20 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
+                throw new IllegalArgumentException(e.getMessage());
             } catch (ExpiredJwtException e) {
                 logger.warn("JWT_TOKEN_EXPIRED", e);
+                try {
+					throw new JWTokenException(e.getMessage());
+				} catch (JWTokenException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
             }
         } else {
             logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
+
         }
 
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
