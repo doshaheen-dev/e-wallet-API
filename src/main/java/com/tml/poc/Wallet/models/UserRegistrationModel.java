@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserRegistrationModel {
 	
-	int countrycode;
 	@NotEmpty
 	String mobileNumber;
 	
@@ -15,12 +14,6 @@ public class UserRegistrationModel {
 	
 	private String OTP;
 	
-	public int getCountrycode() {
-		return countrycode;
-	}
-	public void setCountrycode(int countrycode) {
-		this.countrycode = countrycode;
-	}
 	public String getMobileNumber() {
 		return mobileNumber;
 	}

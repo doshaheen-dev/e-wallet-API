@@ -31,8 +31,10 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 	public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //    Optional<JwtUserDetails> findFirst = inMemoryUserList.stream()
 //        .filter(user -> user.getUsername().equals(username)).findFirst();
+		
+		
 		JwtUserDetails jwtUserDetails = null;
-		Optional<UserModel> userModel = userRepository.findAllByMobileNumber(username);
+		Optional<UserModel> userModel = userRepository.findByUuid(username);
 
 		if (!userModel.isPresent()) {
 			Optional<EmployeeModel> empOptional = employeeRepository.findAllByEmailidAndIsActive(username,true);

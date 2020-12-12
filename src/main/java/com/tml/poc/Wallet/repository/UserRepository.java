@@ -13,7 +13,12 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	List<UserModel> findAll();
 	Optional<UserModel> findAllById(long id);
-	Optional<UserModel> findAllByMobileNumber(String mobile);
-	Optional<UserModel> findAllByEmailid(String emailid);
+	List<UserModel> findAllByMobileNumberOrEmailidAndIsActive(String mobile,String email,boolean isActive);
+	Optional<UserModel> findByUuid(String uuid);
+	Optional<UserModel> findByEmailid(String emailid);
+	Optional<UserModel> findByMobileNumber(String mobile);
+	
+	Optional<UserModel> findByEmailidAndIsActive(String emailid,boolean isactive);
+	Optional<UserModel> findByMobileNumberAndIsActive(String mobile,boolean isactive);
 		
 }

@@ -20,6 +20,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -32,8 +33,11 @@ public class UserModel {
 
 	@Column(name = "uuid", updatable = false, nullable = false)
 	private  String uuid=UUID.randomUUID().toString();
-	private int countrycode;
+	
+    @Column(name="mobileNumber", unique=true)
 	private String mobileNumber;
+    
+    @Column(name="emailid", unique=true)
 	private String emailid;
 	private boolean isKYC;
 
@@ -44,6 +48,7 @@ public class UserModel {
 	private LocalDateTime dob;
 	private String gender;
 	private String profile_image;
+	private boolean isProfileComplete;
 	private long role;
 	private String createdBy;
 	private String updatedBy;
@@ -58,11 +63,18 @@ public class UserModel {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	
 	private boolean isMobileVerified;
 	private boolean isEmailVerified;
 	
 	private String otp;
+	@JsonIgnore
+	private Date otpCreated;
+	@Column(name = "isUserActivated", nullable = false, updatable = true)
 	private boolean isActive;
+	
+	@Column(name = "isUserBlocked", nullable = false, updatable = false)
+	private boolean isBlockedByAdmin;
 	
 	public long getId() {
 		return id;
@@ -96,13 +108,6 @@ public class UserModel {
 		this.accountid = accountid;
 	}
 
-	public int getCountrycode() {
-		return countrycode;
-	}
-
-	public void setCountrycode(int countrycode) {
-		this.countrycode = countrycode;
-	}
 
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -232,6 +237,31 @@ public class UserModel {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
+	public Date getOtpCreated() {
+		return otpCreated;
+	}
+
+	public void setOtpCreated(Date otpCreated) {
+		this.otpCreated = otpCreated;
+	}
+
+	public boolean isProfileComplete() {
+		return isProfileComplete;
+	}
+
+	public void setProfileComplete(boolean isProfileComplete) {
+		this.isProfileComplete = isProfileComplete;
+	}
+
+	public boolean isBlockedByAdmin() {
+		return isBlockedByAdmin;
+	}
+
+	public void setBlockedByAdmin(boolean isBlockedByAdmin) {
+		this.isBlockedByAdmin = isBlockedByAdmin;
+	}
+	
 	
 	
 

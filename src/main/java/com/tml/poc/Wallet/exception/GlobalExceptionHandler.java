@@ -55,56 +55,62 @@ public class GlobalExceptionHandler {
 //    
 	@ExceptionHandler(JsonEOFException.class)
 	public ResponseEntity<?> JsonExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(JsonParseException.class)
 	public ResponseEntity<?> JsonParceExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(SignatureException.class)
 	public ResponseEntity<?> jwtSignatureExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public ResponseEntity<?> userNotFoundExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(ServletException.class)
 	public ResponseEntity<?> servletExceptionExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(IOException.class)
 	public ResponseEntity<?> iOExceptionExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<?> expiredJwtExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(MalformedJwtException.class)
 	public ResponseEntity<?> malformedJwtExceptionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(JwtException.class)
 	public ResponseEntity<?> jwtExceptionExcpetionHandler(Exception ex, WebRequest request) {
-		DataModelResponce errorDetails = new DataModelResponce(new Date(), ex.getMessage(), null, false, 0);
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(InvalidInputException.class)
+	public ResponseEntity<?> invalidinputExceptionHandler(Exception ex, WebRequest request) {
+		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
+		return new ResponseEntity<>(errorDetails, HttpStatus.OK);
 	}
 
 //  @ExceptionHandler(Exception.class)
