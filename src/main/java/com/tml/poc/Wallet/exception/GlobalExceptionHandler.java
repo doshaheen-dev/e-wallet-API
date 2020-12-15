@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(InvalidInputException.class)
 	public ResponseEntity<?> invalidinputExceptionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
-		return new ResponseEntity<>(errorDetails, HttpStatus.OK);
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 //  @ExceptionHandler(Exception.class)

@@ -10,7 +10,7 @@ public class DataReturnUtil {
 	
 	public  Object setDataAndReturnResponseForAuthRestAPI(Object obj,String jwToken) {
 		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
-		if(obj!=null) {
+		if(obj!=null || !jwToken.isEmpty()) {
 			dataModelResponce.setData(obj);
 			dataModelResponce.setSuccess(true);
 			dataModelResponce.setMessage("Success");

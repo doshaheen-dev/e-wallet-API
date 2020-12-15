@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.io.JsonEOFException;
+import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
@@ -51,6 +52,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private DataReturnUtil dataReturnUtils;
+	
+	
+
 
 	/**
 	 * customer login req for OTP
@@ -62,7 +66,6 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	private ResponseEntity doLoginCall(@RequestBody UserCredModel userLoginModule)
 			throws ResourceNotFoundException, InvalidInputException {
-
 		return authenticationService.doUserAuthenticationByMobile(userLoginModule);
 	}
 
@@ -105,7 +108,7 @@ public class AuthenticationController {
 				String refreshedToken = jwtTokenUtil.refreshToken(token);
 //			return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
 				return ResponseEntity
-						.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(new Date(), refreshedToken));
+						.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(null, refreshedToken));
 			} else {
 				return ResponseEntity.badRequest().body(null);
 			}

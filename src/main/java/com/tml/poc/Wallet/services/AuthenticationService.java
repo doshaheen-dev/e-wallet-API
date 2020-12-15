@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
@@ -69,7 +70,8 @@ public class AuthenticationService {
     @Value("${otp.expiretime.miliseco}")
     private long otpExpireTime;
     		
-
+	@Autowired
+	private EmailComponant emailCompo;
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
@@ -97,6 +99,7 @@ public class AuthenticationService {
 			usermodel.setOtp(userLoginModule.getOtp());
 			usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
 			userRepository.save(usermodel);
+			emailCompo.sendOTPEmail(usermodel.getEmailid(),usermodel.getOtp());
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 		}else {
 			throw new ResourceNotFoundException("User Not Found");

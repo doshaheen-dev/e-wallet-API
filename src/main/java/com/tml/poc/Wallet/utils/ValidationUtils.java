@@ -5,16 +5,23 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
+import com.tml.poc.Wallet.exception.InvalidInputException;
+
 @Component
 public class ValidationUtils {
 
-	public boolean isValidEmail(String target) {
-		System.out.println(target);
+	public boolean isValidEmail(String target) throws InvalidInputException {
+		try{System.out.println(target);
 		Pattern pattern;
 		Matcher matcher;
 		pattern = Pattern.compile(ApplicationConstants.EMAIL_PATTERN);
 		matcher = pattern.matcher(target);
 		return matcher.matches();
+		}catch (Exception e) {
+			// TODO: handle exception
+			
+			throw new InvalidInputException("User Not Found");
+		}
 	}
 
 	public boolean isValidPassword(String password) {

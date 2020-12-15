@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
@@ -45,7 +46,9 @@ public class UserService {
     private long otpExpireTime;
 	    
 
-
+	@Autowired
+	private EmailComponant emailCompo;
+	
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
@@ -69,13 +72,11 @@ public class UserService {
 		Optional<UserModel> userOptional=null;
 		userOptional=userRepository.findByEmailid(userRegistrationModel.getEmailid());
 		if(userOptional.isPresent()) {
-			
 			message=message+" EmailId is Already Present |";
 		}
 		if(userRepository.findByMobileNumber(userRegistrationModel.getMobileNumber()).isPresent()) {
 			message=message+" Mobile number is Already Present ";
 		}
-		
 		if(message.equals("")) {
 			UserModel usermodel=new UserModel();
 			userRegistrationModel.setOTP(cmUtils.generateOTP());
@@ -83,16 +84,26 @@ public class UserService {
 			usermodel.setMobileNumber(userRegistrationModel.getMobileNumber());
 			usermodel.setOtp(userRegistrationModel.getOTP());
 			usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
+			usermodel.setActive(false);
 			userRepository.save(usermodel);
+			
+			emailCompo.sendOTPEmail(usermodel.getEmailid(),usermodel.getOtp());
+
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userRegistrationModel));
 		}else {
-			
 			throw new InvalidInputException(message);
-
 		}
 		
 	}
 	
+	
+	/**
+	 * to ReSend Otp set here
+	 * @param userCred
+	 * @return
+	 * @throws InvalidInputException
+	 * @throws ResourceNotFoundException
+	 */
 	public ResponseEntity doResendOTP(String userCred) 
 			throws InvalidInputException, ResourceNotFoundException {
 		String message="";
@@ -113,6 +124,8 @@ public class UserService {
 			usermodel.setOtp(userLoginModule.getOtp());
 			usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
 			userRepository.save(usermodel);
+			emailCompo.sendOTPEmail(usermodel.getEmailid(),usermodel.getOtp());
+
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 		}else {
 			

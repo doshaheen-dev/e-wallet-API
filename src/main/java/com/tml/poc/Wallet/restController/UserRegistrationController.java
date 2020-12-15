@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
@@ -28,6 +29,9 @@ public class UserRegistrationController {
 	
 	@Autowired
 	private UserService userService;
+	
+	
+
 		
 	@PostMapping("/register")
 	public Object getUserRegister(@Valid @RequestBody UserRegistrationModel userRegistrationModel) 
