@@ -23,15 +23,22 @@ public class RequestFilter implements Filter {
 	    LOGGER.info("doFilter, parsing request");
             // LOG REQUEST
             ResettableStreamHttpServletRequest wrappedRequest = null;
-            ResettableStreamHttpServletResponse wrappedResponse = null;
+            ResettableStreamHttpServletResponse wrappedResponse = null;		
             try {
                     wrappedRequest = new ResettableStreamHttpServletRequest((HttpServletRequest) request);
                     wrappedResponse = new ResettableStreamHttpServletResponse((HttpServletResponse) response);
                     logApiInterceptor.writeRequestPayloadAudit(wrappedRequest);
+                    String reqHeader=logApiInterceptor.getRawHeadersRequestId(wrappedRequest);
+                   
+                    wrappedResponse.setHeader("RequestId", reqHeader);
                     chain.doFilter(wrappedRequest, wrappedResponse);
-
+                    														
             } catch (Exception e) {
 //                    LOGGER.error("Fail to wrap request and response",e);
             }
     }
+    
+    
+    
+    
 }

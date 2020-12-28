@@ -3,6 +3,7 @@ package com.tml.poc.Wallet.loggingUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.tml.poc.Wallet.repository.CustomTraceRepository;
+import com.tml.poc.Wallet.services.ResquestRespLogMongoservice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.UUID;
 
@@ -25,6 +27,12 @@ import java.util.UUID;
 public class LogApiInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = LoggerFactory.getLogger(LogApiInterceptor.class);
 
+	private static String headerStr="";
+	
+	
+	@Autowired
+	ResquestRespLogMongoservice requestLogService;
+	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
@@ -45,6 +53,37 @@ public class LogApiInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		return rawHeaders.toString();
+	}
+	
+	
+	public String getRawHeadersRequestId(HttpServletRequest request) {
+		StringBuffer rawHeaders = new StringBuffer();
+		Enumeration headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String key = (String) headerNames.nextElement();
+			String value = request.getHeader(key);
+//			rawHeaders.append(key).append(":").append(value).append("\n");
+			if(key.equalsIgnoreCase("RequestId")) {
+				return value;
+			}
+		}
+
+		return null;
+	}
+
+	public String getRawHeadersRespId(HttpServletResponse response) {
+		StringBuffer rawHeaders = new StringBuffer();
+		Enumeration headerNames = Collections.enumeration(response.getHeaderNames());
+		while (headerNames.hasMoreElements()) {
+			String key = (String) headerNames.nextElement();
+			String value = response.getHeader(key);
+//			rawHeaders.append(key).append(":").append(value).append("\n");
+			if(key.equalsIgnoreCase("RequestId")) {
+				return value;
+			}
+		}
+
+		return null;
 	}
 
 	public String getRawHeaders(HttpServletResponse response) {
@@ -68,23 +107,36 @@ public class LogApiInterceptor extends HandlerInterceptorAdapter {
 		}
 	}
 
+	
+	/**
+	 * request payload writtern and taking logs
+	 * @param wrappedRequest
+	 */
 	public void writeRequestPayloadAudit(ResettableStreamHttpServletRequest wrappedRequest) {
 		try {
 			String requestHeaders = getRawHeaders(wrappedRequest);
+			String requestId = getRawHeadersRequestId(wrappedRequest);
 			String requestBody = org.apache.commons.io.IOUtils.toString(wrappedRequest.getReader());
 			logger.info("Request Method: " + wrappedRequest.getMethod());
 			logger.info("Request Headers:");
 			logger.info(requestHeaders);
 			logger.info("Request body:");
 			logger.info(requestBody);
+			
+//			 String url = ((HttpServletRequest)request).getRequestURL().toString();
+//			 String queryString = ((HttpServletRequest)request).getQueryString();
+			requestLogService.addRequestIntoLogMongo(requestId,wrappedRequest.getRequestURI(), requestHeaders, requestBody);
+			
 		} catch (Exception e) {
 //	    	logger.error(e.getMessage());
 		}
 	}
 
 	public void writeResponsePayloadAudit(ResettableStreamHttpServletResponse wrappedResponse) {
-		try {
+		try {	
 			String rawHeaders = getRawHeaders(wrappedResponse);
+			String requestId = getRawHeadersRespId(wrappedResponse);
+
 			logger.info("Response Status: " + wrappedResponse.getStatus());
 			logger.info("Response Headers:");
 			logger.info(rawHeaders);
@@ -95,6 +147,9 @@ public class LogApiInterceptor extends HandlerInterceptorAdapter {
 			}
 			String responseBody = new String(data);
 			logger.info(responseBody);
+			
+			requestLogService.addResponseIntoLogMongo(requestId, rawHeaders, responseBody);
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
