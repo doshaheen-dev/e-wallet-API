@@ -9,6 +9,8 @@ public class AppContainerCustomizer
             implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
-        factory.setPort(80);
+        factory.setPort(8080);
     }
 }
+
+
