@@ -23,4 +23,9 @@ public class UserKYCController {
     private ResponseEntity applyUserKYC(@Valid @RequestBody UserKYCModel userKYCModel){
         return userKYCService.applyUserKYC(userKYCModel);
     }
+
+    @PostMapping("/approval")
+    private ResponseEntity getApprovalUserKYC(@Valid @RequestBody UserKYCModel userKYCModel){
+        return userKYCService.applyUserKYC(userKYCModel);
+    }
 }

@@ -20,5 +20,6 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 	
 	Optional<UserModel> findByEmailidAndIsActive(String emailid,boolean isactive);
 	Optional<UserModel> findByMobileNumberAndIsActive(String mobile,boolean isactive);
-		
+
+
 }

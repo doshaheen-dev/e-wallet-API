@@ -24,6 +24,17 @@ public class DataReturnUtil {
 		return dataModelResponce;
 		
 	}
+
+	public  Object setDataAndReturnResponseSuccess(Object obj,String message) {
+		DataModelResponce dataModelResponce = new DataModelResponce();
+
+			dataModelResponce.setData(obj);
+			dataModelResponce.setSuccess(true);
+			dataModelResponce.setMessage(message);
+
+		return dataModelResponce;
+
+	}
 	
 	public  Object setDataAndReturnResponseForRestAPI(Object obj) {
 		DataModelResponce dataModelRespo=new DataModelResponce();
