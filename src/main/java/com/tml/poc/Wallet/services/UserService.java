@@ -53,7 +53,7 @@ public class UserService {
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
 	 * 
-	 * @param userModel
+	 * @param
 	 * @return
 	 * @throws InvalidInputException 
 	 * @throws ResourceNotFoundException 
@@ -139,7 +139,7 @@ public class UserService {
 	 * after registration check mobile number is already present and then checking
 	 * OTP
 	 * 
-	 * @param userRegistrationModel
+	 * @param
 	 * @return
 	 * @throws InvalidInputException 
 	 * @throws ResourceNotFoundException 
@@ -158,7 +158,7 @@ public class UserService {
 				usermodel.setMobileVerified(true);
 				usermodel.setEmailVerified(false);
 				usermodel=userRepository.save(usermodel);
-				final String token = jwtTokenUtil.generateToken1(usermodel.getUuid());
+				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
 			else {

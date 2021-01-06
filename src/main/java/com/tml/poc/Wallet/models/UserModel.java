@@ -31,8 +31,11 @@ public class UserModel {
 	private long id;
 	private long accountid;
 
+	/**
+	 * uuid is use to CreateUI
+	 */
 	@Column(name = "uuid", updatable = false, nullable = false)
-	private  String uuid=UUID.randomUUID().toString();
+	private  String qrCode=UUID.randomUUID().toString();
 	
     @Column(name="mobileNumber", unique=true)
 	private String mobileNumber;
@@ -229,13 +232,12 @@ public class UserModel {
 		this.isActive = isActive;
 	}
 
-	
-	public String getUuid() {
-		return uuid;
+	public String getQrCode() {
+		return qrCode;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
 	}
 
 	public Date getOtpCreated() {

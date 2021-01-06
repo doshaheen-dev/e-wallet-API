@@ -23,4 +23,9 @@ public class UserSearchController {
         return userSearchService.searchUserByMobile(mobileNumber);
     }
 
+    @GetMapping("/qrcode/{qrCode}")
+    private ResponseEntity getUserByQRCode(@PathVariable(name = "qrCode")String qrCode){
+        return userSearchService.searchUserByUUID(qrCode);
+    }
+
 }

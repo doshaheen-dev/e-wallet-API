@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class TransactionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column("trans_id")
+    @Column(name = "trans_id")
     private long id;
 
     private String senderID;

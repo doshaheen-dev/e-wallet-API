@@ -34,7 +34,7 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 		
 		
 		JwtUserDetails jwtUserDetails = null;
-		Optional<UserModel> userModel = userRepository.findByUuid(username);
+		Optional<UserModel> userModel = userRepository.findByQrCode(username);
 
 		if (!userModel.isPresent()) {
 			Optional<EmployeeModel> empOptional = employeeRepository.findAllByEmailidAndIsActive(username,true);
@@ -46,7 +46,7 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
 		} else {
 			jwtUserDetails = new JwtUserDetails(userModel.get().getId(),
-					userModel.get().getUuid(),
+					userModel.get().getQrCode(),
 					userModel.get().getOtp(),
 					"user");
 		}

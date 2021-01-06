@@ -26,6 +26,15 @@ public class UserSearchService {
         }
     }
 
+    public ResponseEntity searchUserByUUID(String uuid){
+        Optional<UserModel> userModelList=userRepository.findByQrCode(uuid);
+        if(userModelList.isPresent()){
+            return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userModelList.get()));
+        }else{
+            throw new UsernameNotFoundException("QR Code is not Found");
+        }
+    }
+
 
     public ResponseEntity searchUserMobile(String mobilenumber){
         Optional<UserModel> userModelList=userRepository.findByMobileNumber(mobilenumber);

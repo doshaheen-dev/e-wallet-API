@@ -76,7 +76,7 @@ public class AuthenticationService {
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
 	 * 
-	 * @param userModel
+	 * @param
 	 * @return
 	 */
 	public ResponseEntity doUserAuthenticationByMobile(@Valid UserCredModel userCredModel)
@@ -113,7 +113,7 @@ public class AuthenticationService {
 	/**
 	 * Verification of User By OTP and send Token
 	 * 
-	 * @param userRegistrationModel
+	 * @param
 	 * @return
 	 * @throws ResourceNotFoundException 
 	 */
@@ -135,7 +135,7 @@ public class AuthenticationService {
 				usermodel.setOtp("");
 				usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
 				usermodel=userRepository.save(usermodel);
-				final String token = jwtTokenUtil.generateToken1(usermodel.getUuid());
+				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
 		}else {
