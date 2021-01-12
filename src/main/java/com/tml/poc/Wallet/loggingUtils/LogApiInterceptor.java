@@ -117,11 +117,11 @@ public class LogApiInterceptor extends HandlerInterceptorAdapter {
 			String requestHeaders = getRawHeaders(wrappedRequest);
 			String requestId = getRawHeadersRequestId(wrappedRequest);
 			String requestBody = org.apache.commons.io.IOUtils.toString(wrappedRequest.getReader());
-			logger.info("Request Method: " + wrappedRequest.getMethod());
-			logger.info("Request Headers:");
-			logger.info(requestHeaders);
-			logger.info("Request body:");
-			logger.info(requestBody);
+//			logger.info("Request Method: " + wrappedRequest.getMethod());
+//			logger.info("Request Headers:");
+//			logger.info(requestHeaders);
+//			logger.info("Request body:");
+//			logger.info(requestBody);
 			
 //			 String url = ((HttpServletRequest)request).getRequestURL().toString();
 //			 String queryString = ((HttpServletRequest)request).getQueryString();
@@ -137,10 +137,10 @@ public class LogApiInterceptor extends HandlerInterceptorAdapter {
 			String rawHeaders = getRawHeaders(wrappedResponse);
 			String requestId = getRawHeadersRespId(wrappedResponse);
 
-			logger.info("Response Status: " + wrappedResponse.getStatus());
-			logger.info("Response Headers:");
-			logger.info(rawHeaders);
-			logger.info("Response body:");
+//			logger.info("Response Status: " + wrappedResponse.getStatus());
+//			logger.info("Response Headers:");
+//			logger.info(rawHeaders);
+//			logger.info("Response body:");
 			byte[] data = new byte[wrappedResponse.rawData.size()];
 			for (int i = 0; i < data.length; i++) {
 				data[i] = (byte) wrappedResponse.rawData.get(i);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class Fileutils {
 	// Method which write the bytes into a file
-	public File writeByte(byte[] bytes,String ext) throws IOException, Exception {
+	public File writeByte(byte[] bytes,String ext) throws IOException {
 
 		File file = new File(UUID.randomUUID().toString()+"."+ext.replace(".", ""));
 

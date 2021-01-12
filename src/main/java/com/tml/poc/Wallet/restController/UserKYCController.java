@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("kyc/user")
@@ -20,12 +21,12 @@ public class UserKYCController {
     private UserKYCService userKYCService;
 
     @PostMapping("/apply")
-    private ResponseEntity applyUserKYC(@Valid @RequestBody UserKYCModel userKYCModel){
+    private ResponseEntity applyUserKYC(@Valid @RequestBody UserKYCModel userKYCModel) throws IOException {
         return userKYCService.applyUserKYC(userKYCModel);
     }
 
     @PostMapping("/approval")
     private ResponseEntity getApprovalUserKYC(@Valid @RequestBody UserKYCModel userKYCModel){
-        return userKYCService.applyUserKYC(userKYCModel);
+        return userKYCService.approveKYC(userKYCModel);
     }
 }
