@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,9 +33,23 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}/get")
-	public Object getUserRegisterVerify(@PathVariable long id)  throws AuthenticationException {
+	public Object getGivenUser(@PathVariable long id)  throws AuthenticationException {
 		
 		return ResponseEntity.ok((userService.doGetUserById(id)));
 	}
+	
+	@DeleteMapping("/delete/{id}")
+	public Object DeleteUser(@PathVariable long id)  throws AuthenticationException {
+		
+		return ResponseEntity.ok((userService.doDeleteUserById(id)));
+	}
+	
+	@DeleteMapping("/image/remove/{id}")
+	public Object removeUserImage(@PathVariable long id)  throws AuthenticationException {
+		
+		return ResponseEntity.ok((userService.doRemoveImageUserById(id)));
+	}
+
+
 			
 }

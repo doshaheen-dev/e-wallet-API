@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.validation.constraints.Pattern;
+
 import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -192,4 +194,6 @@ public class CommonMethods {
 
         return result;
     }
+    
+  
 }

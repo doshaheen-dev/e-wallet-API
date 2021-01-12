@@ -9,7 +9,7 @@ public class DataModelResponce {
 	private String message;
 	
 	private Object error;
-
+ 
 	private boolean success;
 	
 	private int resCode;

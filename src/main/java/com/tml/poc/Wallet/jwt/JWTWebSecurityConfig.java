@@ -122,9 +122,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             // -- swagger ui
             "/user/register",
             "/user/verify",
-            "/auth/mobile",
-            "/auth/verify"            
-            
+            "/user/auth/**",         
+            "/user/otp/resend/**"            
             };
     
 //    
