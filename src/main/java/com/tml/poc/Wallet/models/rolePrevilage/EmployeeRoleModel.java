@@ -1,4 +1,4 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.rolePrevilage;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.tml.poc.Wallet.models.EmployeeModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,51 +22,44 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "privilage_master")
-public class PrivilageMasterModel {
+@Table(name = "EmployeeRole")
+public class EmployeeRoleModel {
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	private long privilageId;
-	private long roleId;
-	private boolean isRead;		
-	private boolean isWrite;		
-	private String createdBy;
-	private String updatedBy;
+	private String roleName;
+									
+	String createdBy;
+	String updatedBy;
 
 	@CreatedDate
 	@CreationTimestamp
 	@JsonIgnore
 	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
+	LocalDateTime createdAt;
 
 	@LastModifiedDate
 	@UpdateTimestamp
 	@JsonIgnore
 	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
-
+	LocalDateTime updatedAt;
+		
 	@OneToMany
-	private List<PrivilageMasterModel> privilageMaster;
-	
+	private List<EmployeeModel> employee;
+
 	@JsonIgnore
 	boolean isActive;
 
-	public boolean isRead() {
-		return isRead;
+	public EmployeeRoleModel() {
+		super();
 	}
 
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
-	}
-
-	public boolean isWrite() {
-		return isWrite;
-	}
-
-	public void setWrite(boolean isWrite) {
-		this.isWrite = isWrite;
+	public EmployeeRoleModel(long id) {
+		super();
+		this.id = id;
 	}
 
 	public long getId() {
@@ -74,7 +70,14 @@ public class PrivilageMasterModel {
 		this.id = id;
 	}
 
-	
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -115,32 +118,14 @@ public class PrivilageMasterModel {
 		this.isActive = isActive;
 	}
 
-	public long getPrivilageId() {
-		return privilageId;
-	}
-
-	public void setPrivilageId(long privilageId) {
-		this.privilageId = privilageId;
-	}
-
-	public long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
-	}
-
-//	public List<PrivilageMasterModel> getPrivilageMaster() {
-//		return privilageMaster;
+//	public List<EmployeeModel> getEmployee() {
+//		return employee;
 //	}
 //
-//	public void setPrivilageMaster(List<PrivilageMasterModel> privilageMaster) {
-//		this.privilageMaster = privilageMaster;
+//	public void setEmployee(List<EmployeeModel> employee) {
+//		this.employee = employee;
 //	}
-//
-//	
-//	
+	
 	
 	
 }

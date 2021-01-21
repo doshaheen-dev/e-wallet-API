@@ -1,4 +1,4 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.rolePrevilage;
 
 import java.time.LocalDateTime;
 
