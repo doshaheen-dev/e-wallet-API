@@ -18,6 +18,7 @@
 	<description>Demo project for TML wallet Poc userpool</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -112,7 +113,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-rest-hal-browser</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-rest-hal-browser</artifactId>
 			</dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
@@ -160,7 +161,28 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 			
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
+		<dependency>	
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-aws</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<repositories>
 		<repository>
 			<id>jcenter-snapshots</id>
@@ -168,44 +190,45 @@
 			<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
 		</repository>
 	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>com.microsoft.azure</groupId>
-				<artifactId>azure-webapp-maven-plugin</artifactId>
-				<version>1.7.0</version>
-				<configuration>
-					<authType>azure_cli</authType>
-					<resourceGroup>com.tml.wallet</resourceGroup>
-					<appName>tmlwallet</appName>
-					<pricingTier>B1</pricingTier>
-					<region>CentralIndia</region>
-					<!-- Java Runtime Stack for Web App on Linux -->
-					<linuxRuntime>tomcat 9.0-jre8</linuxRuntime>
-					<runtime>
-						<os>Linux</os>
-						<!-- for now only jre8 is supported for <javaVersion> of linux web 
-							app -->
-						<javaVersion>jre8</javaVersion>
-						<webContainer>tomcat 9.0</webContainer>
-					</runtime>
-					<deployment>
-						<resources>
-							<resource>
-								<directory>${project.basedir}/target</directory>
-								<includes>
-									<include>*.jar</include>
-								</includes>
-							</resource>
-						</resources>
-					</deployment>
-				</configuration>
+<!--			<plugin>-->
+<!--				<groupId>com.microsoft.azure</groupId>-->
+<!--				<artifactId>azure-webapp-maven-plugin</artifactId>-->
+<!--				<version>1.7.0</version>-->
+<!--				<configuration>-->
+<!--					<authType>azure_cli</authType>-->
+<!--					<resourceGroup>com.tml.wallet</resourceGroup>-->
+<!--					<appName>tmlwallet</appName>-->
+<!--					<pricingTier>B1</pricingTier>-->
+<!--					<region>CentralIndia</region>-->
+<!--					&lt;!&ndash; Java Runtime Stack for Web App on Linux &ndash;&gt;-->
+<!--					<linuxRuntime>tomcat 9.0-jre8</linuxRuntime>-->
+<!--					<runtime>-->
+<!--						<os>Linux</os>-->
+<!--						&lt;!&ndash; for now only jre8 is supported for <javaVersion> of linux web-->
+<!--							app &ndash;&gt;-->
+<!--						<javaVersion>jre8</javaVersion>-->
+<!--						<webContainer>tomcat 9.0</webContainer>-->
+<!--					</runtime>-->
+<!--					<deployment>-->
+<!--						<resources>-->
+<!--							<resource>-->
+<!--								<directory>${project.basedir}/target</directory>-->
+<!--								<includes>-->
+<!--									<include>*.jar</include>-->
+<!--								</includes>-->
+<!--							</resource>-->
+<!--						</resources>-->
+<!--					</deployment>-->
+<!--				</configuration>-->
 
-			</plugin>
+<!--			</plugin>-->
 		</plugins>
 	</build>
 </project>

@@ -20,13 +20,13 @@ public class TransactionModel {
     @Column(name = "user_id")
     private long userID;
 
-    @Column(name = "user_id")
+    @Column(name = "trans_type")
     private String transactionType;
 
-    @Column(name = "user_id")
+    @Column(name = "trans_amount")
     private float transactionAmount;
 
-    @Column(name = "user_id")
+    @Column(name = "trans_avail_balance")
     private float availableBalance;
 
     @CreatedDate

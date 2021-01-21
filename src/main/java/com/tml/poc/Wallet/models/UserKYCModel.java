@@ -35,9 +35,13 @@ public class UserKYCModel {
     private String kycDocumentType;
 
     @Column(name = "documentUrl")
-    private String kycDocumentURL;
+    private String kycDocument;
+    @Transient
+    private String kycDocumentExt;
     @Column(name = "passportPhotoUrl")
     private String kycPassportPhoto;
+    @Transient
+    private String kycPassportPhotoExt;
 
     @Column(name = "kycApprovedBy")
     private long approvedBy;
@@ -63,6 +67,22 @@ public class UserKYCModel {
     @JsonIgnore
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public String getKycDocumentExt() {
+        return kycDocumentExt;
+    }
+
+    public void setKycDocumentExt(String kycDocumentExt) {
+        this.kycDocumentExt = kycDocumentExt;
+    }
+
+    public String getKycPassportPhotoExt() {
+        return kycPassportPhotoExt;
+    }
+
+    public void setKycPassportPhotoExt(String kycPassportPhotoExt) {
+        this.kycPassportPhotoExt = kycPassportPhotoExt;
+    }
 
     public long getId() {
         return id;
@@ -104,12 +124,12 @@ public class UserKYCModel {
         this.kycDocumentType = kycDocumentType;
     }
 
-    public String getKycDocumentURL() {
-        return kycDocumentURL;
+    public String getKycDocument() {
+        return kycDocument;
     }
 
-    public void setKycDocumentURL(String kycDocumentURL) {
-        this.kycDocumentURL = kycDocumentURL;
+    public void setKycDocument(String kycDocument) {
+        this.kycDocument = kycDocument;
     }
 
     public String getKycPassportPhoto() {
