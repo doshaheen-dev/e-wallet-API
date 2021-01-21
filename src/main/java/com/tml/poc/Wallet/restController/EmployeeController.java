@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,10 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.EmployeeModel;
-import com.tml.poc.Wallet.models.EmployeeRoleModel;
-import com.tml.poc.Wallet.models.reponse.DataModelResponce;
-import com.tml.poc.Wallet.repository.EmployeeRepository;
-import com.tml.poc.Wallet.repository.EmployeeRoleRepository;
 import com.tml.poc.Wallet.services.EmployeeService;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 

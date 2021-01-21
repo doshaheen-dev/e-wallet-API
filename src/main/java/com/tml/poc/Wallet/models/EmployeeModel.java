@@ -1,7 +1,6 @@
 package com.tml.poc.Wallet.models;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
@@ -22,6 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Pattern.Flag;
 import javax.validation.constraints.Size;
 
+import com.tml.poc.Wallet.models.rolePrevilage.EmployeeRoleModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,7 +27,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.tml.poc.Wallet.utils.Constants;
 
 @Entity
@@ -61,6 +58,7 @@ public class EmployeeModel {
 	private String password;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "birthdate",columnDefinition = "TIMESTAMP")
 	private LocalDateTime dob;
 	private String gender;
 	private String profile_image;
@@ -79,13 +77,13 @@ public class EmployeeModel {
 	@CreatedDate
 	@CreationTimestamp
 	@JsonIgnore
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@Column(name = "created_at",columnDefinition = "TIMESTAMP", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
 	@LastModifiedDate
 	@UpdateTimestamp
 	@JsonIgnore
-	@Column(name = "updated_at")
+	@Column(name = "updated_at",columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
 
 	@JsonIgnore
