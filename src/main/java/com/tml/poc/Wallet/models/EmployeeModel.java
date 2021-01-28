@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tml.poc.Wallet.utils.Constants;
 
 @Entity
-@Table(name = "Employee")
+@Table(name = "web_user")
 public class EmployeeModel {
 
 	@Id

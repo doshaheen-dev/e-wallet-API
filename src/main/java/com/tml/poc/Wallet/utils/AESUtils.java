@@ -136,8 +136,11 @@ public class AESUtils {
     }
 
     public static String encryptPasswordBased(String plainText, SecretKey key, IvParameterSpec iv)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
-            InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+            throws NoSuchPaddingException, NoSuchAlgorithmException,
+            InvalidAlgorithmParameterException,
+            InvalidKeyException, BadPaddingException,
+            IllegalBlockSizeException {
+
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
         return Base64.getEncoder()

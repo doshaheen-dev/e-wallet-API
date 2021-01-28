@@ -71,7 +71,7 @@ public class UserKYCService {
         if (userModelOption.isPresent()) {
             UserModel userModel = userModelOption.get();
 
-            if (!userModel.isKYC()) {
+            if (!userModel.isIskycDone()) {
                 return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userKYCRepository.save(userKYCModel)));
             }else{
                 return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(null,"Already KYC Done"));

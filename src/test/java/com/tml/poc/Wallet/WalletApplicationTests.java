@@ -1,9 +1,7 @@
 package com.tml.poc.Wallet;
 
 import com.tml.poc.Wallet.models.mpin.MPINModel;
-import com.tml.poc.Wallet.utils.AESUtils;
-import com.tml.poc.Wallet.utils.CommonMethods;
-import com.tml.poc.Wallet.utils.Constants;
+import com.tml.poc.Wallet.utils.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,14 +95,14 @@ class WalletApplicationTests {
 			IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
 			InvalidAlgorithmParameterException, NoSuchPaddingException {
 //
-//		String plainText = "www.baeldung.com";
-//		String password = "baeldung";
-//		String salt = "1234567890";
-//		IvParameterSpec ivParameterSpec = AESUtils.generateIv();
-//		SecretKey key = AESUtils.getKeyFromPassword(password,salt);
-//		String cipherText = AESUtils.encryptPasswordBased(plainText, key, ivParameterSpec);
-//		String decryptedCipherText = AESUtils.decryptPasswordBased(
-//				cipherText, key, ivParameterSpec);
-//		Assertions.assertEquals(plainText, decryptedCipherText);
+		String plainText = "www.baeldung.com";
+		String password = "baeldung";
+		String salt = "1234567890123456";
+		IvParameterSpec ivParameterSpec = AESUtils.generateIv();
+
+		String cipherText = AES.encrypt(plainText, salt) ;
+		String decryptText = AES.decrypt(cipherText, salt) ;
+
+		Assertions.assertEquals(plainText, decryptText);
 	}
 }

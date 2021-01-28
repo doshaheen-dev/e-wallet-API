@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -22,12 +23,16 @@ public class MPINModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(notes = "id of M-PIN")
     private long id;
-    @ApiModelProperty(notes = "mpin from user")
+    @ApiModelProperty(notes = "M-PIN from user")
+    @Size(max = 10)
     private String mPin;
     @ApiModelProperty(notes = "UUID from Client side  RequestID")
+    @Size(max = 100)
     private String requestID;
     @ApiModelProperty(notes = "userID of user who is trying")
     private long userID;
+
+    @JsonIgnore
     private String secretkey;
 
     @CreatedDate
@@ -42,6 +47,8 @@ public class MPINModel {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @Column(name = "mpin_otp")
+    @Size(max = 10)
     private String otp;
     private boolean isActive;
     private boolean isVerified;

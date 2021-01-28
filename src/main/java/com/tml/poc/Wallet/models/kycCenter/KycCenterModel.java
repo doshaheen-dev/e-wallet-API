@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,23 +20,29 @@ public class KycCenterModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "kyc_center_name")
+    @Size( max = 50)
     private String centerName;
     @Column(name = "kyc_center_contact_number")
+    @Size( max = 20)
     private String centerContactNumber;
     @Column(name = "kyc_center_emailid")
+    @Size( max = 50)
     private String centerEmailID;
     @Column(name = "kyc_center_area")
+    @Size( max = 20)
     private String centerArea;
     @Column(name = "kyc_center_postal_code")
+    @Size( max = 10)
     private String centerZip;
     @Column(name = "kyc_center_full_address")
+    @Size( max = 250)
     private String centerAddress;
     @Column(name = "kyc_center_city")
+    @Size( max = 20)
     private String centerCity;
     @Column(name = "kyc_center_country")
+    @Size( max = 20)
     private String centerCountry;
-    @Column(name = "kyc_center_country_code")
-    private String centerCountryCode;
 
     @Column(name = "kyc_center_type")
     private String centerType;
@@ -46,19 +54,18 @@ public class KycCenterModel {
     @CreationTimestamp
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @LastModifiedDate
     @UpdateTimestamp
     @JsonIgnore
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
     private String createdBy;
     private String updatedBy;
 
     @JsonIgnore
     boolean isActive;
-
 
     public long getId() {
         return id;
@@ -132,12 +139,12 @@ public class KycCenterModel {
         this.centerCountry = centerCountry;
     }
 
-    public String getCenterCountryCode() {
-        return centerCountryCode;
+    public String getCenterType() {
+        return centerType;
     }
 
-    public void setCenterCountryCode(String centerCountryCode) {
-        this.centerCountryCode = centerCountryCode;
+    public void setCenterType(String centerType) {
+        this.centerType = centerType;
     }
 
     public double getLatitude() {
@@ -156,19 +163,19 @@ public class KycCenterModel {
         this.longitude = longitude;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -194,13 +201,5 @@ public class KycCenterModel {
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public String getCenterType() {
-        return centerType;
-    }
-
-    public void setCenterType(String centerType) {
-        this.centerType = centerType;
     }
 }

@@ -6,10 +6,8 @@ import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.repository.MPinRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
-import com.tml.poc.Wallet.utils.AESUtils;
-import com.tml.poc.Wallet.utils.CommonMethods;
-import com.tml.poc.Wallet.utils.DataReturnUtil;
-import com.tml.poc.Wallet.utils.PasswordUtils;
+import com.tml.poc.Wallet.utils.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -29,7 +27,9 @@ import java.util.Optional;
 @Service
 public class MPinServices {
 
+    @Autowired
     private MPinRepository mMPinRepository;
+    @Autowired
     private UserRepository userRepository;
 
     @Value("${aes.secretkey}")
@@ -38,8 +38,15 @@ public class MPinServices {
     /**
      * create MPIN for User and send OTP
      */
-    public Object createMPin(MPINModel mpinModel) throws ResourceNotFoundException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
-        Optional<MPINModel> mpinModelOptional=mMPinRepository.findByUserIDAndIsActive(mpinModel.getUserID(),
+    public Object createMPin(MPINModel mpinModel) throws ResourceNotFoundException,
+            BadPaddingException,
+            InvalidAlgorithmParameterException,
+            NoSuchAlgorithmException,
+            IllegalBlockSizeException, NoSuchPaddingException,
+            InvalidKeyException, InvalidKeySpecException {
+
+        Optional<MPINModel> mpinModelOptional=mMPinRepository
+                .findByUserIDAndIsActive(mpinModel.getUserID(),
                 true);
         if(mpinModelOptional.isPresent()){
           throw new ResourceNotFoundException("MPIN Already Created");
@@ -48,9 +55,13 @@ public class MPinServices {
         if(!userModelOptional.isPresent()){
             throw new ResourceNotFoundException("Given User not found");
         }
+        mpinModel.setSecretkey(new PasswordUtils().getSalt(Constants.SALT_COUNT));
         mpinModel.setOtp(new CommonMethods().generateOTP());
         mpinModel.setmPin(getEncryptedString(mpinModel));
-       return ResponseEntity.ok(mMPinRepository.save(mpinModel));
+        mpinModel=mMPinRepository.save(mpinModel);
+        mpinModel.setmPin("");
+       return ResponseEntity.ok(new DataReturnUtil()
+               .setDataAndReturnResponseForRestAPI(mMPinRepository.save(mpinModel)));
     }
 
     /**
@@ -80,6 +91,8 @@ public class MPinServices {
         if(!mpinModel.getOtp().equals(mpinModelOptional.get().getOtp())){
             throw new InvalidInputException("Otp Not Matched");
         }
+        mpinModel.setVerified(true);
+        mpinModel.setActive(true);
         return ResponseEntity.ok(new DataReturnUtil()
                 .setDataAndReturnResponseForRestAPI(mMPinRepository.save(mpinModel)));
     }
@@ -90,9 +103,9 @@ public class MPinServices {
         if(!mpinModelOptional.isPresent()){
             throw new ResourceNotFoundException("M-PIN Not Created");
         }
-        if(mpinModel.isVerified()){
-            throw new InvalidInputException("Already Verified");
-        }
+//        if(mpinModel.isVerified()){
+//            throw new InvalidInputException("Already Verified");
+//        }
         mpinModel.setId(mpinModelOptional.get().getId());
         Optional<UserModel> userModelOptional=userRepository.findById(mpinModel.getUserID());
         if(!userModelOptional.isPresent()){
@@ -101,10 +114,30 @@ public class MPinServices {
         if(!mpinModel.getOtp().equals(getDecryptedString(mpinModelOptional.get()))){
             throw new ResourceNotFoundException("M-PIN Not Matched");
         }
-        mpinModel.setVerified(true);
-        mpinModel.setActive(true);
         return ResponseEntity.ok(new DataReturnUtil()
                 .setDataAndReturnResponseForRestAPI(mMPinRepository.save(mpinModel)));
+    }
+    
+    public boolean isMPINVerified(MPINModel mpinModel) throws ResourceNotFoundException,
+            BadPaddingException, InvalidAlgorithmParameterException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidKeyException,
+            InvalidKeySpecException {
+        Optional<MPINModel> mpinModelOptional=mMPinRepository
+                .findByUserIDAndIsActive(mpinModel.getUserID(),
+                true);
+        if(!mpinModelOptional.isPresent()){
+            throw new ResourceNotFoundException("M-PIN Not Created");
+        }
+        Optional<UserModel> userModelOptional=userRepository.findById(mpinModel.getUserID());
+        if(!userModelOptional.isPresent()){
+            throw new ResourceNotFoundException("Given User not found");
+        }
+        if(!mpinModel.getOtp().equals(getDecryptedString(mpinModelOptional.get()))){
+            throw new ResourceNotFoundException("M-PIN Not Matched");
+        }
+        
+        return true;
     }
 
     public String getEncryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
@@ -112,16 +145,11 @@ public class MPinServices {
             InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException,
             NoSuchPaddingException {
-       String privateSecretKey= globalSecretKey+mpinModel.getSecretkey();
+       String privateSecretKey=
+               globalSecretKey+
+                       mpinModel.getSecretkey();
 
-
-//        String plainText = "www.baeldung.com";
-//        String password = "baeldung";
-//        String salt = "1234567890";
-        IvParameterSpec ivParameterSpec = AESUtils.generateIv();
-        SecretKey key = AESUtils.getKeyFromPassword(mpinModel.getmPin(),privateSecretKey);
-        String cipherText = AESUtils.encryptPasswordBased(mpinModel.getmPin(), key, ivParameterSpec);
-
+        String cipherText = AES.encrypt(mpinModel.getmPin(), privateSecretKey);
 
         return cipherText;
     }
@@ -130,13 +158,12 @@ public class MPinServices {
             InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException,
             NoSuchPaddingException {
+
         String privateSecretKey= globalSecretKey+mpinModel.getSecretkey();
-        IvParameterSpec ivParameterSpec = AESUtils.generateIv();
-        SecretKey key = AESUtils.getKeyFromPassword(mpinModel.getmPin(),privateSecretKey);
-        String decryptedCipherText = AESUtils.decryptPasswordBased(
-                mpinModel.getmPin(), key, ivParameterSpec);
+        String decryptedCipherText = AES.encrypt(mpinModel.getmPin(), privateSecretKey);
 
         return decryptedCipherText;
     }
+
 
 }
