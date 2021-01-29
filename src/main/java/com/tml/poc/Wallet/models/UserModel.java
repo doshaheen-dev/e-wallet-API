@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -60,6 +61,7 @@ public class UserModel {
 	private String gender;
 	@Size( max = 100)
 	private String profile_image;
+	@JsonProperty("isProfileComplete")
 	@Column(name="is_profile_completed")
 	private boolean isProfileComplete;
 
@@ -78,8 +80,10 @@ public class UserModel {
 
 
 	@Column(name = "is_mobile_verified")
+	@JsonProperty("isMobileVerified")
 	private boolean isMobileVerified;
 	@Column(name = "is_email_verified")
+	@JsonProperty("isEmailVerified")
 	private boolean isEmailVerified;
 
 	@Column(name = "saltKey_pass", nullable = false, updatable = false)
@@ -89,6 +93,7 @@ public class UserModel {
 
 
 	@Column(name = "isUserActivated", nullable = false)
+	@JsonProperty("isActive")
 	private boolean isActive;
 
 	@JsonIgnore
@@ -179,10 +184,12 @@ public class UserModel {
 		this.profile_image = profile_image;
 	}
 
+	@JsonProperty("isProfileComplete")
 	public boolean isProfileComplete() {
 		return isProfileComplete;
 	}
 
+	@JsonProperty("isProfileComplete")
 	public void setProfileComplete(boolean profileComplete) {
 		isProfileComplete = profileComplete;
 	}
@@ -211,36 +218,24 @@ public class UserModel {
 		this.updatedAt = updatedAt;
 	}
 
+	@JsonProperty("isMobileVerified")
 	public boolean isMobileVerified() {
 		return isMobileVerified;
 	}
 
+	@JsonProperty("isMobileVerified")
 	public void setMobileVerified(boolean mobileVerified) {
 		isMobileVerified = mobileVerified;
 	}
 
+	@JsonProperty("isEmailVerified")
 	public boolean isEmailVerified() {
 		return isEmailVerified;
 	}
 
+	@JsonProperty("isEmailVerified")
 	public void setEmailVerified(boolean emailVerified) {
 		isEmailVerified = emailVerified;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean active) {
-		isActive = active;
-	}
-
-	public boolean isBlockedByAdmin() {
-		return isBlockedByAdmin;
-	}
-
-	public void setBlockedByAdmin(boolean blockedByAdmin) {
-		isBlockedByAdmin = blockedByAdmin;
 	}
 
 	public String getSaltKey() {
@@ -249,6 +244,26 @@ public class UserModel {
 
 	public void setSaltKey(String saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@JsonProperty("isActive")
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@JsonProperty("isActive")
+	public void setActive(boolean active) {
+		isActive = active;
+	}
+
+	@JsonIgnore
+	public boolean isBlockedByAdmin() {
+		return isBlockedByAdmin;
+	}
+
+	@JsonIgnore
+	public void setBlockedByAdmin(boolean blockedByAdmin) {
+		isBlockedByAdmin = blockedByAdmin;
 	}
 
 	public long getUserOtpId() {
