@@ -263,6 +263,7 @@ public class UserService {
      * @param userModel
      * @return
      */
+
     public Object doUserUpdate(long id, UserModel userModel) {
         if (userModel != null) {
             Optional<UserModel> userModelEntity = userRepository.findById(id);
