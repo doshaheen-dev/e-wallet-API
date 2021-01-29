@@ -19,7 +19,5 @@ public class UserCredModel {
 	public void setUserCred(String userCred) {
 		this.userCred = userCred;
 	}
-	
-
 
 }

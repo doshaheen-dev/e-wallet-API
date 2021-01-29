@@ -9,11 +9,16 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "usersKYCTable")
+@Table(name = "mobile_users_kyc")
 public class UserKYCModel {
 
     @Id
@@ -22,67 +27,74 @@ public class UserKYCModel {
     private long id;
 
     @JsonFormat(pattern = Constants.TIME_DATE)
-    @Column(name = "kycApplyDateTime")
-    private LocalDateTime applyDateTime;
+    @Column(name = "kycApplyDateTime",columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    private Timestamp applyDateTime;
 
-    @Column(name = "userid")
+
+    @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "kycIsDone")
+    @Column(name = "is_kyc_approved")
     private boolean isKYCDone;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "documentType")
+    @Size( max = 20)
     private String kycDocumentType;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "documentUrl")
     private String kycDocument;
+
     @Transient
     private String kycDocumentExt;
+
     @Column(name = "passportPhotoUrl")
     private String kycPassportPhoto;
+
     @Transient
     private String kycPassportPhotoExt;
 
     @Column(name = "kycApprovedBy")
     private long approvedBy;
 
-    @Column(name = "dateTimeApprove")
-    private Date approveDataTime;
+    @JsonFormat(pattern = Constants.TIME_DATE)
+    @Column(name = "dateTimeApprove",columnDefinition = "TIMESTAMP")
+    private Timestamp approveDataTime;
 
-    @Column(name = "createdBy")
+    @NotNull
+    @NotEmpty
+    @Column(name = "createdBy", nullable = false, updatable = false)
     private String createdBy;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "updatedBy")
     private String updatedBy;
+
     @Column(name = "zipCode")
+    @Size( max = 10)
     private String postalCode;
 
     @CreatedDate
     @CreationTimestamp
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @LastModifiedDate
     @UpdateTimestamp
     @JsonIgnore
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
-    public String getKycDocumentExt() {
-        return kycDocumentExt;
-    }
-
-    public void setKycDocumentExt(String kycDocumentExt) {
-        this.kycDocumentExt = kycDocumentExt;
-    }
-
-    public String getKycPassportPhotoExt() {
-        return kycPassportPhotoExt;
-    }
-
-    public void setKycPassportPhotoExt(String kycPassportPhotoExt) {
-        this.kycPassportPhotoExt = kycPassportPhotoExt;
-    }
+    @Column(name = "latitude")
+    private double lat;
+    @Column(name = "longitude")
+    private double lon;
 
     public long getId() {
         return id;
@@ -92,11 +104,11 @@ public class UserKYCModel {
         this.id = id;
     }
 
-    public LocalDateTime getApplyDateTime() {
+    public Timestamp getApplyDateTime() {
         return applyDateTime;
     }
 
-    public void setApplyDateTime(LocalDateTime applyDateTime) {
+    public void setApplyDateTime(Timestamp applyDateTime) {
         this.applyDateTime = applyDateTime;
     }
 
@@ -132,12 +144,28 @@ public class UserKYCModel {
         this.kycDocument = kycDocument;
     }
 
+    public String getKycDocumentExt() {
+        return kycDocumentExt;
+    }
+
+    public void setKycDocumentExt(String kycDocumentExt) {
+        this.kycDocumentExt = kycDocumentExt;
+    }
+
     public String getKycPassportPhoto() {
         return kycPassportPhoto;
     }
 
     public void setKycPassportPhoto(String kycPassportPhoto) {
         this.kycPassportPhoto = kycPassportPhoto;
+    }
+
+    public String getKycPassportPhotoExt() {
+        return kycPassportPhotoExt;
+    }
+
+    public void setKycPassportPhotoExt(String kycPassportPhotoExt) {
+        this.kycPassportPhotoExt = kycPassportPhotoExt;
     }
 
     public long getApprovedBy() {
@@ -148,11 +176,11 @@ public class UserKYCModel {
         this.approvedBy = approvedBy;
     }
 
-    public Date getApproveDataTime() {
+    public Timestamp getApproveDataTime() {
         return approveDataTime;
     }
 
-    public void setApproveDataTime(Date approveDataTime) {
+    public void setApproveDataTime(Timestamp approveDataTime) {
         this.approveDataTime = approveDataTime;
     }
 
@@ -180,20 +208,35 @@ public class UserKYCModel {
         this.postalCode = postalCode;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
 }

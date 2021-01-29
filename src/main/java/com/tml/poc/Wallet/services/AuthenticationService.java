@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.tml.poc.Wallet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,6 @@ import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
 import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
-import com.tml.poc.Wallet.models.EmployeeModel;
-import com.tml.poc.Wallet.models.EmployeeRegistrationModel;
-import com.tml.poc.Wallet.models.UserCredModel;
-import com.tml.poc.Wallet.models.UserLoginModule;
-import com.tml.poc.Wallet.models.UserModel;
-import com.tml.poc.Wallet.models.UserRegistrationModel;
 import com.tml.poc.Wallet.models.reponse.DataModelAuthResponce;
 import com.tml.poc.Wallet.models.reponse.DataModelResponce;
 import com.tml.poc.Wallet.repository.EmployeeRepository;
@@ -56,7 +51,7 @@ public class AuthenticationService {
 
 	@Autowired
 	private CommonMethods cmUtils;
-	
+
 	@Autowired
 	private ValidationUtils validUtils;
 
@@ -65,17 +60,20 @@ public class AuthenticationService {
 
 	@Autowired
 	private UserDetailsService jwtInMemoryUserDetailsService;
-	
-	
+
+
     @Value("${otp.expiretime.miliseco}")
     private long otpExpireTime;
-    		
+
 	@Autowired
 	private EmailComponant emailCompo;
+
+	@Autowired
+	private OTPService otpService;
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -94,30 +92,28 @@ public class AuthenticationService {
 		if(userOptional.isPresent()) {
 			UserLoginModule userLoginModule=new UserLoginModule();
 			usermodel=userOptional.get();
-			userLoginModule.setOtp(cmUtils.generateOTP());
 			userLoginModule.setUserCred(userCredModel.getUserCred());
-			usermodel.setOtp(userLoginModule.getOtp());
-			usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
-			userRepository.save(usermodel);
-			emailCompo.sendOTPEmail(usermodel.getEmailid(),usermodel.getOtp());
+
+			userLoginModule=setOTP(usermodel,userLoginModule);
+
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 		}else {
 			throw new ResourceNotFoundException("User Not Found");
 
 		}
-		
-		
-		
+
+
+
 	}
 
 	/**
 	 * Verification of User By OTP and send Token
-	 * 
+	 *
 	 * @param
 	 * @return
-	 * @throws ResourceNotFoundException 
+	 * @throws ResourceNotFoundException
 	 */
-	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule) 
+	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule)
 			throws InvalidInputException, ResourceNotFoundException{
 		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
@@ -127,14 +123,12 @@ public class AuthenticationService {
 		}else if(validUtils.isMobileNumber(userLoginModule.getUserCred())) {
 			userOptional=userRepository.findByMobileNumber(userLoginModule.getUserCred());
 		}else {
-			throw new InvalidInputException("Invalid Input");
+			throw new InvalidInputException("Credential not found");
 		}
 		if(userOptional.isPresent()) {
 			usermodel=userOptional.get();
-			if(verifyOTP(usermodel, userLoginModule)) {
-				usermodel.setOtp("");
-				usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
-				usermodel=userRepository.save(usermodel);
+			if(otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOtp())) {
+
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
@@ -142,36 +136,16 @@ public class AuthenticationService {
 			throw new ResourceNotFoundException("User Not Found");
 
 		}
-		
-		
+
+
 		return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 	}
-	
-	
-	
-	/**
-	 * verify OTP
-	 * @param usermodel
-	 * @param userLoginModule
-	 * @return
-	 * @throws InvalidInputException
-	 */
-	private boolean verifyOTP(UserModel usermodel,UserLoginModule userLoginModule)  throws InvalidInputException{
-		if(usermodel!=null&& usermodel.getOtp().equals(userLoginModule.getOtp())) {
-			Date expireDate = new Date((usermodel.getOtpCreated().getTime() + otpExpireTime));
-			Date currentDate = new Date(System.currentTimeMillis());	
-			if(currentDate.before(expireDate)) {
-				return true;
-			}else {
-				throw new InvalidInputException("OTP Expired");
-			}
-		}else {
-			throw new InvalidInputException("Invalid OTP");
-		}
-	}
-	
-	
-	
+
+
+
+
+
+
 
 	public Object doEmployeeAuthentication(EmployeeRegistrationModel employeeRegistrationModel)
 			throws ResourceNotFoundException {
@@ -195,6 +169,33 @@ public class AuthenticationService {
 		} else {
 			throw new ResourceNotFoundException("Employee not Found");
 		}
+	}
+
+
+
+	private UserLoginModule setOTP(UserModel usermodel, UserLoginModule userLoginModule)
+	{
+		/**
+		 * save and Get UserID for OTP
+		 */
+		UserModel userModelSave=userRepository.save(usermodel);
+
+		/**
+		 * create OTP and set UserID
+		 */
+		OTPModel otpModel=createOTPModel(userModelSave.getId());
+		userLoginModule.setOtp(otpModel.getOtp());
+        userModelSave.setUserOtpId(otpModel.getId());
+		userModelSave=userRepository.save(userModelSave);
+
+
+		return  userLoginModule;
+	}
+
+	private OTPModel createOTPModel(long userID){
+		OTPModel otpModel=new OTPModel();
+		otpModel=otpService.getUserOTPCreate(userID);
+		return  otpModel;
 	}
 
 }

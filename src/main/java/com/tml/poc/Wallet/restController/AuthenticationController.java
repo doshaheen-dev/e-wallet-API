@@ -35,7 +35,7 @@ import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/user/auth")
-@Api(value = "Authentication for User and Admin", description = "Operations pertaining to products in Online Store")
+@Api(value = "Authentication for User and Admin", description = "Authentication for User and Admin")
 public class AuthenticationController {
 
 	@Autowired

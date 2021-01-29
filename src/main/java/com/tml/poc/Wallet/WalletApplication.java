@@ -21,15 +21,12 @@ import com.tml.poc.Wallet.config.AzureBlobProperties;
 @EnableConfigurationProperties({AzureBlobProperties.class})
 public class WalletApplication  {
 	
-	
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(WalletApplication.class, args);
 	}
 	
 	
-	 
 
-	    
-		
 }

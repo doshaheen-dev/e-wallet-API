@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,10 +23,14 @@ public class TransactionModel {
     private long userID;
 
     @Column(name = "trans_type")
+    @Size( max = 10)
     private String transactionType;
 
-    @Column(name = "trans_amount")
-    private float transactionAmount;
+    @Column(name = "transaction_credit_amount")
+    private float transactionCrAmount;
+
+    @Column(name = "transaction_debit_amount")
+    private float transactionDebAmount;
 
     @Column(name = "trans_avail_balance")
     private float availableBalance;
@@ -33,67 +39,29 @@ public class TransactionModel {
     @CreationTimestamp
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @LastModifiedDate
     @UpdateTimestamp
     @JsonIgnore
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
-    public long getId() {
-        return id;
+    @Column(name = "trans_status")
+    private int status;
+
+    public TransactionModel() {
     }
 
-    public void setId(long id) {
+    public TransactionModel(long id, long userID,
+                            String transactionType,
+                            float transactionCrAmount,
+                            float transactionDebAmount) {
         this.id = id;
-    }
-
-    public long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(long userID) {
         this.userID = userID;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+        this.transactionCrAmount = transactionCrAmount;
+        this.transactionDebAmount = transactionDebAmount;
     }
 
-    public float getTransactionAmount() {
-        return transactionAmount;
-    }
-
-    public void setTransactionAmount(float transactionAmount) {
-        this.transactionAmount = transactionAmount;
-    }
-
-    public float getAvailableBalance() {
-        return availableBalance;
-    }
-
-    public void setAvailableBalance(float availableBalance) {
-        this.availableBalance = availableBalance;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

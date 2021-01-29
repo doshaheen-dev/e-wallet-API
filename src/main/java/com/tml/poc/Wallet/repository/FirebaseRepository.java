@@ -1,6 +1,5 @@
 package com.tml.poc.Wallet.repository;
 
-import com.tml.poc.Wallet.models.account.AccountModel;
 import com.tml.poc.Wallet.models.notification.FirebaseTokenModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -11,11 +11,9 @@ import com.tml.poc.Wallet.mongorepository.RequestRespLogMongoRepository;
 @Component
 public class ResquestRespLogMongoservice {
 
-	
 	@Autowired
 	private RequestRespLogMongoRepository resquestRespLogMongoservice;
-	
-	
+
 	@Async
 	public void addRequestIntoLogMongo(String requestId,String url,String requestHeader,String requestBody) {
 		RequestResponceLogModel requestResponceLogModel=new RequestResponceLogModel();
@@ -25,8 +23,7 @@ public class ResquestRespLogMongoservice {
 		requestResponceLogModel.setRequestBody(requestBody);
 		resquestRespLogMongoservice.save(requestResponceLogModel);
 	}
-	
-	
+
 	@Async
 	public void addResponseIntoLogMongo(String requestId,String responseHeader,String responseBody) {
 		RequestResponceLogModel requestResponceLogModel=new RequestResponceLogModel();
@@ -35,10 +32,5 @@ public class ResquestRespLogMongoservice {
 		requestResponceLogModel.setRequestBody(responseBody);
 		resquestRespLogMongoservice.save(requestResponceLogModel);
 	}
-	
-	
-	
 
-	
-	
 }

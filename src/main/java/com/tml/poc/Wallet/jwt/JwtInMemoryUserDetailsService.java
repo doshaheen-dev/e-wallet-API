@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.tml.poc.Wallet.models.OTPModel;
+import com.tml.poc.Wallet.services.OTPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,9 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private OTPService otpService;
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -47,7 +52,7 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 		} else {
 			jwtUserDetails = new JwtUserDetails(userModel.get().getId(),
 					userModel.get().getQrCode(),
-					userModel.get().getOtp(),
+					userModel.get().getSaltKey(),
 					"user");
 		}
 		return jwtUserDetails;

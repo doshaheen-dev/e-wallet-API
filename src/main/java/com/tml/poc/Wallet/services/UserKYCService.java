@@ -1,5 +1,6 @@
 package com.tml.poc.Wallet.services;
 
+import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.UserKYCModel;
 import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.repository.UserKYCRepository;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.UnexpectedTypeException;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -27,20 +31,36 @@ public class UserKYCService {
     @Autowired
     private S3Wrapper s3Wrapper;
 
-    public ResponseEntity applyUserKYC(UserKYCModel userKYCModel) throws IOException {
-        if (userRepository.findAllById(userKYCModel.getUserId()).isPresent()) {
-            userKYCModel.setKycDocument(s3Wrapper.uploadPrev("kyc-"+userKYCModel.getKycDocumentType()+userKYCModel.getUserId(),
-                    userKYCModel.getKycDocument(),
-                    userKYCModel.getKycDocumentExt()));
+    public ResponseEntity applyUserKYC( UserKYCModel userKYCModel) throws IOException,UsernameNotFoundException,ResourceNotFoundException {
+        try {
+            if (userRepository.findAllById(userKYCModel.getUserId()).isPresent()) {
+                userKYCModel.setId(0);
+                if(userKYCModel.getKycDocument()!=null&& !userKYCModel.getKycDocument().isEmpty()) {
+                    userKYCModel.setKycDocument(s3Wrapper.uploadPrev("kyc-" + userKYCModel.getKycDocumentType() + userKYCModel.getUserId(),
+                            userKYCModel.getKycDocument(),
+                            userKYCModel.getKycDocumentExt()));
+                }else
+                {
+                    throw new ResourceNotFoundException("Document not Found");
 
-            userKYCModel.setKycPassportPhoto(s3Wrapper.uploadPrev("kycPassport"+userKYCModel.getUserId(),
-                    userKYCModel.getKycPassportPhoto(),
-                    userKYCModel.getKycPassportPhotoExt()));
+                }
+                if(userKYCModel.getKycPassportPhoto()!=null&& !userKYCModel.getKycPassportPhoto().isEmpty()) {
+                    userKYCModel.setKycPassportPhoto(s3Wrapper.uploadPrev("kycPassport" + userKYCModel.getUserId(),
+                            userKYCModel.getKycPassportPhoto(),
+                            userKYCModel.getKycPassportPhotoExt()));
+                }
+                userKYCModel.setKYCDone(false);
+                return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(userKYCRepository.save(userKYCModel),"Document uploaded successfully. Sent to support for approval"));
+            } else{
+                throw new ResourceNotFoundException("User Not Found");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
 
-            userKYCModel.setKYCDone(false);
-            return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userKYCRepository.save(userKYCModel)));
-        } else{
-            throw new UsernameNotFoundException("User Not Found");
+        } catch (UnexpectedTypeException e){
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
     }
 
@@ -51,7 +71,7 @@ public class UserKYCService {
         if (userModelOption.isPresent()) {
             UserModel userModel = userModelOption.get();
 
-            if (!userModel.isKYC()) {
+            if (!userModel.isIskycDone()) {
                 return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userKYCRepository.save(userKYCModel)));
             }else{
                 return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(null,"Already KYC Done"));
