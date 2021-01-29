@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.services;
 
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
+import com.tml.poc.Wallet.models.OTPModel;
 import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.repository.MPinRepository;
@@ -31,6 +32,9 @@ public class MPinServices {
     private MPinRepository mMPinRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OTPService otpService;
 
     @Value("${aes.secretkey}")
     private String globalSecretKey;
@@ -77,7 +81,11 @@ public class MPinServices {
      * @throws InvalidKeyException
      * @throws InvalidKeySpecException
      */
-    public Object verifycreateMPinAccount(MPINModel mpinModel) throws ResourceNotFoundException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException, InvalidInputException {
+    public Object verifycreateMPinAccount(MPINModel mpinModel) throws ResourceNotFoundException,
+            BadPaddingException, InvalidAlgorithmParameterException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidKeyException,
+            InvalidKeySpecException, InvalidInputException {
         Optional<MPINModel> mpinModelOptional=mMPinRepository.findByUserIDAndIsActive(mpinModel.getUserID(),
                 true);
         mpinModel.setId(mpinModelOptional.get().getId());
@@ -88,9 +96,7 @@ public class MPinServices {
         if(!userModelOptional.isPresent()){
             throw new ResourceNotFoundException("Given User not found");
         }
-        if(!mpinModel.getOtp().equals(mpinModelOptional.get().getOtp())){
-            throw new InvalidInputException("Otp Not Matched");
-        }
+        otpService.verifyOTP(mpinModelOptional.get(),mpinModel.getOtp());
         mpinModel.setVerified(true);
         mpinModel.setActive(true);
         return ResponseEntity.ok(new DataReturnUtil()

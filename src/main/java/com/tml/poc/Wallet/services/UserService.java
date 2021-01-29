@@ -148,7 +148,8 @@ public class UserService {
          */
         OTPModel otpModel=createOTPModel(userModelSave.getId());
         userRegistrationModel.setOTP(otpModel.getOtp());
-        userModelSave=userRepository.save(usermodel);
+        userModelSave.setUserOtpId(otpModel.getId());
+        userModelSave=userRepository.save(userModelSave);
 
 
         return  userRegistrationModel;
@@ -212,11 +213,9 @@ public class UserService {
             throws InvalidInputException, ResourceNotFoundException {
         UserModel usermodel;
         Optional<UserModel> userOptional = userRepository.findByEmailid(userLoginModule.getEmailid());
-
         if (userOptional.isPresent()) {
             usermodel = userOptional.get();
-            if (otpService.verifyOTP(usermodel.getId(), userLoginModule.getOTP())) {
-
+            if (otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOTP())) {
                 usermodel.setActive(true);
                 usermodel.setMobileVerified(true);
                 usermodel.setEmailVerified(false);

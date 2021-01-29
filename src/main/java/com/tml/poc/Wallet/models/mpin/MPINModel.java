@@ -49,6 +49,7 @@ public class MPINModel {
 
     @Column(name = "mpin_otp")
     @Size(max = 10)
+    @Transient
     private String otp;
     private boolean isActive;
     private boolean isVerified;

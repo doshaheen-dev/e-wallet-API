@@ -3,12 +3,9 @@ package com.tml.poc.Wallet.services;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.OTPModel;
-import com.tml.poc.Wallet.models.UserModel;
-import com.tml.poc.Wallet.models.UserRegistrationModel;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.repository.UserOTPRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
-import com.tml.poc.Wallet.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -61,7 +58,7 @@ public class OTPService {
      * @return
      * @throws ResourceNotFoundException
      */
-    public Object verifyOTP(MPINModel mpinModel,String otp) throws ResourceNotFoundException {
+    public boolean verifyOTP(MPINModel mpinModel,String otp) throws ResourceNotFoundException {
 
         Optional<OTPModel> otpModelOptional=
                 userOTPRepository.findFirstByMPinId(mpinModel.getId());
@@ -69,7 +66,7 @@ public class OTPService {
             throw new ResourceNotFoundException("OTP Not Found");
         }
         if(otp.equals(otpModelOptional.get().getOtp())){
-            return otpModelOptional.get();
+            return true;
         }else {
             throw new ResourceNotFoundException("OTP Not matched");
 
@@ -79,16 +76,16 @@ public class OTPService {
 
     /**
      * get OTP By userid and check otp
-     * @param userid
+     * @param otpId
      * @param otp
      * @return
      * @throws ResourceNotFoundException
      * @throws InvalidInputException
      */
-    public boolean verifyOTP(long userid,String otp) throws ResourceNotFoundException, InvalidInputException {
+    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException, InvalidInputException {
 
         Optional<OTPModel> otpModelOptional=
-                userOTPRepository.findAllByUserID(userid);
+                userOTPRepository.findById(otpId);
         if(!otpModelOptional.isPresent()){
             throw new ResourceNotFoundException("OTP Not Found");
         }

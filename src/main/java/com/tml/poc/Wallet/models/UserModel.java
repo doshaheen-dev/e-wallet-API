@@ -76,21 +76,28 @@ public class UserModel {
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
 
-	
+
+	@Column(name = "is_mobile_verified")
 	private boolean isMobileVerified;
+	@Column(name = "is_email_verified")
 	private boolean isEmailVerified;
 
 	@Column(name = "saltKey_pass", nullable = false, updatable = false)
 	@Size(max = 100)
+	@JsonIgnore
 	private String saltKey;
 
 
-	@Column(name = "isUserActivated", nullable = false, updatable = true)
+	@Column(name = "isUserActivated", nullable = false)
 	private boolean isActive;
 
 	@JsonIgnore
-	@Column(name = "isUserBlocked", nullable = false, updatable = false)
+	@Column(name = "isUserBlocked", nullable = false)
 	private boolean isBlockedByAdmin;
+
+	@JsonIgnore
+	@Column(name = "user_otp_id", nullable = false)
+	private long userOtpId;
 
 	public long getId() {
 		return id;
@@ -242,5 +249,13 @@ public class UserModel {
 
 	public void setSaltKey(String saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	public long getUserOtpId() {
+		return userOtpId;
+	}
+
+	public void setUserOtpId(long userOtpId) {
+		this.userOtpId = userOtpId;
 	}
 }
