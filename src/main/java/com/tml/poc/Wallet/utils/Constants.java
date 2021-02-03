@@ -22,6 +22,7 @@ public class Constants {
 
 	public static final String TRANSACTION_COMPLETED_SUCCESSFULLY = "Transaction Completed Successfully";
 
+
 	public static final String FCM_ADMIN_SDK_JSON_PATH = "google/tml-wallet-firebase-adminsdk.json";
 	public static final String FCM_UNICAST_SUCCESS_MESSAGE = "Sent Unicast message to token. Received response : ";
 	public static final String FCM_UNICAST_ERROR_MESSAGE = "Sending Unicast message failed due to error: ";
