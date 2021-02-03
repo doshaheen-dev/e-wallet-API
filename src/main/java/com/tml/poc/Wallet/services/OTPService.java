@@ -58,10 +58,10 @@ public class OTPService {
      * @return
      * @throws ResourceNotFoundException
      */
-    public boolean verifyOTP(MPINModel mpinModel,String otp) throws ResourceNotFoundException {
+    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException {
 
         Optional<OTPModel> otpModelOptional=
-                userOTPRepository.findFirstByMPinId(mpinModel.getId());
+                userOTPRepository.findAllById(otpId);
         if(!otpModelOptional.isPresent()){
             throw new ResourceNotFoundException("OTP Not Found");
         }
@@ -74,27 +74,27 @@ public class OTPService {
     }
 
 
-    /**
-     * get OTP By userid and check otp
-     * @param otpId
-     * @param otp
-     * @return
-     * @throws ResourceNotFoundException
-     * @throws InvalidInputException
-     */
-    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException, InvalidInputException {
-
-        Optional<OTPModel> otpModelOptional=
-                userOTPRepository.findById(otpId);
-        if(!otpModelOptional.isPresent()){
-            throw new ResourceNotFoundException("OTP Not Found");
-        }
-        if(verifyOTPByDate(otpModelOptional.get(),otp)){
-            return true;
-        }else {
-            throw new ResourceNotFoundException("OTP Not matched");
-        }
-    }
+//    /**
+//     * get OTP By userid and check otp
+//     * @param otpId
+//     * @param otp
+//     * @return
+//     * @throws ResourceNotFoundException
+//     * @throws InvalidInputException
+//     */
+//    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException, InvalidInputException {
+//
+//        Optional<OTPModel> otpModelOptional=
+//                userOTPRepository.findById(otpId);
+//        if(!otpModelOptional.isPresent()){
+//            throw new ResourceNotFoundException("OTP Not Found");
+//        }
+//        if(verifyOTPByDate(otpModelOptional.get(),otp)){
+//            return true;
+//        }else {
+//            throw new ResourceNotFoundException("OTP Not matched");
+//        }
+//    }
 
 
     /**

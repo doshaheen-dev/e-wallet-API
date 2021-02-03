@@ -19,7 +19,7 @@ public class TransactionModel {
     @Column(name = "trans_id",  nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "user_id")
+    @Column(name = "mobile_user_id")
     private long userID;
 
     @Column(name = "trans_type")
@@ -64,4 +64,75 @@ public class TransactionModel {
         this.transactionDebAmount = transactionDebAmount;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(long userID) {
+        this.userID = userID;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public float getTransactionCrAmount() {
+        return transactionCrAmount;
+    }
+
+    public void setTransactionCrAmount(float transactionCrAmount) {
+        this.transactionCrAmount = transactionCrAmount;
+    }
+
+    public float getTransactionDebAmount() {
+        return transactionDebAmount;
+    }
+
+    public void setTransactionDebAmount(float transactionDebAmount) {
+        this.transactionDebAmount = transactionDebAmount;
+    }
+
+    public float getAvailableBalance() {
+        return availableBalance;
+    }
+
+    public void setAvailableBalance(float availableBalance) {
+        this.availableBalance = availableBalance;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

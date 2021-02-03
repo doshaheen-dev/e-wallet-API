@@ -18,7 +18,7 @@ public class SendMoneyModel {
     @Column(name = "receiver_user_id")
     private long receiveruserID;
 
-    @Column(name = "send_money_type")
+    @Column(name = "send_money_type",length = 50)
     @Size( max = 50)
     private String transactionType;
 
@@ -28,9 +28,17 @@ public class SendMoneyModel {
     @Column(name = "send_money_status")
     private int status;
 
-    @Column(name = "send_money_MPIN")
+    @Column(name = "send_money_MPIN",length = 250)
     @Size( max = 250)
     private String mpin;
+
+    @Column(name="transaction_status_message",length = 100)
+    @Size( max = 100)
+    private String statusRespMessage;
+
+    @Column(name="send_money_discription",length = 100)
+    @Size( max = 100)
+    private String senderDisc;
 
     public long getId() {
         return id;
@@ -46,6 +54,14 @@ public class SendMoneyModel {
 
     public void setSenderuserID(long senderuserID) {
         this.senderuserID = senderuserID;
+    }
+
+    public long getReceiveruserID() {
+        return receiveruserID;
+    }
+
+    public void setReceiveruserID(long receiveruserID) {
+        this.receiveruserID = receiveruserID;
     }
 
     public String getTransactionType() {
@@ -78,5 +94,21 @@ public class SendMoneyModel {
 
     public void setMpin(String mpin) {
         this.mpin = mpin;
+    }
+
+    public String getStatusRespMessage() {
+        return statusRespMessage;
+    }
+
+    public void setStatusRespMessage(String statusRespMessage) {
+        this.statusRespMessage = statusRespMessage;
+    }
+
+    public String getSenderDisc() {
+        return senderDisc;
+    }
+
+    public void setSenderDisc(String senderDisc) {
+        this.senderDisc = senderDisc;
     }
 }

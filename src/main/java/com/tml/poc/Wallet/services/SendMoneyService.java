@@ -4,8 +4,10 @@ import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.transaction.SendMoneyModel;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
+import com.tml.poc.Wallet.repository.SendMoneyRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -15,6 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+@Service
 public class SendMoneyService {
 
     @Autowired
@@ -29,27 +32,13 @@ public class SendMoneyService {
     @Autowired
     private UserRepository userRepository;
 
-    public Object sendMoneyTransaction(SendMoneyModel sendMoneyModel)
-            throws BadPaddingException,
-            ResourceNotFoundException,
-            InvalidKeyException, NoSuchAlgorithmException,
-            IllegalBlockSizeException, NoSuchPaddingException,
-            InvalidAlgorithmParameterException, InvalidKeySpecException {
-        MPINModel mpinModel=new MPINModel();
-        mpinModel.setmPin(sendMoneyModel.getMpin());
-        mpinModel.setUserID(sendMoneyModel.getSenderuserID());
-        if(mPinServices.isMPINVerified(mpinModel)){
-                
-        }
 
+    @Autowired
+    private SendMoneyRepository sendMoneyRepository;
 
-        return "";
-    }
-
-
-    private boolean isBallanceMoreThanTransAmount(float transAmount){
-
-        return true;
-    }
+   public SendMoneyModel sendMoneyToTransaction(SendMoneyModel sendMoneyModel)
+   {
+       return sendMoneyRepository.save(sendMoneyModel);
+   }
 
 }

@@ -11,5 +11,6 @@ public interface UserBallanceRepository extends JpaRepository<UserBallanceModel,
 
 	List<UserBallanceModel> findAll();
 	Optional<UserBallanceModel> findAllById(long id);
+	Optional<UserBallanceModel> findAllByUserID(long userId);
 
 }

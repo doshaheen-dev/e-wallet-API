@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+@Entity(name ="mobile_users" )
 @Table(name = "mobile_users")
 public class UserModel {
 
@@ -35,16 +35,17 @@ public class UserModel {
 	/**
 	 * uuid is use to CreateUI
 	 */
-	@Column(name = "uuid", updatable = false, nullable = false)
+	@Column(name = "uuid",length = 50, updatable = false, nullable = false)
 	@Size( max = 50)
 	private  String qrCode=UUID.randomUUID().toString();
 	
-    @Column(name="mobile_number", unique=true)
+    @Column(name="mobile_number",length = 15, unique=true)
 	@Size( max = 15)
 	private String mobileNumber;
     
-    @Column(name="email_id", unique=true)
+    @Column(name="email_id",length = 50, unique=true)
 	@Size( max = 50)
+	@JsonProperty("emailId")
 	private String emailid;
 	@Column(name="is_kyc_approved")
 	private boolean iskycDone;
@@ -58,8 +59,10 @@ public class UserModel {
 	@Column(name="birthdate")
 	private Date dob;
 	@Size( max = 10)
+	@Column(name = "gender",length = 10)
 	private String gender;
 	@Size( max = 100)
+	@Column(name = "profile_image",length = 100)
 	private String profile_image;
 	@JsonProperty("isProfileComplete")
 	@Column(name="is_profile_completed")
@@ -68,11 +71,13 @@ public class UserModel {
 	@Size( max = 20)
 	private String updatedBy;
 
+	@JsonIgnore
 	@CreatedDate
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;
 
+	@JsonIgnore
 	@LastModifiedDate
 	@UpdateTimestamp
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
@@ -104,6 +109,12 @@ public class UserModel {
 	@Column(name = "user_otp_id", nullable = false)
 	private long userOtpId;
 
+
+	@Transient
+	@JsonProperty("isMPINCreated")
+	private boolean isMPINCreated;
+
+
 	public long getId() {
 		return id;
 	}
@@ -128,10 +139,12 @@ public class UserModel {
 		this.mobileNumber = mobileNumber;
 	}
 
+	@JsonProperty("emailId")
 	public String getEmailid() {
 		return emailid;
 	}
 
+	@JsonProperty("emailId")
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
@@ -272,5 +285,15 @@ public class UserModel {
 
 	public void setUserOtpId(long userOtpId) {
 		this.userOtpId = userOtpId;
+	}
+
+	@JsonProperty("isMPINCreated")
+	public boolean isMPINCreated() {
+		return isMPINCreated;
+	}
+
+	@JsonProperty("isMPINCreated")
+	public void setMPINCreated(boolean MPINCreated) {
+		isMPINCreated = MPINCreated;
 	}
 }

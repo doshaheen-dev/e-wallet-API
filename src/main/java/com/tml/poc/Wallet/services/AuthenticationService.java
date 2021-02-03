@@ -70,6 +70,10 @@ public class AuthenticationService {
 
 	@Autowired
 	private OTPService otpService;
+
+	@Autowired
+	private MPinServices mPinServices;
+
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
@@ -115,7 +119,6 @@ public class AuthenticationService {
 	 */
 	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule)
 			throws InvalidInputException, ResourceNotFoundException{
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userLoginModule.getUserCred())) {
@@ -128,7 +131,7 @@ public class AuthenticationService {
 		if(userOptional.isPresent()) {
 			usermodel=userOptional.get();
 			if(otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOtp())) {
-
+				usermodel.setMPINCreated(mPinServices.isMPINCreated(usermodel.getId()));
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}

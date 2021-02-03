@@ -24,10 +24,12 @@ public class MPINModel {
     @ApiModelProperty(notes = "id of M-PIN")
     private long id;
     @ApiModelProperty(notes = "M-PIN from user")
-    @Size(max = 10)
+    @Size(max = 250)
+    @Column(name = "m_pin", length = 250)
     private String mPin;
     @ApiModelProperty(notes = "UUID from Client side  RequestID")
     @Size(max = 100)
+    @Column(name = "request_id", length = 100)
     private String requestID;
     @ApiModelProperty(notes = "userID of user who is trying")
     private long userID;
@@ -51,6 +53,12 @@ public class MPINModel {
     @Size(max = 10)
     @Transient
     private String otp;
+
+
+    @Column(name = "mpin_otp_id")
+    @JsonIgnore
+    private long otpId;
+
     private boolean isActive;
     private boolean isVerified;
 
@@ -132,5 +140,13 @@ public class MPINModel {
 
     public void setVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public long getOtpId() {
+        return otpId;
+    }
+
+    public void setOtpId(long otpId) {
+        this.otpId = otpId;
     }
 }

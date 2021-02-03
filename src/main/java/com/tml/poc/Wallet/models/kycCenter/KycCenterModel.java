@@ -19,32 +19,32 @@ public class KycCenterModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "kyc_center_name")
+    @Column(name = "kyc_center_name", length = 50)
     @Size( max = 50)
     private String centerName;
-    @Column(name = "kyc_center_contact_number")
+    @Column(name = "kyc_center_contact_number", length = 20)
     @Size( max = 20)
     private String centerContactNumber;
-    @Column(name = "kyc_center_emailid")
+    @Column(name = "kyc_center_emailid", length = 20)
     @Size( max = 50)
     private String centerEmailID;
-    @Column(name = "kyc_center_area")
+    @Column(name = "kyc_center_area", length = 20)
     @Size( max = 20)
     private String centerArea;
-    @Column(name = "kyc_center_postal_code")
+    @Column(name = "kyc_center_postal_code", length = 20)
     @Size( max = 10)
     private String centerZip;
-    @Column(name = "kyc_center_full_address")
+    @Column(name = "kyc_center_full_address", length = 20)
     @Size( max = 250)
     private String centerAddress;
-    @Column(name = "kyc_center_city")
+    @Column(name = "kyc_center_city", length = 20)
     @Size( max = 20)
     private String centerCity;
-    @Column(name = "kyc_center_country")
+    @Column(name = "kyc_center_country", length = 20)
     @Size( max = 20)
     private String centerCountry;
 
-    @Column(name = "kyc_center_type")
+    @Column(name = "kyc_center_type", length = 20)
     private String centerType;
 
     private double latitude;

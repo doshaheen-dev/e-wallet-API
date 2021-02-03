@@ -18,6 +18,7 @@ public class OTPModel {
     private long id;
 
     @Size(max = 10)
+    @Column(name="otp",length = 200)
     private String otp;
 
     @CreatedDate

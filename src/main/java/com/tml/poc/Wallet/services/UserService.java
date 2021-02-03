@@ -1,14 +1,11 @@
 package com.tml.poc.Wallet.services;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import com.tml.poc.Wallet.models.OTPModel;
 import com.tml.poc.Wallet.utils.PasswordUtils;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +18,6 @@ import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.models.UserLoginModule;
 import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.models.UserRegistrationModel;
-import com.tml.poc.Wallet.models.reponse.DataModelResponce;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -179,11 +175,13 @@ public class UserService {
         if (userOpt.isPresent()) {
             UserModel usermodel = userOpt.get();
             UserLoginModule userLoginModule = new UserLoginModule();
-            userLoginModule.setOtp(cmUtils.generateOTP());
+
             userLoginModule.setUserCred(userCred);
 
 
-            setOTP(usermodel,userLoginModule);
+            UserLoginModule userLoginModule1=setOTP(usermodel,userLoginModule);
+            userLoginModule.setOtp(userLoginModule1.getOtp());
+
             /**
              * to send Email
              */
@@ -309,6 +307,31 @@ public class UserService {
             }
         } else {
             return dataReturnUtils.setDataAndReturnResponseForRestAPI(null, "Id not Found");
+        }
+    }
+
+    /**
+     * get User By Id
+     * which one called from another service
+     *
+     * @param id
+     * @return
+     */
+    public boolean isGetUserById(long id) throws ResourceNotFoundException {
+        if (id > 0) {
+            Optional<UserModel> userModelEntity = userRepository.findById(id);
+            if (userModelEntity.isPresent()) {
+                UserModel userModelDB = userModelEntity.get();
+                if(userModelDB.isActive()) {
+                    return true;
+                }else{
+                    throw  new ResourceNotFoundException("User is InActive");
+                }
+            } else {
+                throw  new ResourceNotFoundException("User Not Found");
+            }
+        } else {
+            throw new ResourceNotFoundException("Id not Found");
         }
     }
 
