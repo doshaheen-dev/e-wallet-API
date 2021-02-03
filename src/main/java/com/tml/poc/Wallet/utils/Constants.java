@@ -5,7 +5,12 @@ public class Constants {
 	
 	public static final String EMAIL_REGEX="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 	public static final String TIME_DATE="yyyy-MM-dd'T'HH:mm:ss Z";
-
+/**
+	 * security
+	 */
+	public static final int SALT_COUNT=128;
+	
+	
 	public static final String FCM_ADMIN_SDK_JSON_PATH = "google/tml-wallet-firebase-adminsdk.json";
 	public static final String FCM_UNICAST_SUCCESS_MESSAGE = "Sent Unicast message to token. Received response : ";
 	public static final String FCM_UNICAST_ERROR_MESSAGE = "Sending Unicast message failed due to error: ";
