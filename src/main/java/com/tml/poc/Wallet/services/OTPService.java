@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.tml.poc.Wallet.utils.Constants.*;
+
 @Service
 public class OTPService {
 
@@ -54,7 +56,6 @@ public class OTPService {
 
     /**
      * MPIN OTP Verification
-     * @param mpinModel
      * @return
      * @throws ResourceNotFoundException
      */
@@ -63,12 +64,12 @@ public class OTPService {
         Optional<OTPModel> otpModelOptional=
                 userOTPRepository.findAllById(otpId);
         if(!otpModelOptional.isPresent()){
-            throw new ResourceNotFoundException("OTP Not Found");
+            throw new ResourceNotFoundException(OTP_NOT_FOUND);
         }
         if(otp.equals(otpModelOptional.get().getOtp())){
             return true;
         }else {
-            throw new ResourceNotFoundException("OTP Not matched");
+            throw new ResourceNotFoundException(OTP_NOT_MATCHED);
 
         }
     }
@@ -112,10 +113,10 @@ public class OTPService {
             if (currentDate.before(expireDate)) {
                 return true;
             } else {
-                throw new InvalidInputException("OTP Expired");
+                throw new InvalidInputException(OTP_EXPIRED);
             }
         } else {
-            throw new InvalidInputException("Invalid OTP");
+            throw new InvalidInputException(OTP_NOT_MATCHED);
         }
     }
 

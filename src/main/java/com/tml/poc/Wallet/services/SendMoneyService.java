@@ -1,11 +1,13 @@
 package com.tml.poc.Wallet.services;
 
+import com.google.gson.Gson;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.transaction.SendMoneyModel;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
 import com.tml.poc.Wallet.repository.SendMoneyRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
+import com.tml.poc.Wallet.utils.CommonMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,12 @@ public class SendMoneyService {
     @Autowired
     private SendMoneyRepository sendMoneyRepository;
 
-   public SendMoneyModel sendMoneyToTransaction(SendMoneyModel sendMoneyModel)
-   {
-       return sendMoneyRepository.save(sendMoneyModel);
+    @Autowired
+    private CommonMethods commonMethods;
+
+
+    public String sendMoneyToTransaction(SendMoneyModel sendMoneyModel) throws BadPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidKeyException {
+       return commonMethods.plainTestToCipherText(new Gson().toJson(sendMoneyRepository.save(sendMoneyModel)));
    }
 
 }

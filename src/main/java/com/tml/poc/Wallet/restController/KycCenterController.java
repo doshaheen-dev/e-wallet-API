@@ -1,8 +1,6 @@
 package com.tml.poc.Wallet.restController;
 
-import com.azure.core.annotation.Put;
 import com.tml.poc.Wallet.models.kycCenter.KycCenterModel;
-import com.tml.poc.Wallet.models.rolePrevilage.EmployeeRoleModel;
 import com.tml.poc.Wallet.services.KycCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,4 +29,11 @@ public class KycCenterController {
         return kycCenterService.getAllKycCenter();
     }
 
+    @GetMapping("/search")
+    private Object searchAllKycCenter(
+            @RequestParam(name = "lat") double latitude,
+            @RequestParam(name = "lon") double longitude
+    ) {
+        return kycCenterService.getAllKycCenter();
+    }
 }

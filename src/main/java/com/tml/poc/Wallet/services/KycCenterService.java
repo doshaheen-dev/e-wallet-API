@@ -34,6 +34,10 @@ public class KycCenterService {
                 kycCenterRepository.findAll()));
     }
 
+//    private Object findKYCCenterByLatLon(double lat,double lon){
+//
+//    }
+
 
 
 

@@ -1,8 +1,5 @@
 package com.tml.poc.Wallet.services;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,10 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +16,9 @@ import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
-import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
-import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
 import com.tml.poc.Wallet.models.reponse.DataModelAuthResponce;
 import com.tml.poc.Wallet.models.reponse.DataModelResponce;
-import com.tml.poc.Wallet.repository.EmployeeRepository;
-import com.tml.poc.Wallet.repository.EmployeeRoleRepository;
+import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -44,7 +34,7 @@ public class AuthenticationService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private EmployeeRepository emplRepository;
+	private WebUserRepository emplRepository;
 
 	@Autowired
 	private DataReturnUtil dataReturnUtils;
@@ -154,10 +144,10 @@ public class AuthenticationService {
 			throws ResourceNotFoundException {
 		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
 		if (employeeRegistrationModel != null) {
-			Optional<EmployeeModel> employeeModel;
+			Optional<WebUserModel> employeeModel;
 			employeeModel = emplRepository.findAllByEmailid(employeeRegistrationModel.getEmailid());
 			if (employeeModel.isPresent()) {
-				EmployeeModel empModel = employeeModel.get();
+				WebUserModel empModel = employeeModel.get();
 				if (empModel.isActive()) {
 					final String token = jwtTokenUtil.generateToken(empModel.getEmailid(),
 							empModel.getPassword(),

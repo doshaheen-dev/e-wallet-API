@@ -13,41 +13,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.EmployeeModel;
-import com.tml.poc.Wallet.services.EmployeeService;
+import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.services.WebUserService;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 
-@RequestMapping("/employee")
+@RequestMapping("/webuser")
 @RestController
-public class EmployeeController {
+public class WebUserController {
 
 	
 	@Autowired
-	private EmployeeService emplService;
+	private WebUserService emplService;
 	
 	@Autowired
 	private DataReturnUtil dataReturnUtil;
 		
 	@PostMapping("/add")
-	private ResponseEntity addEmployee(@Valid @RequestBody EmployeeModel employeeModel ) 
+	private ResponseEntity addWebUser(@Valid @RequestBody WebUserModel webUserModel)
 			throws ResourceNotFoundException {
 		
-		return emplService.addEmployee(employeeModel);
+		return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
+				emplService.addWebUser(webUserModel),"Web User Added"));
 	}
-	
-	
+
 	@PutMapping("/update")
-	private ResponseEntity updateEmployee(@Valid @RequestBody EmployeeModel employeeModel ) 
+	private ResponseEntity updateWebUser(@Valid @RequestBody WebUserModel webUserModel)
 			throws ResourceNotFoundException {
 		
-		return emplService.UpdateEmployee(employeeModel);
+		return emplService.updateWebUser(webUserModel);
 	}
 	
 	@DeleteMapping("/{id}/delete")
-	private ResponseEntity deleteEmployee(@PathVariable long id ) 
+	private ResponseEntity deleteWebUser(@PathVariable long id )
 			throws ResourceNotFoundException {
 		
-		return emplService.deleteEmployee(id);
+		return emplService.deleteWebUser(id);
 	}
 	
 	

@@ -54,7 +54,6 @@ public class UserModel {
 	private String firstname;
 	@Size( max = 20)
 	private String lastname;
-
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name="birthdate")
 	private Date dob;

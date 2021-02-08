@@ -105,9 +105,9 @@ public class MPinServices {
         MPINModel usermodelFromDb=mpinModelOptional.get();
 
         otpService.verifyOTP(usermodelFromDb.getOtpId(),mpinModel.getOtp());
-        mpinModel.setVerified(true);
-        mpinModel.setActive(true);
-        mpinModel=mMPinRepository.save(mpinModel);
+        usermodelFromDb.setVerified(true);
+        usermodelFromDb.setActive(true);
+        mpinModel=mMPinRepository.save(usermodelFromDb);
         mpinModel.setmPin("");
         return ResponseEntity.ok(new DataReturnUtil()
                 .setDataAndReturnResponseForRestAPI(mpinModel));

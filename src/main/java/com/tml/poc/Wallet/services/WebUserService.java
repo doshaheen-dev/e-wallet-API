@@ -7,23 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.azure.core.http.rest.Response;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.jwt.JwtTokenUtil;
-import com.tml.poc.Wallet.models.EmployeeModel;
-import com.tml.poc.Wallet.repository.EmployeeRepository;
-import com.tml.poc.Wallet.repository.UserRepository;
-import com.tml.poc.Wallet.utils.CommonMethods;
+import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import com.tml.poc.Wallet.utils.PasswordUtils;
 
 @Service
-public class EmployeeService {
+public class WebUserService {
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
+	private WebUserRepository webUserRepository;
 	
 	
 	@Autowired
@@ -39,13 +34,13 @@ public class EmployeeService {
 																
 	
 	
-	public ResponseEntity addEmployee(EmployeeModel employeeModel) throws ResourceNotFoundException{
+	public ResponseEntity addWebUser(WebUserModel webUserModel) throws ResourceNotFoundException{
 		
-		if(employeeModel==null)
+		if(webUserModel ==null)
 		{
 			throw new  ResourceNotFoundException("No Employee Found");
 		}
-		Optional<EmployeeModel> employeeModelOpt=employeeRepository.findAllByEmailid(employeeModel.getEmailid());
+		Optional<WebUserModel> employeeModelOpt= webUserRepository.findAllByEmailid(webUserModel.getEmailid());
 		if(employeeModelOpt.isPresent()) {
 			throw new  ResourceNotFoundException("User Already present");
 		}else {
@@ -54,9 +49,10 @@ public class EmployeeService {
 			/**
 			 * send it by Email
 			 */
-			employeeModel.setPassword(beBCryptPasswordEncoder.encode(passwordUtils.generatePassword(8)));
+//			webUserModel.setPassword(beBCryptPasswordEncoder.encode(passwordUtils.generatePassword(8)));
+			webUserModel.setPassword(passwordUtils.generatePassword(8));
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(
-					employeeRepository.save(employeeModel)));
+					webUserRepository.save(webUserModel)));
 		}
 		
 		
@@ -64,20 +60,20 @@ public class EmployeeService {
 	
 	
 
-	public ResponseEntity UpdateEmployee(EmployeeModel employeeModel) throws ResourceNotFoundException{
+	public ResponseEntity updateWebUser(WebUserModel webUserModel) throws ResourceNotFoundException{
 		
-		if(employeeModel==null)
+		if(webUserModel ==null)
 		{
 			throw new  ResourceNotFoundException("No Employee Found");
 		}
-		Optional<EmployeeModel> employeeModelOpt=employeeRepository.findAllByEmailid(employeeModel.getEmailid());
+		Optional<WebUserModel> employeeModelOpt= webUserRepository.findAllByEmailid(webUserModel.getEmailid());
 		if(employeeModelOpt.isPresent()) {
 			
-			employeeModel.setId(employeeModelOpt.get().getId());
-			employeeModel.setPassword(employeeModelOpt.get().getPassword());
+			webUserModel.setId(employeeModelOpt.get().getId());
+			webUserModel.setPassword(employeeModelOpt.get().getPassword());
 			
 			return  ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(
-					employeeRepository.save(employeeModel)));
+					webUserRepository.save(webUserModel)));
 		}else {
 			throw new  ResourceNotFoundException("User Not Found");
 			
@@ -90,19 +86,19 @@ public class EmployeeService {
 		
 	}
 	
-	public ResponseEntity deleteEmployee(long employeeIdDelete) throws ResourceNotFoundException{
+	public ResponseEntity deleteWebUser(long webUserIdDelete) throws ResourceNotFoundException{
 		
-		if(employeeIdDelete==0)
+		if(webUserIdDelete==0)
 		{
 			throw new  ResourceNotFoundException("No Employee Found");
 		}
-		Optional<EmployeeModel> employeeModelOpt=employeeRepository.findAllByIdAndIsActive(employeeIdDelete,true);
+		Optional<WebUserModel> employeeModelOpt= webUserRepository.findAllByIdAndIsActive(webUserIdDelete,true);
 		if(employeeModelOpt.isPresent()) {
 			
-			EmployeeModel employeModel=employeeModelOpt.get();
+			WebUserModel employeModel=employeeModelOpt.get();
 			employeModel.setActive(false);
 			return  ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(
-					employeeRepository.save(employeModel)));
+					webUserRepository.save(employeModel)));
 		}else {
 			throw new  ResourceNotFoundException("User Not Found");
 			

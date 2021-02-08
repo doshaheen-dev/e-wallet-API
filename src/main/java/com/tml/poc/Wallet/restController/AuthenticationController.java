@@ -89,7 +89,7 @@ public class AuthenticationController {
 	 * @param employeeRegistrationModel
 	 * @return
 	 */
-	@PostMapping("/employee/login")
+	@PostMapping("/webuser/login")
 	private Object doMobileLoginCall(@RequestBody EmployeeRegistrationModel employeeRegistrationModel)
 			throws ResourceNotFoundException {
 		return authenticationService.doEmployeeAuthentication(employeeRegistrationModel);
