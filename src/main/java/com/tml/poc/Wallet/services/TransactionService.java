@@ -119,7 +119,7 @@ public class TransactionService {
 
     public float senderBalanceIsSufficient(long senderUserID, float transactionAmount) throws ResourceNotFoundException {
         UserBallanceModel userBallanceModel = mobileUserBallanceService.getUserBallanceByUserID(senderUserID);
-        if (transactionAmount > userBallanceModel.getAvailableBalance()) {
+        if (transactionAmount < userBallanceModel.getAvailableBalance()) {
             return userBallanceModel.getAvailableBalance();
         } else {
             throw new ResourceNotFoundException(Constants.INSUFFICIENT_BALANCE);

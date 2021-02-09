@@ -56,4 +56,12 @@ public class Constants {
 	 * M-PIN
 	 */
 	public static final String MPIN_ALREADY_CREATED="M-PIN Created already";
+
+	/**
+	 * Role
+	 */
+	public static final String ROLE_ALREADY_ADDED="Role Code Already Added";
+	public static final String ROLE_NOT_FOUND="Role Not Found";
+	public static final String ROLE_ADDED_SUCCESSFULLY="Role Added Successfully";
+	public static final String ROLE_DELETED_SUCCESSFULLY="Role DELETED Successfully";
 }

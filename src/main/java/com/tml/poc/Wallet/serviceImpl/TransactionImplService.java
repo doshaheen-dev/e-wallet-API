@@ -39,7 +39,7 @@ public class TransactionImplService {
         transactionModel.setAvailableBalance(debitorBalance);
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
 
-        if(transactionModelSaved!=null)
+        if(transactionModelSaved!=null&&transactionModelSaved.getId()!=0)
         {
             return transactionModel;
         }
@@ -61,7 +61,7 @@ public class TransactionImplService {
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
         transactionModel.setAvailableBalance(creditorBalance);
 
-        if(transactionModelSaved!=null)
+        if(transactionModelSaved!=null&&transactionModelSaved.getId()!=0)
         {
             return transactionModel;
         }

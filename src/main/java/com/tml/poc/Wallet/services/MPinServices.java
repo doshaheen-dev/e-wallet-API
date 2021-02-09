@@ -184,7 +184,7 @@ public class MPinServices {
         if(!userModelOptional.isPresent()){
             throw new ResourceNotFoundException("Given User not found");
         }
-        if(!mpinModel.getOtp().equals(getDecryptedString(mpinModelOptional.get()))){
+        if(!mpinModel.getmPin().equals(getDecryptedString(mpinModelOptional.get()))){
             throw new ResourceNotFoundException("M-PIN Not Matched");
         }
         
@@ -196,26 +196,20 @@ public class MPinServices {
             InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException,
             NoSuchPaddingException {
-       String privateSecretKey=
-               globalSecretKey+
-                       mpinModel.getSecretkey();
-
+       String privateSecretKey= globalSecretKey+ mpinModel.getSecretkey();
         String cipherText = AES.encrypt(mpinModel.getmPin(), privateSecretKey);
-
         return cipherText;
     }
+
     public String getDecryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
             InvalidKeySpecException, IllegalBlockSizeException,
             InvalidKeyException, BadPaddingException,
             InvalidAlgorithmParameterException,
             NoSuchPaddingException {
-
         String privateSecretKey= globalSecretKey+mpinModel.getSecretkey();
         String decryptedCipherText = AES.decrypt(mpinModel.getmPin(), privateSecretKey);
-
         return decryptedCipherText;
     }
-
 
     private MPINModel setOTP(MPINModel mpinModel)
     {

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.tml.poc.Wallet.models.WebUserModel;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,8 +24,12 @@ public class WebUserRoleModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@NotNull
+	@NotEmpty
 	@Column(name = "web_role_name",length = 20)
 	private String roleName;
+	@NotNull
+	@NotEmpty
 	@Column(name = "web_role_code",length = 20)
 	private String roleCode;
 
@@ -135,11 +141,5 @@ public class WebUserRoleModel {
 		this.roleCode = roleCode;
 	}
 
-	public List<WebUserModel> getWebuser() {
-		return webuser;
-	}
 
-	public void setWebuser(List<WebUserModel> webuser) {
-		this.webuser = webuser;
-	}
 }

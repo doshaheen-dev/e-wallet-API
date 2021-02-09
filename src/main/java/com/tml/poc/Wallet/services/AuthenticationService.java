@@ -17,7 +17,6 @@ import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.models.reponse.DataModelAuthResponce;
-import com.tml.poc.Wallet.models.reponse.DataModelResponce;
 import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
@@ -73,7 +72,6 @@ public class AuthenticationService {
 	 */
 	public ResponseEntity doUserAuthenticationByMobile(@Valid UserCredModel userCredModel)
 			throws ResourceNotFoundException,InvalidInputException {
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userCredModel.getUserCred())) {
@@ -140,12 +138,12 @@ public class AuthenticationService {
 
 
 
-	public Object doEmployeeAuthentication(EmployeeRegistrationModel employeeRegistrationModel)
+	public Object doEmployeeAuthentication(WebUserRegistrationModel webUserRegistrationModel)
 			throws ResourceNotFoundException {
 		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
-		if (employeeRegistrationModel != null) {
+		if (webUserRegistrationModel != null) {
 			Optional<WebUserModel> employeeModel;
-			employeeModel = emplRepository.findAllByEmailid(employeeRegistrationModel.getEmailid());
+			employeeModel = emplRepository.findAllByEmailid(webUserRegistrationModel.getEmailid());
 			if (employeeModel.isPresent()) {
 				WebUserModel empModel = employeeModel.get();
 				if (empModel.isActive()) {
@@ -154,13 +152,13 @@ public class AuthenticationService {
 							empModel.getRoleId().getRoleName());
 					return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
 				} else {
-					throw new ResourceNotFoundException("Employee is not Active");
+					throw new ResourceNotFoundException("WebUser is not Active");
 				}
 			} else {
-				throw new ResourceNotFoundException("Employee not Found");
+				throw new ResourceNotFoundException("WebUser not Found");
 			}
 		} else {
-			throw new ResourceNotFoundException("Employee not Found");
+			throw new ResourceNotFoundException("WebUser not Found");
 		}
 	}
 
