@@ -1,5 +1,8 @@
 package com.tml.poc.Wallet.utils;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,14 +11,23 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.validation.constraints.Pattern;
 
 import org.apache.juli.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.client.RestTemplate;
+
+import static com.tml.poc.Wallet.utils.Constants.ENCRYPTION_ALGO;
+import static com.tml.poc.Wallet.utils.Constants.ENCRYPTION_SECRETKEY;
 
 @Service
 public class CommonMethods {
@@ -23,6 +35,9 @@ public class CommonMethods {
 
     //Save the uploaded file to this folder
     public static String UPLOADED_FOLDER = "uploadFile/";
+
+    @Autowired
+    private AESUtils aesUtils;
 
     public String generateOTP()
     {
@@ -194,6 +209,21 @@ public class CommonMethods {
 
         return result;
     }
-    
-  
+
+    public String encryptionStringToJson(String cipherText) throws NoSuchAlgorithmException,
+            IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
+            InvalidAlgorithmParameterException, NoSuchPaddingException {
+        SecretKey key = aesUtils.secretKeyToString(ENCRYPTION_SECRETKEY);
+        IvParameterSpec ivParameterSpec = aesUtils.generateIvPreloaded();
+        String algorithm = ENCRYPTION_ALGO;
+        return aesUtils.decrypt(algorithm, cipherText, key, ivParameterSpec);
+    }
+    public String plainTestToCipherText(String plainTest) throws NoSuchAlgorithmException,
+            IllegalBlockSizeException, InvalidKeyException, BadPaddingException,
+            InvalidAlgorithmParameterException, NoSuchPaddingException {
+        SecretKey key = aesUtils.secretKeyToString(ENCRYPTION_SECRETKEY);
+        IvParameterSpec ivParameterSpec = aesUtils.generateIvPreloaded();
+        String algorithm = ENCRYPTION_ALGO;
+        return aesUtils.encrypt(algorithm, plainTest, key, ivParameterSpec);
+    }
 }

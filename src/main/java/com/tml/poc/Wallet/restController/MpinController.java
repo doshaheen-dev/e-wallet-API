@@ -7,10 +7,7 @@ import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.services.MPinServices;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -26,6 +23,8 @@ public class MpinController {
 
     @Autowired
     private MPinServices mPinServices;
+
+
 
     @ApiOperation(value = "Create M-PIN For New User")
     @PostMapping("/create")
@@ -55,6 +54,16 @@ public class MpinController {
             NoSuchPaddingException, InvalidAlgorithmParameterException,
             InvalidKeySpecException, InvalidInputException {
         return mPinServices.checkPrevMPIN(mpinModel);
+    }
+
+    @ApiOperation(value = "to check MPIN is Created or not")
+    @GetMapping("/{userId}/verify")
+    public Object isMpinCreated(@PathVariable(name = "userId")long userId) throws ResourceNotFoundException,
+            BadPaddingException, InvalidKeyException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidAlgorithmParameterException,
+            InvalidKeySpecException, InvalidInputException {
+        return mPinServices.checkMPiCreatedOrNot(userId);
     }
 
 

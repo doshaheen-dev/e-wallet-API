@@ -43,7 +43,7 @@ public class ResettableServletOutputStream extends ServletOutputStream {
 
         @Override
         public void close() throws IOException {
-                System.out.println("** RESPONSE CLOSE **");
+//                System.out.println("** RESPONSE CLOSE **");
                 outputStream.close();
 //                logApiInterceptor.writeResponsePayloadAudit(wrappedResponse);
         }

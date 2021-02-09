@@ -1,5 +1,8 @@
 package com.tml.poc.Wallet.utils;
 
+import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -16,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -24,9 +28,14 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+import static com.tml.poc.Wallet.utils.Constants.*;
+
+@Service
 public class AESUtils {
 
-    public static String encrypt(String algorithm, String input, SecretKey key, IvParameterSpec iv)
+
+
+    public  String encrypt(String algorithm, String input, SecretKey key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance(algorithm);
@@ -36,7 +45,7 @@ public class AESUtils {
                 .encodeToString(cipherText);
     }
 
-    public static String decrypt(String algorithm, String cipherText, SecretKey key, IvParameterSpec iv)
+    public  String decrypt(String algorithm, String cipherText, SecretKey key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance(algorithm);
@@ -46,14 +55,37 @@ public class AESUtils {
         return new String(plainText);
     }
 
-    public static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
+    public  SecretKey generateKey(int n) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(n);
         SecretKey key = keyGenerator.generateKey();
         return key;
     }
 
-    public static SecretKey getKeyFromPassword(String password, String salt)
+    public  String stringToSecretKey() throws NoSuchAlgorithmException {
+        // create new key
+        SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+// get base64 encoded version of the key
+        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        return encodedKey;
+    }
+    public  String stringToSecretKey(SecretKey secretKey) throws NoSuchAlgorithmException {
+        // create new key
+
+// get base64 encoded version of the key
+        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        return encodedKey;
+    }
+
+    public  SecretKey secretKeyToString(String encodedKey) throws NoSuchAlgorithmException {
+        // decode the base64 encoded string
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        return originalKey;
+    }
+
+    public  SecretKey getKeyFromPassword(String password, String salt)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
@@ -62,13 +94,38 @@ public class AESUtils {
         return secret;
     }
 
-    public static IvParameterSpec generateIv() {
+    public  IvParameterSpec generateIv(String string) {
+        byte[] iv = Base64.getEncoder().encode(string.getBytes());
+
+//        byte[] iv = Base64Utils.encode(string.getBytes());
+
+//        byte[] iv = string.getBytes(StandardCharsets.UTF_8);
+        System.out.println("generateIv "+iv);
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
+    }
+
+    public  IvParameterSpec generateIv() {
         byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);
         return new IvParameterSpec(iv);
     }
 
-    public static void encryptFile(String algorithm, SecretKey key, IvParameterSpec iv,
+
+    public  IvParameterSpec generateIv(int n) {
+        byte[] iv = new byte[n];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
+    }
+
+    public  IvParameterSpec generateIvPreloaded() {
+        byte[] iv = IV_PARAM_SPEC;
+        IvParameterSpec ivParameterSpec=new IvParameterSpec(iv);
+        System.out.println("ivParameterSpec "+ Base64.getEncoder().encodeToString(ivParameterSpec.getIV()));
+        return ivParameterSpec;
+    }
+
+    public  void encryptFile(String algorithm, SecretKey key, IvParameterSpec iv,
                                    File inputFile, File outputFile) throws IOException, NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
@@ -92,7 +149,7 @@ public class AESUtils {
         outputStream.close();
     }
 
-    public static void decryptFile(String algorithm, SecretKey key, IvParameterSpec iv,
+    public  void decryptFile(String algorithm, SecretKey key, IvParameterSpec iv,
                                    File encryptedFile, File decryptedFile) throws IOException, NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             BadPaddingException, IllegalBlockSizeException {
@@ -116,7 +173,7 @@ public class AESUtils {
         outputStream.close();
     }
 
-    public static SealedObject encryptObject(String algorithm, Serializable object, SecretKey key,
+    public  SealedObject encryptObject(String algorithm, Serializable object, SecretKey key,
                                              IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException, IOException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance(algorithm);
@@ -125,7 +182,7 @@ public class AESUtils {
         return sealedObject;
     }
 
-    public static Serializable decryptObject(String algorithm, SealedObject sealedObject, SecretKey key,
+    public  Serializable decryptObject(String algorithm, SealedObject sealedObject, SecretKey key,
                                              IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException, ClassNotFoundException,
             BadPaddingException, IllegalBlockSizeException, IOException {
@@ -135,16 +192,19 @@ public class AESUtils {
         return unsealObject;
     }
 
-    public static String encryptPasswordBased(String plainText, SecretKey key, IvParameterSpec iv)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
-            InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public  String encryptPasswordBased(String plainText, SecretKey key, IvParameterSpec iv)
+            throws NoSuchPaddingException, NoSuchAlgorithmException,
+            InvalidAlgorithmParameterException,
+            InvalidKeyException, BadPaddingException,
+            IllegalBlockSizeException {
+
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
         return Base64.getEncoder()
                 .encodeToString(cipher.doFinal(plainText.getBytes()));
     }
 
-    public static String decryptPasswordBased(String cipherText, SecretKey key, IvParameterSpec iv)
+    public  String decryptPasswordBased(String cipherText, SecretKey key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");

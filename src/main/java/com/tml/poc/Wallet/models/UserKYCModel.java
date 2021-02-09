@@ -12,12 +12,13 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "usersKYCTable")
+@Table(name = "mobile_users_kyc")
 public class UserKYCModel {
 
     @Id
@@ -26,19 +27,21 @@ public class UserKYCModel {
     private long id;
 
     @JsonFormat(pattern = Constants.TIME_DATE)
-    @Column(name = "kycApplyDateTime",columnDefinition = "DATETIME")
-    private Date applyDateTime;
+    @Column(name = "kycApplyDateTime",columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    private Timestamp applyDateTime;
 
 
-    @Column(name = "userid")
+    @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "kycIsDone")
+    @Column(name = "is_kyc_approved")
     private boolean isKYCDone;
 
     @NotNull
     @NotEmpty
     @Column(name = "documentType")
+    @Size( max = 20)
     private String kycDocumentType;
 
     @NotNull
@@ -59,7 +62,7 @@ public class UserKYCModel {
     private long approvedBy;
 
     @JsonFormat(pattern = Constants.TIME_DATE)
-    @Column(name = "dateTimeApprove",columnDefinition = "DATETIME")
+    @Column(name = "dateTimeApprove",columnDefinition = "TIMESTAMP")
     private Timestamp approveDataTime;
 
     @NotNull
@@ -73,6 +76,7 @@ public class UserKYCModel {
     private String updatedBy;
 
     @Column(name = "zipCode")
+    @Size( max = 10)
     private String postalCode;
 
     @CreatedDate
@@ -92,22 +96,6 @@ public class UserKYCModel {
     @Column(name = "longitude")
     private double lon;
 
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
-    }
-
     public long getId() {
         return id;
     }
@@ -116,11 +104,11 @@ public class UserKYCModel {
         this.id = id;
     }
 
-    public Date getApplyDateTime() {
+    public Timestamp getApplyDateTime() {
         return applyDateTime;
     }
 
-    public void setApplyDateTime(Date applyDateTime) {
+    public void setApplyDateTime(Timestamp applyDateTime) {
         this.applyDateTime = applyDateTime;
     }
 
@@ -234,5 +222,21 @@ public class UserKYCModel {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 }

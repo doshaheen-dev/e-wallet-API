@@ -1,20 +1,14 @@
 package com.tml.poc.Wallet.services;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.tml.poc.Wallet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +16,8 @@ import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
-import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
-import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
-import com.tml.poc.Wallet.models.EmployeeModel;
-import com.tml.poc.Wallet.models.EmployeeRegistrationModel;
-import com.tml.poc.Wallet.models.UserCredModel;
-import com.tml.poc.Wallet.models.UserLoginModule;
-import com.tml.poc.Wallet.models.UserModel;
-import com.tml.poc.Wallet.models.UserRegistrationModel;
 import com.tml.poc.Wallet.models.reponse.DataModelAuthResponce;
-import com.tml.poc.Wallet.models.reponse.DataModelResponce;
-import com.tml.poc.Wallet.repository.EmployeeRepository;
-import com.tml.poc.Wallet.repository.EmployeeRoleRepository;
+import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -49,14 +33,14 @@ public class AuthenticationService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private EmployeeRepository emplRepository;
+	private WebUserRepository emplRepository;
 
 	@Autowired
 	private DataReturnUtil dataReturnUtils;
 
 	@Autowired
 	private CommonMethods cmUtils;
-	
+
 	@Autowired
 	private ValidationUtils validUtils;
 
@@ -65,23 +49,29 @@ public class AuthenticationService {
 
 	@Autowired
 	private UserDetailsService jwtInMemoryUserDetailsService;
-	
-	
+
+
     @Value("${otp.expiretime.miliseco}")
     private long otpExpireTime;
-    		
+
 	@Autowired
 	private EmailComponant emailCompo;
+
+	@Autowired
+	private OTPService otpService;
+
+	@Autowired
+	private MPinServices mPinServices;
+
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
 	public ResponseEntity doUserAuthenticationByMobile(@Valid UserCredModel userCredModel)
 			throws ResourceNotFoundException,InvalidInputException {
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userCredModel.getUserCred())) {
@@ -94,32 +84,29 @@ public class AuthenticationService {
 		if(userOptional.isPresent()) {
 			UserLoginModule userLoginModule=new UserLoginModule();
 			usermodel=userOptional.get();
-			userLoginModule.setOtp(cmUtils.generateOTP());
 			userLoginModule.setUserCred(userCredModel.getUserCred());
-			usermodel.setOtp(userLoginModule.getOtp());
-			usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
-			userRepository.save(usermodel);
-			emailCompo.sendOTPEmail(usermodel.getEmailid(),usermodel.getOtp());
+
+			userLoginModule=setOTP(usermodel,userLoginModule);
+
 			return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 		}else {
 			throw new ResourceNotFoundException("User Not Found");
 
 		}
-		
-		
-		
+
+
+
 	}
 
 	/**
 	 * Verification of User By OTP and send Token
-	 * 
+	 *
 	 * @param
 	 * @return
-	 * @throws ResourceNotFoundException 
+	 * @throws ResourceNotFoundException
 	 */
-	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule) 
+	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule)
 			throws InvalidInputException, ResourceNotFoundException{
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userLoginModule.getUserCred())) {
@@ -127,14 +114,12 @@ public class AuthenticationService {
 		}else if(validUtils.isMobileNumber(userLoginModule.getUserCred())) {
 			userOptional=userRepository.findByMobileNumber(userLoginModule.getUserCred());
 		}else {
-			throw new InvalidInputException("Invalid Input");
+			throw new InvalidInputException("Credential not found");
 		}
 		if(userOptional.isPresent()) {
 			usermodel=userOptional.get();
-			if(verifyOTP(usermodel, userLoginModule)) {
-				usermodel.setOtp("");
-				usermodel.setOtpCreated(new Date(System.currentTimeMillis()));
-				usermodel=userRepository.save(usermodel);
+			if(otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOtp())) {
+				usermodel.setMPINCreated(mPinServices.isMPINCreated(usermodel.getId()));
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
@@ -142,59 +127,66 @@ public class AuthenticationService {
 			throw new ResourceNotFoundException("User Not Found");
 
 		}
-		
-		
+
+
 		return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForRestAPI(userLoginModule));
 	}
-	
-	
-	
-	/**
-	 * verify OTP
-	 * @param usermodel
-	 * @param userLoginModule
-	 * @return
-	 * @throws InvalidInputException
-	 */
-	private boolean verifyOTP(UserModel usermodel,UserLoginModule userLoginModule)  throws InvalidInputException{
-		if(usermodel!=null&& usermodel.getOtp().equals(userLoginModule.getOtp())) {
-			Date expireDate = new Date((usermodel.getOtpCreated().getTime() + otpExpireTime));
-			Date currentDate = new Date(System.currentTimeMillis());	
-			if(currentDate.before(expireDate)) {
-				return true;
-			}else {
-				throw new InvalidInputException("OTP Expired");
-			}
-		}else {
-			throw new InvalidInputException("Invalid OTP");
-		}
-	}
-	
-	
-	
 
-	public Object doEmployeeAuthentication(EmployeeRegistrationModel employeeRegistrationModel)
+
+
+
+
+
+
+	public Object doEmployeeAuthentication(WebUserRegistrationModel webUserRegistrationModel)
 			throws ResourceNotFoundException {
 		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
-		if (employeeRegistrationModel != null) {
-			Optional<EmployeeModel> employeeModel;
-			employeeModel = emplRepository.findAllByEmailid(employeeRegistrationModel.getEmailid());
+		if (webUserRegistrationModel != null) {
+			Optional<WebUserModel> employeeModel;
+			employeeModel = emplRepository.findAllByEmailid(webUserRegistrationModel.getEmailid());
 			if (employeeModel.isPresent()) {
-				EmployeeModel empModel = employeeModel.get();
+				WebUserModel empModel = employeeModel.get();
 				if (empModel.isActive()) {
 					final String token = jwtTokenUtil.generateToken(empModel.getEmailid(),
 							empModel.getPassword(),
 							empModel.getRoleId().getRoleName());
 					return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
 				} else {
-					throw new ResourceNotFoundException("Employee is not Active");
+					throw new ResourceNotFoundException("WebUser is not Active");
 				}
 			} else {
-				throw new ResourceNotFoundException("Employee not Found");
+				throw new ResourceNotFoundException("WebUser not Found");
 			}
 		} else {
-			throw new ResourceNotFoundException("Employee not Found");
+			throw new ResourceNotFoundException("WebUser not Found");
 		}
+	}
+
+
+
+	private UserLoginModule setOTP(UserModel usermodel, UserLoginModule userLoginModule)
+	{
+		/**
+		 * save and Get UserID for OTP
+		 */
+		UserModel userModelSave=userRepository.save(usermodel);
+
+		/**
+		 * create OTP and set UserID
+		 */
+		OTPModel otpModel=createOTPModel(userModelSave.getId());
+		userLoginModule.setOtp(otpModel.getOtp());
+        userModelSave.setUserOtpId(otpModel.getId());
+		userModelSave=userRepository.save(userModelSave);
+
+
+		return  userLoginModule;
+	}
+
+	private OTPModel createOTPModel(long userID){
+		OTPModel otpModel=new OTPModel();
+		otpModel=otpService.getUserOTPCreate(userID);
+		return  otpModel;
 	}
 
 }

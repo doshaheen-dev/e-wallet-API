@@ -121,7 +121,7 @@ public class GlobalExceptionHandler {
 		{
 			MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;
 			String parameterName = exception.getParameter().getParameterName();
-//
+
 //			for(int i=0;i<exception.get){
 //
 //			}
@@ -134,10 +134,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
 	}
 
-//  @ExceptionHandler(Exception.class)
-//  public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
-//      errorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-//      return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-//  }
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+	  DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
+      return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
 }

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class EmployeeRegistrationModel {
+public class WebUserRegistrationModel {
 	
 	
 	
