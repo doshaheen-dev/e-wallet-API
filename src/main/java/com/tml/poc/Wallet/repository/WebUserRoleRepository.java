@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WebUserRoleRepository extends JpaRepository<WebUserRoleModel, Long> {
 
-
 	List<WebUserRoleModel> findAll();
 	List<WebUserRoleModel> findAllByIsActive(boolean isActive);
 	List<WebUserRoleModel> findAllByIdAndIsActive(long id, boolean isActive);
