@@ -20,7 +20,7 @@ public class UserKYCController {
     private UserKYCService userKYCService;
 
     @PostMapping("/apply")
-    private ResponseEntity applyUserKYC(@Valid @RequestBody UserKYCModel userKYCModel) throws IOException, ResourceNotFoundException {
+    private ResponseEntity applyUserKYC( @RequestBody UserKYCModel userKYCModel) throws IOException, ResourceNotFoundException {
 
         return userKYCService.applyUserKYC(userKYCModel);
     }

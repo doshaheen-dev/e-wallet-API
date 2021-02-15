@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.tml.poc.Wallet.models.OTPModel;
-import com.tml.poc.Wallet.utils.PasswordUtils;
+import com.tml.poc.Wallet.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,6 @@ import com.tml.poc.Wallet.models.UserLoginModule;
 import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.models.UserRegistrationModel;
 import com.tml.poc.Wallet.repository.UserRepository;
-import com.tml.poc.Wallet.utils.CommonMethods;
-import com.tml.poc.Wallet.utils.DataReturnUtil;
-import com.tml.poc.Wallet.utils.ValidationUtils;
 
 @Service
 public class UserService {
@@ -261,16 +258,16 @@ public class UserService {
      * @param userModel
      * @return
      */
-
-    public Object doUserUpdate(long id, UserModel userModel) {
+    public Object doUserUpdate(long id, UserModel userModel,boolean isMobileUpdat) {
         if (userModel != null) {
             Optional<UserModel> userModelEntity = userRepository.findById(id);
             if (userModelEntity.isPresent()) {
                 UserModel userModelDB = userModelEntity.get();
                 userModel.setId(userModelDB.getId());
-                userModel.setMobileNumber(userModelDB.getMobileNumber());
-                userModel.setEmailid(userModelDB.getEmailid());
-
+                if(!isMobileUpdat) {
+                    userModel.setMobileNumber(userModelDB.getMobileNumber());
+                    userModel.setEmailid(userModelDB.getEmailid());
+                }
                 if (userModel.getFirstname().isEmpty() ||
                         userModel.getLastname().isEmpty()) {
                     userModel.setProfileComplete(false);
@@ -381,16 +378,18 @@ public class UserService {
     }
 
 
-    public UserModel findUserByUserID(long userid) {
+
+    public UserModel findUserByUserID(long userid) throws ResourceNotFoundException {
         if (userid > 0) {
             Optional<UserModel> userModelEntity = userRepository.findById(userid);
             if (userModelEntity.isPresent()) {
                 return userModelEntity.get();
             } else {
-                return null;
+               throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
             }
         } else {
-            return null;
+            throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
+
         }
     }
 }

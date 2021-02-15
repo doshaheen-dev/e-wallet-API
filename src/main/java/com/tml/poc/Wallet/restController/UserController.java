@@ -29,7 +29,7 @@ public class UserController {
 	@PutMapping("/{id}/update")
 	public Object getUserUpdate(@PathVariable long id,@RequestBody UserModel userModule) {
 		
-		return ResponseEntity.ok(userService.doUserUpdate(id, userModule));
+		return ResponseEntity.ok(userService.doUserUpdate(id, userModule,false));
 	}
 	
 	@GetMapping("/{id}/get")

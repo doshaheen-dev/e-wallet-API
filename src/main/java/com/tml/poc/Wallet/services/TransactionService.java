@@ -114,7 +114,7 @@ public class TransactionService {
         MPINModel mpinModel = new MPINModel();
         mpinModel.setmPin(mpinOfSenderUser);
         mpinModel.setUserID(senderUserId);
-        return mPinServices.isMPINVerified(mpinModel);
+        return mPinServices.isMPINVerified(mpinOfSenderUser,mpinModel);
     }
 
     public float senderBalanceIsSufficient(long senderUserID, float transactionAmount) throws ResourceNotFoundException {

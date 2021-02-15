@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/features")
-public class GetAllFeatureList {
+public class GetAllFeatureListController {
 
 
     @GetMapping("/getAll")
     public Object getAllFeature(){
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(WebDashBoardFeatureModel.FEATURES_MODULE_LIST,"Found All Feature List"));
     }
+
 }

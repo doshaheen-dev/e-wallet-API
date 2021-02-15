@@ -56,6 +56,8 @@ public class Constants {
 	 * M-PIN
 	 */
 	public static final String MPIN_ALREADY_CREATED="M-PIN Created already";
+	public static final String MPIN_NOT_FOUND="M-PIN Not Found";
+	public static final String MPIN_CHANGED_SUCCESFULLY="M-PIN Changed Successfully";
 
 	/**
 	 * Role
@@ -64,4 +66,22 @@ public class Constants {
 	public static final String ROLE_NOT_FOUND="Role Not Found";
 	public static final String ROLE_ADDED_SUCCESSFULLY="Role Added Successfully";
 	public static final String ROLE_DELETED_SUCCESSFULLY="Role DELETED Successfully";
+
+	/**
+	 * kyc
+	 */
+	public static final String KYC_DOCUMENT_NOT_FOUND="KYC Document not Found";
+
+	/**
+	 * Wallet balance
+	 */
+	public static final String WALLET_BALLANCE_SUCCESS="Wallet balance found Successfully";
+
+
+	/**
+	 * Validation
+	 */
+	public static final String VALID_EMAILID="Enter Valid EmailId";
+	public static final String ENTER_VALUE="Enter Value";
+	public static final String USER_NOT_FOUND = "User not found";
 }

@@ -49,7 +49,6 @@ public class UserModel {
 	private String emailid;
 	@Column(name="is_kyc_approved")
 	private boolean iskycDone;
-
 	@Size( max = 20)
 	private String firstname;
 	@Size( max = 20)
@@ -66,7 +65,6 @@ public class UserModel {
 	@JsonProperty("isProfileComplete")
 	@Column(name="is_profile_completed")
 	private boolean isProfileComplete;
-
 	@Size( max = 20)
 	private String updatedBy;
 
@@ -112,6 +110,9 @@ public class UserModel {
 	@Transient
 	@JsonProperty("isMPINCreated")
 	private boolean isMPINCreated;
+
+	@JsonProperty("isKYCApplied")
+	private boolean isKYCApplied;
 
 
 	public long getId() {
@@ -294,5 +295,13 @@ public class UserModel {
 	@JsonProperty("isMPINCreated")
 	public void setMPINCreated(boolean MPINCreated) {
 		isMPINCreated = MPINCreated;
+	}
+
+	public boolean isKYCApplied() {
+		return isKYCApplied;
+	}
+
+	public void setKYCApplied(boolean KYCApplied) {
+		isKYCApplied = KYCApplied;
 	}
 }

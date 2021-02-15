@@ -4,6 +4,7 @@ package com.tml.poc.Wallet.restController;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
+import com.tml.poc.Wallet.models.request.ChangeMPINModel;
 import com.tml.poc.Wallet.services.MPinServices;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,6 @@ public class MpinController {
 
     @Autowired
     private MPinServices mPinServices;
-
-
 
     @ApiOperation(value = "Create M-PIN For New User")
     @PostMapping("/create")
@@ -65,6 +64,27 @@ public class MpinController {
             InvalidKeySpecException, InvalidInputException {
         return mPinServices.checkMPiCreatedOrNot(userId);
     }
+
+    @ApiOperation(value = "to Change MPIN")
+    @PostMapping("/change")
+    public Object changeMPIN(@RequestBody ChangeMPINModel changeMPINModel) throws ResourceNotFoundException,
+            BadPaddingException, InvalidKeyException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidAlgorithmParameterException,
+            InvalidKeySpecException, InvalidInputException {
+        return mPinServices.changeMPIN(changeMPINModel);
+    }
+
+    @ApiOperation(value = "if user forgot MPIN")
+    @PostMapping("/forgot")
+    public Object forgotMpin(@RequestBody MPINModel mpinModel) throws ResourceNotFoundException,
+            BadPaddingException, InvalidKeyException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidAlgorithmParameterException,
+            InvalidKeySpecException {
+        return mPinServices.forgotMPin(mpinModel);
+    }
+
 
 
 

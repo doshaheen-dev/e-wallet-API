@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tml.poc.Wallet.utils.Constants.KYC_DOCUMENT_NOT_FOUND;
+
 @Service
 public class UserKYCService {
 
@@ -33,7 +35,9 @@ public class UserKYCService {
 
     public ResponseEntity applyUserKYC( UserKYCModel userKYCModel) throws IOException,UsernameNotFoundException,ResourceNotFoundException {
         try {
-            if (userRepository.findAllById(userKYCModel.getUserId()).isPresent()) {
+            Optional<UserModel> userModelOptional=userRepository.findAllById(userKYCModel.getUserId());
+            if (userModelOptional.isPresent()) {
+                UserModel userModel=userModelOptional.get();
                 userKYCModel.setId(0);
                 if(userKYCModel.getKycDocument()!=null&& !userKYCModel.getKycDocument().isEmpty()) {
                     userKYCModel.setKycDocument(s3Wrapper.uploadPrev("kyc-" + userKYCModel.getKycDocumentType() + userKYCModel.getUserId(),
@@ -41,8 +45,7 @@ public class UserKYCService {
                             userKYCModel.getKycDocumentExt()));
                 }else
                 {
-                    throw new ResourceNotFoundException("Document not Found");
-
+                    throw new ResourceNotFoundException(KYC_DOCUMENT_NOT_FOUND);
                 }
                 if(userKYCModel.getKycPassportPhoto()!=null&& !userKYCModel.getKycPassportPhoto().isEmpty()) {
                     userKYCModel.setKycPassportPhoto(s3Wrapper.uploadPrev("kycPassport" + userKYCModel.getUserId(),
@@ -50,6 +53,8 @@ public class UserKYCService {
                             userKYCModel.getKycPassportPhotoExt()));
                 }
                 userKYCModel.setKYCDone(false);
+                userModel.setKYCApplied(true);
+                userRepository.save(userModel);
                 return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(userKYCRepository.save(userKYCModel),"Document uploaded successfully. Sent to support for approval"));
             } else{
                 throw new ResourceNotFoundException("User Not Found");

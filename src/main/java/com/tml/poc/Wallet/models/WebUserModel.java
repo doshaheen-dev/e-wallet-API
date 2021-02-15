@@ -31,6 +31,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tml.poc.Wallet.utils.Constants;
 
+import static com.tml.poc.Wallet.utils.Constants.ENTER_VALUE;
+import static com.tml.poc.Wallet.utils.Constants.VALID_EMAILID;
+
 @Entity
 @Table(name = "web_user")
 public class WebUserModel {
@@ -39,14 +42,14 @@ public class WebUserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int countrycode;
+    private String countrycode;
     private String mobileNumber;
 
-    @NotEmpty
+    @NotEmpty(message =ENTER_VALUE)
     @Email
     @Size(max = 100)
-    @Column(unique = true)
-    @Pattern(regexp = Constants.EMAIL_REGEX, flags = Flag.UNICODE_CASE)
+    @Pattern(regexp = Constants.EMAIL_REGEX, flags = Flag.UNICODE_CASE, message =VALID_EMAILID)
+    @Column(name="email_id", unique = true)
     private String emailid;
 
     @Column(name = "first_name", length = 50)
@@ -54,7 +57,7 @@ public class WebUserModel {
     @Column(name = "last_name", length = 50)
     private String lastname;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -69,7 +72,6 @@ public class WebUserModel {
     })
     @JoinColumn(name = "webuser")
     private WebUserRoleModel roleId;
-
 
     @Column(name="role_code")
     private String roleCode;
@@ -111,11 +113,11 @@ public class WebUserModel {
         this.id = id;
     }
 
-    public int getCountrycode() {
+    public String getCountrycode() {
         return countrycode;
     }
 
-    public void setCountrycode(int countrycode) {
+    public void setCountrycode(String countrycode) {
         this.countrycode = countrycode;
     }
 
@@ -189,6 +191,10 @@ public class WebUserModel {
 
     public void setRoleId(long roleId) {
         this.roleId = new WebUserRoleModel(roleId);
+    }
+
+    public void setRoleIdModel(WebUserRoleModel roleId) {
+        this.roleId = roleId;
     }
 
     public String getCreatedBy() {

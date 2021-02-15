@@ -28,4 +28,9 @@ public class UserSearchController {
         return userSearchService.searchUserByUUID(qrCode);
     }
 
+    @GetMapping("/getAll")
+    private ResponseEntity getAllUser(){
+        return userSearchService.getAllUser();
+    }
+
 }

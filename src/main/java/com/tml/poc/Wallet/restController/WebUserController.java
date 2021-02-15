@@ -4,13 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.WebUserModel;
@@ -31,9 +25,8 @@ public class WebUserController {
 	@PostMapping("/add")
 	private ResponseEntity addWebUser(@Valid @RequestBody WebUserModel webUserModel)
 			throws ResourceNotFoundException {
-		
-		return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
-				emplService.addWebUser(webUserModel),"Web User Added"));
+
+		return emplService.addWebUser(webUserModel);
 	}
 
 	@PutMapping("/update")
@@ -49,8 +42,17 @@ public class WebUserController {
 		
 		return emplService.deleteWebUser(id);
 	}
-	
-	
-	
-	
+
+	@GetMapping("/{id}/get")
+	private ResponseEntity getWebUser(@PathVariable long id) throws ResourceNotFoundException {
+		return emplService.getWebUser(id);
+	}
+
+	@GetMapping("/getAll")
+	private ResponseEntity getAllWebUser() throws ResourceNotFoundException {
+		return emplService.getAllWebUser();
+	}
+
+
+
 }
