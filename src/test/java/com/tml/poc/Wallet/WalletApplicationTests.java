@@ -77,7 +77,7 @@ class WalletApplicationTests {
                 "  \"mpin\" : \"96E79218965EB72C92A549DD5A330112\",\n" +
                 "  \"receiveruserID\" : 4\n" +
                 "}";
-		String cipherText = "bTkGb3A/cZda5QifdyBimBwCYdn7qKGUGm56f5RcmP5m3Qd472IVbKukdF96Hq8ArNAO/A8G35Dcgzv6w2ObAc6k2anHUX7mzmCxC/C67vA8IukBFesX6qKMuBUtSYVnhv8o6ABBF+FMlJS24ZfckVg6jBfvZ0g06fUNMVYReLI=";
+		String cipherText = "lqIr9l5wpK9fn9Q8QhZNRdxekCFW62GERbybduodN5LtJLEcfc6Do6ErJn247qhnPKlpzFEBANmHingrli+dIZjlprthZfL9tnsP1H7XBfJ/+3DCZ3fAPBPMh3tCclpg8+cfbpwxFphRfcXpO58ceA==";
         SecretKey key = aesUtils.secretKeyToString(ENCRYPTION_SECRETKEY);
         IvParameterSpec ivParameterSpec = aesUtils.generateIvPreloaded();
         System.out.println("Key " + aesUtils.stringToSecretKey(key));
@@ -87,6 +87,8 @@ class WalletApplicationTests {
         String plainText = aesUtils.decrypt(algorithm, cipherText, key, ivParameterSpec);
         System.out.println("input " + input + " plainText " + plainText);
         System.out.println("input " + input + " cipherText " + cipherText);
+        System.out.println(new BCryptPasswordEncoder().matches("670b14728ad9902aecba32e22fa4f6bd",
+                "$2a$10$oWerIkUefGZOZQk9wR8nKeGvrVLB1avpm/APCurap7/HwYFSfDBwS"));
 //        Assertions.assertEquals(input, plainText);
     }
 

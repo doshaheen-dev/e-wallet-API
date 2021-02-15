@@ -67,7 +67,7 @@ public class MPinServices {
         if(mpinModelOptionalByuserInactive.isPresent()){
             mpinModel.setId(mpinModelOptionalByuserInactive.get().getId());
         }
-        mpinModel.setSecretkey(new PasswordUtils().getSalt(Constants.SALT_COUNT));
+//        mpinModel.setSecretkey(new PasswordUtils().getSalt(Constants.SALT_COUNT));
         mpinModel=setOTP(mpinModel);
         mpinModel.setmPin(new BCryptPasswordEncoder().encode(mpinModel.getmPin()));
         mpinModel=mMPinRepository.save(mpinModel);
@@ -193,26 +193,26 @@ public class MPinServices {
         return true;
     }
 
-    public String getEncryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
-            InvalidKeySpecException, IllegalBlockSizeException,
-            InvalidKeyException, BadPaddingException,
-            InvalidAlgorithmParameterException,
-            NoSuchPaddingException {
-       String privateSecretKey= globalSecretKey+ mpinModel.getSecretkey();
-        String cipherText = AES.encrypt(mpinModel.getmPin(), privateSecretKey);
-        return cipherText;
-    }
+//    public String getEncryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
+//            InvalidKeySpecException, IllegalBlockSizeException,
+//            InvalidKeyException, BadPaddingException,
+//            InvalidAlgorithmParameterException,
+//            NoSuchPaddingException {
+//       String privateSecretKey= globalSecretKey+ mpinModel.getSecretkey();
+//        String cipherText = AES.encrypt(mpinModel.getmPin(), privateSecretKey);
+//        return cipherText;
+//    }
 
-    public String getDecryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
-            InvalidKeySpecException, IllegalBlockSizeException,
-            InvalidKeyException, BadPaddingException,
-            InvalidAlgorithmParameterException,
-            NoSuchPaddingException {
-        String privateSecretKey= globalSecretKey+mpinModel.getSecretkey();
-        String decryptedCipherText = AES.decrypt(mpinModel.getmPin(), privateSecretKey);
-        System.out.println("decryptedCipherText = "+decryptedCipherText);
-        return decryptedCipherText;
-    }
+//    public String getDecryptedString(MPINModel mpinModel) throws NoSuchAlgorithmException,
+//            InvalidKeySpecException, IllegalBlockSizeException,
+//            InvalidKeyException, BadPaddingException,
+//            InvalidAlgorithmParameterException,
+//            NoSuchPaddingException {
+//        String privateSecretKey= globalSecretKey+mpinModel.getSecretkey();
+//        String decryptedCipherText = AES.decrypt(mpinModel.getmPin(), privateSecretKey);
+//        System.out.println("decryptedCipherText = "+decryptedCipherText);
+//        return decryptedCipherText;
+//    }
 
     private MPINModel setOTP(MPINModel mpinModel)
     {
@@ -266,7 +266,6 @@ public class MPinServices {
             MPINModel mpinModel=mpinModelOptional.get();
             isMPINVerified(changeMPINModel.getOldMPIN(),mpinModel);
             mpinModel.setmPin(changeMPINModel.getNewMpin());
-            mpinModel.setSecretkey(new PasswordUtils().getSalt(Constants.SALT_COUNT));
             String mpinString=new BCryptPasswordEncoder().encode(mpinModel.getmPin());
             mpinModel.setmPin(mpinString);
             mpinModel=mMPinRepository.save(mpinModel);
@@ -303,7 +302,6 @@ public class MPinServices {
         if(mpinModelOptionalByuserInactive.isPresent()){
             mpinModel.setId(mpinModelOptionalByuserInactive.get().getId());
         }
-        mpinModel.setSecretkey(mpinModelOptionalByuserInactive.get().getSecretkey());
         mpinModel=setOTP(mpinModel);
         mpinModel.setmPin(mpinModelOptionalByuserInactive.get().getmPin());
         mpinModel=mMPinRepository.save(mpinModel);

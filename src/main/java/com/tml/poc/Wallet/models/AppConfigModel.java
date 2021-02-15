@@ -25,7 +25,7 @@ public class AppConfigModel {
     @Column(name = "wallet_currency")
     private String currency;
     @Column(name = "transactional_limit")
-    private float transactionLimit;
+    private float transactionLimit=0f;
     @Column(name = "kyc_documents")
     private String kycDocuments;
 
