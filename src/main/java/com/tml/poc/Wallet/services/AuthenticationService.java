@@ -4,7 +4,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.tml.poc.Wallet.models.*;
+import com.tml.poc.Wallet.models.usermodels.UserCredModel;
+import com.tml.poc.Wallet.models.usermodels.UserLoginModule;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserRegistrationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import org.springframework.stereotype.Repository;
 
 @Repository

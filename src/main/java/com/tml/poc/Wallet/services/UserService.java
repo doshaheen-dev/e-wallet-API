@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.tml.poc.Wallet.models.OTPModel;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
 import com.tml.poc.Wallet.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +15,9 @@ import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
-import com.tml.poc.Wallet.models.UserLoginModule;
-import com.tml.poc.Wallet.models.UserModel;
-import com.tml.poc.Wallet.models.UserRegistrationModel;
+import com.tml.poc.Wallet.models.usermodels.UserLoginModule;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
+import com.tml.poc.Wallet.models.usermodels.UserRegistrationModel;
 import com.tml.poc.Wallet.repository.UserRepository;
 
 @Service

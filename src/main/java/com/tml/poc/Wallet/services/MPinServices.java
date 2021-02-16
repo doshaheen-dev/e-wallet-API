@@ -2,8 +2,8 @@ package com.tml.poc.Wallet.services;
 
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.OTPModel;
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.reponse.DataFoundModel;
 import com.tml.poc.Wallet.models.request.ChangeMPINModel;
@@ -13,7 +13,6 @@ import com.tml.poc.Wallet.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

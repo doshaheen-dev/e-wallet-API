@@ -1,6 +1,5 @@
 package com.tml.poc.Wallet.services;
 
-import com.tml.poc.Wallet.models.UserModel;
 import com.tml.poc.Wallet.models.transaction.UserBallanceModel;
 import com.tml.poc.Wallet.repository.UserBallanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

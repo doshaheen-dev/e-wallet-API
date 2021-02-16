@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,4 +1,4 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.utilsmodels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;

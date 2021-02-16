@@ -1,16 +1,18 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.usermodels;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.sun.istack.NotNull;
 
-public class UserCredModel {
-		
+public class UserLoginModule {
+
 	@NotEmpty
 	@NotBlank
 	@NotNull
 	private String userCred;
+	
+	private String otp;
 
 	public String getUserCred() {
 		return userCred;
@@ -20,4 +22,16 @@ public class UserCredModel {
 		this.userCred = userCred;
 	}
 
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+	
+	
+	
 }
+
+

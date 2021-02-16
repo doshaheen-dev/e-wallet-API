@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.tml.poc.Wallet.models.WebUserModel;
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 

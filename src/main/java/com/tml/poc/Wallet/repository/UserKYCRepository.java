@@ -1,6 +1,6 @@
 package com.tml.poc.Wallet.repository;
 
-import com.tml.poc.Wallet.models.UserKYCModel;
+import com.tml.poc.Wallet.models.usermodels.UserKYCModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

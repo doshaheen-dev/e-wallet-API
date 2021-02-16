@@ -16,9 +16,9 @@ import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.jwt.JwtUserDetails;
-import com.tml.poc.Wallet.models.WebUserRegistrationModel;
-import com.tml.poc.Wallet.models.UserCredModel;
-import com.tml.poc.Wallet.models.UserLoginModule;
+import com.tml.poc.Wallet.models.webuser.WebUserRegistrationModel;
+import com.tml.poc.Wallet.models.usermodels.UserCredModel;
+import com.tml.poc.Wallet.models.usermodels.UserLoginModule;
 import com.tml.poc.Wallet.services.AuthenticationService;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 

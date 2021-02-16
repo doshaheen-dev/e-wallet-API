@@ -1,4 +1,4 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.usermodels;
 
 import java.time.LocalDateTime;
 import java.util.Date;
