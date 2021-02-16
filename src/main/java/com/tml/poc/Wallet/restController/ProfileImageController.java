@@ -4,15 +4,14 @@ import com.tml.poc.Wallet.s3Config.S3Wrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.tml.poc.Wallet.config.MyBlobService;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.FileUploadModelReq;
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.utilsmodels.FileUploadModelReq;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import com.tml.poc.Wallet.utils.Fileutils;
@@ -20,7 +19,6 @@ import com.tml.poc.Wallet.utils.Fileutils;
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.validation.Valid;
 

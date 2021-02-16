@@ -1,8 +1,8 @@
 package com.tml.poc.Wallet.services;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.UserKYCModel;
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.usermodels.UserKYCModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.UserKYCRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.s3Config.S3Wrapper;
@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.UnexpectedTypeException;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

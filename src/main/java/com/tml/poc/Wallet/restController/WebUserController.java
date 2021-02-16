@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import com.tml.poc.Wallet.services.WebUserService;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 

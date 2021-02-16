@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import com.tml.poc.Wallet.utils.PasswordUtils;

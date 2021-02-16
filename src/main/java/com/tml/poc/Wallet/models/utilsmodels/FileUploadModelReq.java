@@ -1,4 +1,4 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.utilsmodels;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

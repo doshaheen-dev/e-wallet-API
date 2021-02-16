@@ -1,9 +1,7 @@
 package com.tml.poc.Wallet.restController;
 
-import com.google.gson.Gson;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.UserKYCModel;
-import com.tml.poc.Wallet.repository.UserKYCRepository;
+import com.tml.poc.Wallet.models.usermodels.UserKYCModel;
 import com.tml.poc.Wallet.services.UserKYCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
