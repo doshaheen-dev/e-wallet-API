@@ -3,14 +3,11 @@ package com.tml.poc.Wallet.models.rolePrevilage;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import com.tml.poc.Wallet.models.WebUserModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,17 +16,27 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "privilage_master")
-public class PrivilageMasterModel {
+@Table(name = "webuser_role")
+public class WebUserRoleModel {
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	private long privilageId;
-	private long roleId;
-	private boolean isRead;		
-	private boolean isWrite;		
+
+	@NotNull
+	@NotEmpty
+	@Column(name = "web_role_name",length = 20)
+	private String roleName;
+
+	@NotNull(message = "Role Code can not be null")
+	@NotEmpty(message = "Role Code can not be Empty")
+	@Column(name = "web_role_code",length = 20)
+	private String roleCode;
+
+	@Column(name = "created_by",length = 50)
 	private String createdBy;
+	@Column(name = "updated_by",length = 50)
 	private String updatedBy;
 
 	@CreatedDate
@@ -43,27 +50,24 @@ public class PrivilageMasterModel {
 	@JsonIgnore
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
-
+		
 	@OneToMany
-	private List<PrivilageMasterModel> privilageMaster;
-	
+	private List<WebUserModel> webuser;
+
+	@Column(name = "access_module")
+	private String accessLayerModule;
+
 	@JsonIgnore
+	@Column(name = "is_active")
 	boolean isActive;
 
-	public boolean isRead() {
-		return isRead;
+	public WebUserRoleModel() {
+		super();
 	}
 
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
-	}
-
-	public boolean isWrite() {
-		return isWrite;
-	}
-
-	public void setWrite(boolean isWrite) {
-		this.isWrite = isWrite;
+	public WebUserRoleModel(long id) {
+		super();
+		this.id = id;
 	}
 
 	public long getId() {
@@ -74,7 +78,14 @@ public class PrivilageMasterModel {
 		this.id = id;
 	}
 
-	
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -115,32 +126,21 @@ public class PrivilageMasterModel {
 		this.isActive = isActive;
 	}
 
-	public long getPrivilageId() {
-		return privilageId;
+	public String getAccessLayerModule() {
+		return accessLayerModule;
 	}
 
-	public void setPrivilageId(long privilageId) {
-		this.privilageId = privilageId;
+	public void setAccessLayerModule(String accessModule) {
+		this.accessLayerModule = accessModule;
 	}
 
-	public long getRoleId() {
-		return roleId;
+	public String getRoleCode() {
+		return roleCode;
 	}
 
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
 
-//	public List<PrivilageMasterModel> getPrivilageMaster() {
-//		return privilageMaster;
-//	}
-//
-//	public void setPrivilageMaster(List<PrivilageMasterModel> privilageMaster) {
-//		this.privilageMaster = privilageMaster;
-//	}
-//
-//	
-//	
-	
-	
+
 }

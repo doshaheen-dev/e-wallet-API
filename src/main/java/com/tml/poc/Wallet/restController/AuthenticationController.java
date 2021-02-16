@@ -1,33 +1,24 @@
 package com.tml.poc.Wallet.restController;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.io.JsonEOFException;
-import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.jwt.JwtUserDetails;
-import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
-import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
-import com.tml.poc.Wallet.models.EmployeeRegistrationModel;
+import com.tml.poc.Wallet.models.WebUserRegistrationModel;
 import com.tml.poc.Wallet.models.UserCredModel;
 import com.tml.poc.Wallet.models.UserLoginModule;
-import com.tml.poc.Wallet.models.UserRegistrationModel;
 import com.tml.poc.Wallet.services.AuthenticationService;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 
@@ -86,13 +77,13 @@ public class AuthenticationController {
 	/**
 	 * Employee Verificcation by Emailid password
 	 * 
-	 * @param employeeRegistrationModel
+	 * @param webUserRegistrationModel
 	 * @return
 	 */
-	@PostMapping("/employee/login")
-	private Object doMobileLoginCall(@RequestBody EmployeeRegistrationModel employeeRegistrationModel)
+	@PostMapping("/webuser/login")
+	private Object doMobileLoginCall(@RequestBody WebUserRegistrationModel webUserRegistrationModel)
 			throws ResourceNotFoundException {
-		return authenticationService.doEmployeeAuthentication(employeeRegistrationModel);
+		return authenticationService.doEmployeeAuthentication(webUserRegistrationModel);
 	}
 
 	@RequestMapping(value = "/user/refresh", method = RequestMethod.GET)

@@ -19,10 +19,10 @@ public class UserBallanceModel {
     @Column(name = "user_wallet_bal_id",  nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "user_id")
+    @Column(name = "mobile_user_id")
     private long userID;
 
-    @Column(name = "trans_avail_balance")
+    @Column(name = "wallet_avail_balance")
     private float availableBalance;
 
     @CreatedDate
@@ -35,6 +35,10 @@ public class UserBallanceModel {
     @UpdateTimestamp
     @Column(name = "updated_at",columnDefinition = "TIMESTAMP")
     private Timestamp updatedAt;
+
+    @Column(name = "wallet_last_transaction_id")
+    private long transactionID;
+
 
     public long getId() {
         return id;
@@ -58,5 +62,29 @@ public class UserBallanceModel {
 
     public void setAvailableBalance(float availableBalance) {
         this.availableBalance = availableBalance;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public long getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(long transactionID) {
+        this.transactionID = transactionID;
     }
 }

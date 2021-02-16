@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.tml.poc.Wallet.utils.Constants.*;
+
 @Service
 public class OTPService {
 
@@ -54,47 +56,46 @@ public class OTPService {
 
     /**
      * MPIN OTP Verification
-     * @param mpinModel
      * @return
      * @throws ResourceNotFoundException
      */
-    public boolean verifyOTP(MPINModel mpinModel,String otp) throws ResourceNotFoundException {
+    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException {
 
         Optional<OTPModel> otpModelOptional=
-                userOTPRepository.findFirstByMPinId(mpinModel.getId());
+                userOTPRepository.findAllById(otpId);
         if(!otpModelOptional.isPresent()){
-            throw new ResourceNotFoundException("OTP Not Found");
+            throw new ResourceNotFoundException(OTP_NOT_FOUND);
         }
         if(otp.equals(otpModelOptional.get().getOtp())){
             return true;
         }else {
-            throw new ResourceNotFoundException("OTP Not matched");
+            throw new ResourceNotFoundException(OTP_NOT_MATCHED);
 
         }
     }
 
 
-    /**
-     * get OTP By userid and check otp
-     * @param otpId
-     * @param otp
-     * @return
-     * @throws ResourceNotFoundException
-     * @throws InvalidInputException
-     */
-    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException, InvalidInputException {
-
-        Optional<OTPModel> otpModelOptional=
-                userOTPRepository.findById(otpId);
-        if(!otpModelOptional.isPresent()){
-            throw new ResourceNotFoundException("OTP Not Found");
-        }
-        if(verifyOTPByDate(otpModelOptional.get(),otp)){
-            return true;
-        }else {
-            throw new ResourceNotFoundException("OTP Not matched");
-        }
-    }
+//    /**
+//     * get OTP By userid and check otp
+//     * @param otpId
+//     * @param otp
+//     * @return
+//     * @throws ResourceNotFoundException
+//     * @throws InvalidInputException
+//     */
+//    public boolean verifyOTP(long otpId,String otp) throws ResourceNotFoundException, InvalidInputException {
+//
+//        Optional<OTPModel> otpModelOptional=
+//                userOTPRepository.findById(otpId);
+//        if(!otpModelOptional.isPresent()){
+//            throw new ResourceNotFoundException("OTP Not Found");
+//        }
+//        if(verifyOTPByDate(otpModelOptional.get(),otp)){
+//            return true;
+//        }else {
+//            throw new ResourceNotFoundException("OTP Not matched");
+//        }
+//    }
 
 
     /**
@@ -112,10 +113,10 @@ public class OTPService {
             if (currentDate.before(expireDate)) {
                 return true;
             } else {
-                throw new InvalidInputException("OTP Expired");
+                throw new InvalidInputException(OTP_EXPIRED);
             }
         } else {
-            throw new InvalidInputException("Invalid OTP");
+            throw new InvalidInputException(OTP_NOT_MATCHED);
         }
     }
 

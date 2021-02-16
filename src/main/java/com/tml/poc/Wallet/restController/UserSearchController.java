@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("user/serach")
+@RequestMapping("user/search")
 public class UserSearchController {
 
     @Autowired
@@ -26,6 +26,11 @@ public class UserSearchController {
     @GetMapping("/qrcode/{qrCode}")
     private ResponseEntity getUserByQRCode(@PathVariable(name = "qrCode")String qrCode){
         return userSearchService.searchUserByUUID(qrCode);
+    }
+
+    @GetMapping("/getAll")
+    private ResponseEntity getAllUser(){
+        return userSearchService.getAllUser();
     }
 
 }

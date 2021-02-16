@@ -45,4 +45,12 @@ public class UserSearchService {
         }
     }
 
+
+
+    public ResponseEntity getAllUser(){
+        List<UserModel> userModelList=userRepository.findAll();
+            return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userModelList));
+
+    }
+
 }

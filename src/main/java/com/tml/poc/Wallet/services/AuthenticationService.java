@@ -1,8 +1,5 @@
 package com.tml.poc.Wallet.services;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,10 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +16,8 @@ import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
-import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
-import com.tml.poc.Wallet.jwt.resorce.JwtTokenResponse;
 import com.tml.poc.Wallet.models.reponse.DataModelAuthResponce;
-import com.tml.poc.Wallet.models.reponse.DataModelResponce;
-import com.tml.poc.Wallet.repository.EmployeeRepository;
-import com.tml.poc.Wallet.repository.EmployeeRoleRepository;
+import com.tml.poc.Wallet.repository.WebUserRepository;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -44,7 +33,7 @@ public class AuthenticationService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private EmployeeRepository emplRepository;
+	private WebUserRepository emplRepository;
 
 	@Autowired
 	private DataReturnUtil dataReturnUtils;
@@ -70,6 +59,10 @@ public class AuthenticationService {
 
 	@Autowired
 	private OTPService otpService;
+
+	@Autowired
+	private MPinServices mPinServices;
+
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
 	 * and country code and we are checking it is present into database or not
@@ -79,7 +72,6 @@ public class AuthenticationService {
 	 */
 	public ResponseEntity doUserAuthenticationByMobile(@Valid UserCredModel userCredModel)
 			throws ResourceNotFoundException,InvalidInputException {
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userCredModel.getUserCred())) {
@@ -115,7 +107,6 @@ public class AuthenticationService {
 	 */
 	public ResponseEntity doUserAuthenticationVerification(@Valid UserLoginModule userLoginModule)
 			throws InvalidInputException, ResourceNotFoundException{
-		DataModelResponce dataModelResponce = new DataModelResponce();
 		UserModel usermodel;
 		Optional<UserModel> userOptional;
 		if(validUtils.isValidEmail(userLoginModule.getUserCred())) {
@@ -128,7 +119,7 @@ public class AuthenticationService {
 		if(userOptional.isPresent()) {
 			usermodel=userOptional.get();
 			if(otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOtp())) {
-
+				usermodel.setMPINCreated(mPinServices.isMPINCreated(usermodel.getId()));
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
@@ -147,27 +138,28 @@ public class AuthenticationService {
 
 
 
-	public Object doEmployeeAuthentication(EmployeeRegistrationModel employeeRegistrationModel)
+
+	public Object doEmployeeAuthentication(WebUserRegistrationModel webUserRegistrationModel)
 			throws ResourceNotFoundException {
 		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
-		if (employeeRegistrationModel != null) {
-			Optional<EmployeeModel> employeeModel;
-			employeeModel = emplRepository.findAllByEmailid(employeeRegistrationModel.getEmailid());
+		if (webUserRegistrationModel != null) {
+			Optional<WebUserModel> employeeModel;
+			employeeModel = emplRepository.findAllByEmailid(webUserRegistrationModel.getEmailid());
 			if (employeeModel.isPresent()) {
-				EmployeeModel empModel = employeeModel.get();
+				WebUserModel empModel = employeeModel.get();
 				if (empModel.isActive()) {
 					final String token = jwtTokenUtil.generateToken(empModel.getEmailid(),
 							empModel.getPassword(),
 							empModel.getRoleId().getRoleName());
 					return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
 				} else {
-					throw new ResourceNotFoundException("Employee is not Active");
+					throw new ResourceNotFoundException("WebUser is not Active");
 				}
 			} else {
-				throw new ResourceNotFoundException("Employee not Found");
+				throw new ResourceNotFoundException("WebUser not Found");
 			}
 		} else {
-			throw new ResourceNotFoundException("Employee not Found");
+			throw new ResourceNotFoundException("WebUser not Found");
 		}
 	}
 
