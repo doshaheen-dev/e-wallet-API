@@ -2,10 +2,12 @@ package com.tml.poc.Wallet.firebase;
 
 import com.google.firebase.messaging.Notification;
 import com.tml.poc.Wallet.models.notification.PushNotificationRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * Utility class to build a FCM Notification
  */
+@Service
 public class FCMNotificationBuilderUtil {
 
     /**

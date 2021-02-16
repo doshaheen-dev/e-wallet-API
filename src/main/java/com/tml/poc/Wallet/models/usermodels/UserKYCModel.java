@@ -9,13 +9,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
+
+
 
 @Entity
 @Table(name = "mobile_users_kyc")
@@ -52,11 +52,15 @@ public class UserKYCModel {
     @Transient
     private String kycDocumentExt;
 
+    @OneToMany
+    private List<KycDocumentModel> documentModelList;
+
     @Column(name = "passportPhotoUrl")
     private String kycPassportPhoto;
 
     @Transient
     private String kycPassportPhotoExt;
+
 
     @Column(name = "kycApprovedBy")
     private long approvedBy;
@@ -95,6 +99,10 @@ public class UserKYCModel {
     private double lat;
     @Column(name = "longitude")
     private double lon;
+
+
+
+
 
     public long getId() {
         return id;
@@ -238,5 +246,13 @@ public class UserKYCModel {
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    public List<KycDocumentModel> getDocumentModelList() {
+        return documentModelList;
+    }
+
+    public void setDocumentModelList(List<KycDocumentModel> documentModelList) {
+        this.documentModelList = documentModelList;
     }
 }

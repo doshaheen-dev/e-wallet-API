@@ -8,10 +8,12 @@ import com.tml.poc.Wallet.models.notification.PushNotificationRequest;
 import com.tml.poc.Wallet.services.FCMService;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Class responsible for building the message and multicast message objects for @{@link FCMService}
  */
+@Service
 public class FCMMessageBuilder {
 
     @Autowired

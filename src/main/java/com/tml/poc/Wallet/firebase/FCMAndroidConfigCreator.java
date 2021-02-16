@@ -2,12 +2,14 @@ package com.tml.poc.Wallet.firebase;
 
 import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.AndroidNotification;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
 /**
  * Class responsible for creating Android configurations to be used by @{@link FCMMessageBuilder}
  */
+@Service
 public class FCMAndroidConfigCreator {
 
     /**

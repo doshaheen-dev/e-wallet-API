@@ -7,10 +7,12 @@ import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.exception.TransactionFailedException;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.reponse.EncryptDataModel;
+import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
 import com.tml.poc.Wallet.models.transaction.SendMoneyModel;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
 import com.tml.poc.Wallet.repository.TransactionRepository;
 import com.tml.poc.Wallet.services.MPinServices;
+import com.tml.poc.Wallet.services.RequestMoneyService;
 import com.tml.poc.Wallet.services.TransactionService;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class MobileTransactionController {
    private TransactionService transactionService;
 
    @Autowired
+   private RequestMoneyService requestMoneyService;
+
+   @Autowired
    private CommonMethods commonMethods;
 
     @PostMapping("/sendMoney")
@@ -50,6 +55,25 @@ public class MobileTransactionController {
 
         return transactionService.sendMoneyTransaction(sendMoneyModel);
     }
+
+    @PostMapping("/requestMoney")
+    public Object requestMoneyToReceipient(@RequestBody EncryptDataModel encryptedPayload) throws BadPaddingException,
+            ResourceNotFoundException, InvalidKeyException,
+            NoSuchAlgorithmException, IllegalBlockSizeException,
+            NoSuchPaddingException, InvalidAlgorithmParameterException,
+            InvalidKeySpecException, TransactionFailedException {
+
+        RequestMoneyModel requestMoneyModel
+                =new Gson().fromJson(
+                        commonMethods.encryptionStringToJson(
+                                encryptedPayload.getEncryptedData())
+                ,RequestMoneyModel.class);
+
+
+        return requestMoneyService.requestMoney(requestMoneyModel);
+    }
+
+
 
 
 }
