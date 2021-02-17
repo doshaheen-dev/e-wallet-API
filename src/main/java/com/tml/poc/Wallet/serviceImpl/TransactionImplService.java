@@ -40,6 +40,8 @@ public class TransactionImplService {
                 sendMoneyModel.getSenderuserID(),
                 sendMoneyModel.getTransactionType(),
                 0,sendMoneyModel.getTransactionAmount(),
+                0,
+                null,
                 userModelSender.getId(),
                 userModelSender.getFirstname()+" "+userModelSender.getLastname()
                 );
@@ -70,7 +72,9 @@ public class TransactionImplService {
                 sendMoneyModel.getTransactionAmount(),
                 0,
                 userModelSender.getId(),
-                userModelSender.getFirstname()+" "+userModelSender.getLastname());
+                userModelSender.getFirstname()+" "+userModelSender.getLastname(),
+                0,
+                null);
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
         transactionModel.setAvailableBalance(creditorBalance);
 

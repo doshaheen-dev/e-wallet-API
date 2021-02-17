@@ -28,6 +28,12 @@ public class TransactionModel {
     @Column(name = "creditedby_user_full_name",length = 50)
     private String creditedByUserFullName;
 
+    @Column(name = "debitedby_user_id")
+    private long debitedByUserId;
+
+    @Column(name = "debitedby_user_full_name",length = 50)
+    private String debitedByUserFullName;
+
     @Column(name = "trans_type",length = 20)
     @Size( max = 20)
     private String transactionType;
@@ -64,7 +70,9 @@ public class TransactionModel {
                             float transactionCrAmount,
                             float transactionDebAmount,
                             long creditedByUserId,
-                            String creditedByUserFullName) {
+                            String creditedByUserFullName,
+                            long debitedByUserId,
+                            String debitedByUserFullName) {
         this.id = id;
         this.userID = userID;
         this.transactionType = transactionType;
@@ -72,6 +80,8 @@ public class TransactionModel {
         this.transactionDebAmount = transactionDebAmount;
         this.creditedByUserId = creditedByUserId;
         this.creditedByUserFullName = creditedByUserFullName;
+        this.debitedByUserId = debitedByUserId;
+        this.debitedByUserFullName = debitedByUserFullName;
     }
 
     public long getId() {
@@ -160,5 +170,21 @@ public class TransactionModel {
 
     public void setCreditedByUserFullName(String creditedByUserFullName) {
         this.creditedByUserFullName = creditedByUserFullName;
+    }
+
+    public long getDebitedByUserId() {
+        return debitedByUserId;
+    }
+
+    public void setDebitedByUserId(long debitedByUserId) {
+        this.debitedByUserId = debitedByUserId;
+    }
+
+    public String getDebitedByUserFullName() {
+        return debitedByUserFullName;
+    }
+
+    public void setDebitedByUserFullName(String debitedByUserFullName) {
+        this.debitedByUserFullName = debitedByUserFullName;
     }
 }
