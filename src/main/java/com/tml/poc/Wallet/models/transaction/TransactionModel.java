@@ -22,8 +22,14 @@ public class TransactionModel {
     @Column(name = "mobile_user_id")
     private long userID;
 
-    @Column(name = "trans_type")
-    @Size( max = 10)
+    @Column(name = "creditedby_user_id")
+    private long creditedByUserId;
+
+    @Column(name = "creditedby_user_full_name",length = 50)
+    private String creditedByUserFullName;
+
+    @Column(name = "trans_type",length = 20)
+    @Size( max = 20)
     private String transactionType;
 
     @Column(name = "transaction_credit_amount")
@@ -56,12 +62,16 @@ public class TransactionModel {
     public TransactionModel(long id, long userID,
                             String transactionType,
                             float transactionCrAmount,
-                            float transactionDebAmount) {
+                            float transactionDebAmount,
+                            long creditedByUserId,
+                            String creditedByUserFullName) {
         this.id = id;
         this.userID = userID;
         this.transactionType = transactionType;
         this.transactionCrAmount = transactionCrAmount;
         this.transactionDebAmount = transactionDebAmount;
+        this.creditedByUserId = creditedByUserId;
+        this.creditedByUserFullName = creditedByUserFullName;
     }
 
     public long getId() {
@@ -134,5 +144,21 @@ public class TransactionModel {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public long getCreditedByUserId() {
+        return creditedByUserId;
+    }
+
+    public void setCreditedByUserId(long creditedByUserId) {
+        this.creditedByUserId = creditedByUserId;
+    }
+
+    public String getCreditedByUserFullName() {
+        return creditedByUserFullName;
+    }
+
+    public void setCreditedByUserFullName(String creditedByUserFullName) {
+        this.creditedByUserFullName = creditedByUserFullName;
     }
 }

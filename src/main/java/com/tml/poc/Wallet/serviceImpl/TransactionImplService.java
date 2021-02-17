@@ -5,6 +5,7 @@ import com.tml.poc.Wallet.exception.TransactionFailedException;
 import com.tml.poc.Wallet.models.transaction.SendMoneyModel;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
 import com.tml.poc.Wallet.models.transaction.UserBallanceModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.TransactionRepository;
 import com.tml.poc.Wallet.services.MobileUserBallanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,20 @@ public class TransactionImplService {
     /**
      * debit amount and update into Transaction
      * @param sendMoneyModel
+     * @param userModelSender
      * @return
      * @throws TransactionFailedException
      */
-    public TransactionModel debitTransaction(SendMoneyModel sendMoneyModel) throws TransactionFailedException {
+    public TransactionModel debitTransaction(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
         UserBallanceModel userBallanceModel=mobileUserBallanceService.getUserBallanceByUserID(sendMoneyModel.getSenderuserID());
         float debitorBalance=debit(sendMoneyModel.getTransactionAmount(),userBallanceModel.getAvailableBalance());
-        TransactionModel transactionModel=new TransactionModel(0,sendMoneyModel.getSenderuserID(),sendMoneyModel.getTransactionType(),
-                0,sendMoneyModel.getTransactionAmount());
+        TransactionModel transactionModel=new TransactionModel(0,
+                sendMoneyModel.getSenderuserID(),
+                sendMoneyModel.getTransactionType(),
+                0,sendMoneyModel.getTransactionAmount(),
+                userModelSender.getId(),
+                userModelSender.getFirstname()+" "+userModelSender.getLastname()
+                );
         transactionModel.setAvailableBalance(debitorBalance);
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
 
@@ -50,14 +57,20 @@ public class TransactionImplService {
     /**
      * credit amount into transaction
      * @param sendMoneyModel
+     * @param userModelSender
      * @return
      * @throws TransactionFailedException
      */
-    public TransactionModel creditTransaction(SendMoneyModel sendMoneyModel) throws TransactionFailedException {
+    public TransactionModel creditTransaction(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
         UserBallanceModel userBallanceModel=mobileUserBallanceService.getUserBallanceByUserID(sendMoneyModel.getReceiveruserID());
         float creditorBalance=credit(sendMoneyModel.getTransactionAmount(),userBallanceModel.getAvailableBalance());
-        TransactionModel transactionModel=new TransactionModel(0,sendMoneyModel.getReceiveruserID(),sendMoneyModel.getTransactionType(),
-                sendMoneyModel.getTransactionAmount(),0);
+        TransactionModel transactionModel=new TransactionModel(0,
+                sendMoneyModel.getReceiveruserID(),
+                sendMoneyModel.getTransactionType(),
+                sendMoneyModel.getTransactionAmount(),
+                0,
+                userModelSender.getId(),
+                userModelSender.getFirstname()+" "+userModelSender.getLastname());
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
         transactionModel.setAvailableBalance(creditorBalance);
 

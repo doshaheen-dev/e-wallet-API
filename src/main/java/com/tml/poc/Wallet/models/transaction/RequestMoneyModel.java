@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Table(name = "requestMoney")
 public class RequestMoneyModel {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",  nullable = false, updatable = false)

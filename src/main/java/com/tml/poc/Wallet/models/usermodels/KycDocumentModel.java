@@ -29,8 +29,12 @@ public class KycDocumentModel {
     @Column(name = "document")
     private String document;
 
+    @Transient
     @Column(name = "docuemntExt")
     private String documentExt;
+
+    @Column(name = "document_name")
+    private String documentName;
 
     @CreatedDate
     @CreationTimestamp
@@ -91,5 +95,13 @@ public class KycDocumentModel {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDocumentName() {
+        return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 }

@@ -314,13 +314,13 @@ public class UserService {
      * @param id
      * @return
      */
-    public boolean isGetUserById(long id) throws ResourceNotFoundException {
+    public UserModel isGetUserById(long id) throws ResourceNotFoundException {
         if (id > 0) {
             Optional<UserModel> userModelEntity = userRepository.findById(id);
             if (userModelEntity.isPresent()) {
                 UserModel userModelDB = userModelEntity.get();
                 if(userModelDB.isActive()) {
-                    return true;
+                    return userModelDB;
                 }else{
                     throw  new ResourceNotFoundException("User is InActive");
                 }

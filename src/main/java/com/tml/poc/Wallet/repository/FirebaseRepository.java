@@ -13,7 +13,7 @@ public interface FirebaseRepository extends JpaRepository<FirebaseTokenModel, Lo
 
 	List<FirebaseTokenModel> findAll();
 	Optional<FirebaseTokenModel> findById(long id);
-	List<FirebaseTokenModel> findAllByUserId(long id);
+	List<FirebaseTokenModel> findAllByUserId(String id);
 	Optional<FirebaseTokenModel> findByDeviceIDAndFcmToken(String deviceId,String fcmToken);
 
 }

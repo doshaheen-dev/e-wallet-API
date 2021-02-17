@@ -6,6 +6,7 @@ import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.transaction.SendMoneyModel;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
 import com.tml.poc.Wallet.models.transaction.UserBallanceModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.serviceImpl.TransactionImplService;
 import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -63,13 +64,13 @@ public class TransactionService {
             InvalidKeyException, InvalidKeySpecException, TransactionFailedException {
 
         try {
-            isSenderUserPresent(sendMoneyModel.getSenderuserID());
-            isReceiverUserPresent(sendMoneyModel.getSenderuserID());
+            UserModel userModelSender=isSenderUserPresent(sendMoneyModel.getSenderuserID());
+            UserModel userModelReceiver=isReceiverUserPresent(sendMoneyModel.getSenderuserID());
 
             isMPINCorrect(sendMoneyModel.getSenderuserID(), sendMoneyModel.getMpin());
             float availableBalance = senderBalanceIsSufficient(sendMoneyModel.getSenderuserID(), sendMoneyModel.getTransactionAmount());
-            TransactionModel transactionModelDebited = debitAmount(sendMoneyModel);
-            TransactionModel transactionModelCredited = creditAmount(sendMoneyModel);
+            TransactionModel transactionModelDebited = debitAmount(sendMoneyModel,userModelSender);
+            TransactionModel transactionModelCredited = creditAmount(sendMoneyModel,userModelSender);
 
             UpdateBallanceOfDebitUser(transactionModelDebited);
             UpdateBallanceOfCreditUser(transactionModelCredited);
@@ -100,12 +101,12 @@ public class TransactionService {
 
     }
 
-    public boolean isSenderUserPresent(long senderUserID) throws ResourceNotFoundException {
+    public UserModel isSenderUserPresent(long senderUserID) throws ResourceNotFoundException {
         return userService.isGetUserById(senderUserID);
 
     }
 
-    public boolean isReceiverUserPresent(long receiverUserID) throws ResourceNotFoundException {
+    public UserModel isReceiverUserPresent(long receiverUserID) throws ResourceNotFoundException {
 
         return userService.isGetUserById(receiverUserID);
     }
@@ -126,13 +127,13 @@ public class TransactionService {
         }
     }
 
-    public TransactionModel debitAmount(SendMoneyModel sendMoneyModel) throws TransactionFailedException {
-        TransactionModel transactionModelDebit = transactionImplService.debitTransaction(sendMoneyModel);
+    public TransactionModel debitAmount(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
+        TransactionModel transactionModelDebit = transactionImplService.debitTransaction(sendMoneyModel,userModelSender);
         return transactionModelDebit;
     }
 
-    public TransactionModel creditAmount(SendMoneyModel sendMoneyModel) throws TransactionFailedException {
-        TransactionModel transactionModelDebit = transactionImplService.creditTransaction(sendMoneyModel);
+    public TransactionModel creditAmount(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
+        TransactionModel transactionModelDebit = transactionImplService.creditTransaction(sendMoneyModel,userModelSender);
         return transactionModelDebit;
     }
 

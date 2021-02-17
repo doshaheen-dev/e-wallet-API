@@ -6,6 +6,7 @@ import com.tml.poc.Wallet.firebase.FCMMessageBuilder;
 import com.tml.poc.Wallet.models.notification.FirebaseTokenModel;
 import com.tml.poc.Wallet.models.notification.PushNotificationRequest;
 import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.FirebaseRepository;
 import com.tml.poc.Wallet.repository.RequestMoneyRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
@@ -61,19 +62,19 @@ public class RequestMoneyService {
 
     }
 
-    private boolean requesterUserPresent(long senderUserID) throws ResourceNotFoundException {
+    private UserModel requesterUserPresent(long senderUserID) throws ResourceNotFoundException {
         return userService.isGetUserById(senderUserID);
 
     }
 
-    private boolean requestToUserPresent(long receiverUserID) throws ResourceNotFoundException {
+    private UserModel requestToUserPresent(long receiverUserID) throws ResourceNotFoundException {
 
         return userService.isGetUserById(receiverUserID);
     }
 
     private Object sendNotificationToRequestie(RequestMoneyModel requestMoneyModel){
         List<FirebaseTokenModel> firebaseTokenModelOptional
-                =firebaseRepository.findAllByUserId(requestMoneyModel.getRequestToUserId());
+                =firebaseRepository.findAllByUserId(String.valueOf(requestMoneyModel.getRequestToUserId()));
         List<String> tokenList=new ArrayList<>();
         for(FirebaseTokenModel firebaseTokenModel: firebaseTokenModelOptional) {
             tokenList.add(firebaseTokenModel.getFcmToken());

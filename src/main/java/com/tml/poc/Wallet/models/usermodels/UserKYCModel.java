@@ -38,28 +38,9 @@ public class UserKYCModel {
     @Column(name = "is_kyc_approved")
     private boolean isKYCDone;
 
-    @NotNull
-    @NotEmpty
-    @Column(name = "documentType")
-    @Size( max = 20)
-    private String kycDocumentType;
-
-    @NotNull
-    @NotEmpty
-    @Column(name = "documentUrl")
-    private String kycDocument;
-
-    @Transient
-    private String kycDocumentExt;
 
     @OneToMany
     private List<KycDocumentModel> documentModelList;
-
-    @Column(name = "passportPhotoUrl")
-    private String kycPassportPhoto;
-
-    @Transient
-    private String kycPassportPhotoExt;
 
 
     @Column(name = "kycApprovedBy")
@@ -79,10 +60,6 @@ public class UserKYCModel {
     @Column(name = "updatedBy")
     private String updatedBy;
 
-    @Column(name = "zipCode")
-    @Size( max = 10)
-    private String postalCode;
-
     @CreatedDate
     @CreationTimestamp
     @JsonIgnore
@@ -99,9 +76,6 @@ public class UserKYCModel {
     private double lat;
     @Column(name = "longitude")
     private double lon;
-
-
-
 
 
     public long getId() {
@@ -136,44 +110,13 @@ public class UserKYCModel {
         isKYCDone = KYCDone;
     }
 
-    public String getKycDocumentType() {
-        return kycDocumentType;
+
+    public List<KycDocumentModel> getDocumentModelList() {
+        return documentModelList;
     }
 
-    public void setKycDocumentType(String kycDocumentType) {
-        this.kycDocumentType = kycDocumentType;
-    }
-
-    public String getKycDocument() {
-        return kycDocument;
-    }
-
-    public void setKycDocument(String kycDocument) {
-        this.kycDocument = kycDocument;
-    }
-
-    public String getKycDocumentExt() {
-        return kycDocumentExt;
-    }
-
-    public void setKycDocumentExt(String kycDocumentExt) {
-        this.kycDocumentExt = kycDocumentExt;
-    }
-
-    public String getKycPassportPhoto() {
-        return kycPassportPhoto;
-    }
-
-    public void setKycPassportPhoto(String kycPassportPhoto) {
-        this.kycPassportPhoto = kycPassportPhoto;
-    }
-
-    public String getKycPassportPhotoExt() {
-        return kycPassportPhotoExt;
-    }
-
-    public void setKycPassportPhotoExt(String kycPassportPhotoExt) {
-        this.kycPassportPhotoExt = kycPassportPhotoExt;
+    public void setDocumentModelList(List<KycDocumentModel> documentModelList) {
+        this.documentModelList = documentModelList;
     }
 
     public long getApprovedBy() {
@@ -208,14 +151,6 @@ public class UserKYCModel {
         this.updatedBy = updatedBy;
     }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -248,11 +183,4 @@ public class UserKYCModel {
         this.lon = lon;
     }
 
-    public List<KycDocumentModel> getDocumentModelList() {
-        return documentModelList;
-    }
-
-    public void setDocumentModelList(List<KycDocumentModel> documentModelList) {
-        this.documentModelList = documentModelList;
-    }
 }
