@@ -2,12 +2,16 @@ package com.tml.poc.Wallet.enums;
 
 import java.util.ArrayList;
 
+/**
+ * User Feature shown for Web Pannel for Privilages
+ */
 public class WebDashBoardFeatureModel {
 
 
     public static final String[] FEATURES_MODULE_LIST={
             "WRITE_WEB_USER",
             "WRITE_ROLE",
+            "WRITE_SETTING",
 
             "WRITE_MOBILE_USER",
             "WRITE_MOBILE_USER_TRANSACTION",

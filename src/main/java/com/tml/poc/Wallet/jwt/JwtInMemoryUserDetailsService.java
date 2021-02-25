@@ -20,9 +20,6 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private OTPService otpService;
-	
-	@Autowired
 	private WebUserRepository webUserRepository;
 
 	/**

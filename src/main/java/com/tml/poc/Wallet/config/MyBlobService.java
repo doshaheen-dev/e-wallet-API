@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * BLOB Services to for Azure
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,6 +34,10 @@ public class MyBlobService {
         return container;
     }
 
+    /**
+     * Get list of File of BLOB
+     * @return
+     */
     public List<String> listFiles() {
         BlobContainerClient container = containerClient();
         List<String> list = new ArrayList<String>();
@@ -40,6 +47,11 @@ public class MyBlobService {
         return list;
     }
 
+    /**
+     * Download FIle and get into ByteAray Stram
+     * @param blobitem
+     * @return
+     */
     public ByteArrayOutputStream downloadFile(String blobitem) {
         BlobContainerClient containerClient = containerClient();
         BlobClient blobClient = containerClient.getBlobClient(blobitem);
@@ -49,6 +61,13 @@ public class MyBlobService {
         return os;
     }
 
+    /**
+     * Store File into AZURE Storage
+     * @param filename
+     * @param content
+     * @param length
+     * @return
+     */
     public String storeFile(String filename, InputStream content, long length) {
         BlobClient client = containerClient().getBlobClient(filename);
         if (client.exists()) {

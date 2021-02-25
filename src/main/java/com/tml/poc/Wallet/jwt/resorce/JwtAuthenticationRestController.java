@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tml.poc.Wallet.jwt.JwtTokenUtil;
 import com.tml.poc.Wallet.jwt.JwtUserDetails;
 
+/**
+ * Demo API JWT POC
+ */
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class JwtAuthenticationRestController {

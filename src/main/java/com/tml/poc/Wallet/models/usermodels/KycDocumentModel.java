@@ -20,8 +20,7 @@ public class KycDocumentModel {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {
-            CascadeType.MERGE,
-            CascadeType.REFRESH
+            CascadeType.ALL
     })
     @JoinColumn(name = "documentModelList")
     private UserKYCModel userKYCModel;

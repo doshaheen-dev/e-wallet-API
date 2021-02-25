@@ -3,6 +3,9 @@ package com.tml.poc.Wallet.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Custome Exception Handled for Invalid Input
+ */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class InvalidInputException extends Exception{
 

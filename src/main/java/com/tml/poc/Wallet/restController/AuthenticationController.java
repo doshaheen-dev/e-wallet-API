@@ -82,7 +82,7 @@ public class AuthenticationController {
 	 */
 	@PostMapping("/webuser/login")
 	private Object doMobileLoginCall(@RequestBody WebUserRegistrationModel webUserRegistrationModel)
-			throws ResourceNotFoundException {
+			throws ResourceNotFoundException, InvalidInputException {
 		return authenticationService.doEmployeeAuthentication(webUserRegistrationModel);
 	}
 

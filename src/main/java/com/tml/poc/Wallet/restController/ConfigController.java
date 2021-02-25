@@ -19,9 +19,9 @@ public class ConfigController {
 
     @PostMapping("/add")
     public Object addNewConfigValue(@RequestBody AppConfigModel appConfigModel){
-        List<AppConfigModel> appConfigModelList=configRepository.findAll(Sort.by("id"));
+        List<AppConfigModel> appConfigModelList=configRepository.findAll(Sort.by("id").descending());
         if(appConfigModelList.size()!=0) {
-            appConfigModel.setId( appConfigModelList.get(0).getId());
+            appConfigModel.setId(appConfigModelList.get(0).getId());
         }
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
                 configRepository.save(appConfigModel)
@@ -39,7 +39,7 @@ public class ConfigController {
     @GetMapping("/get")
     public Object getConfigValues(){
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
-                configRepository.findAll()
+                configRepository.findAll().get(0)
                 ,"Success"));
     }
 

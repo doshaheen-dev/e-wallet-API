@@ -2,18 +2,16 @@ package com.tml.poc.Wallet.models.usermodels;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
+import com.tml.poc.Wallet.utils.Constants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,284 +22,302 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity(name ="mobile_users" )
+@Entity(name = "mobile_users")
 @Table(name = "mobile_users")
 public class UserModel {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="user_id")
-	private long id;
-	/**
-	 * uuid is use to CreateUI
-	 */
-	@Column(name = "uuid",length = 50, updatable = false, nullable = false)
-	@Size( max = 50)
-	private  String qrCode=UUID.randomUUID().toString();
-	
-    @Column(name="mobile_number",length = 15, unique=true)
-	@Size( max = 15)
-	private String mobileNumber;
-    
-    @Column(name="email_id",length = 50, unique=true)
-	@Size( max = 50)
-	@JsonProperty("emailId")
-	private String emailid;
-	@Column(name="is_kyc_approved")
-	private boolean iskycDone;
-	@Size( max = 20)
-	private String firstname;
-	@Size( max = 20)
-	private String lastname;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Column(name="birthdate")
-	private Date dob;
-	@Size( max = 10)
-	@Column(name = "gender",length = 10)
-	private String gender;
-	@Size( max = 100)
-	@Column(name = "profile_image",length = 100)
-	private String profile_image;
-	@JsonProperty("isProfileComplete")
-	@Column(name="is_profile_completed")
-	private boolean isProfileComplete;
-	@Size( max = 20)
-	private String updatedBy;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private long id;
+    /**
+     * uuid is use to CreateUI
+     */
+    @Column(name = "uuid", length = 50, updatable = false, nullable = false)
+    @Size(max = 50)
+    private String qrCode = UUID.randomUUID().toString();
 
-	@JsonIgnore
-	@CreatedDate
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
-	private LocalDateTime createdAt;
+    @Column(name = "mobile_number", length = 15, unique = true)
+    @Size(max = 15)
+    private String mobileNumber;
 
-	@JsonIgnore
-	@LastModifiedDate
-	@UpdateTimestamp
-	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime updatedAt;
+    @Column(name = "email_id", length = 50, unique = true)
+    @Size(max = 50)
+    @JsonProperty("emailId")
+    private String emailid;
+    @Column(name = "is_kyc_approved")
+    private boolean iskycDone;
+    @Size(max = 20)
+    private String firstname;
+    @Size(max = 20)
+    private String lastname;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "birthdate")
+    private Date dob;
+    @Size(max = 10)
+    @Column(name = "gender", length = 10)
+    private String gender;
+    @Size(max = 100)
+    @Column(name = "profile_image", length = 100)
+    private String profile_image;
+    @JsonProperty("isProfileComplete")
+    @Column(name = "is_profile_completed")
+    private boolean isProfileComplete;
+    @Size(max = 20)
+    private String updatedBy;
 
+    @CreatedDate
+    @CreationTimestamp
+    @JsonFormat(pattern = Constants.TIME_DATE)
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+    private Date createdAt;
 
-	@Column(name = "is_mobile_verified")
-	@JsonProperty("isMobileVerified")
-	private boolean isMobileVerified;
-	@Column(name = "is_email_verified")
-	@JsonProperty("isEmailVerified")
-	private boolean isEmailVerified;
-
-	@Column(name = "saltKey_pass", nullable = false, updatable = false)
-	@Size(max = 100)
-	@JsonIgnore
-	private String saltKey;
+    @JsonIgnore
+    @LastModifiedDate
+    @UpdateTimestamp
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private Date updatedAt;
 
 
-	@Column(name = "isUserActivated", nullable = false)
-	@JsonProperty("isActive")
-	private boolean isActive;
+    @Column(name = "is_mobile_verified")
+    @JsonProperty("isMobileVerified")
+    private boolean isMobileVerified;
+    @Column(name = "is_email_verified")
+    @JsonProperty("isEmailVerified")
+    private boolean isEmailVerified;
 
-	@JsonIgnore
-	@Column(name = "isUserBlocked", nullable = false)
-	private boolean isBlockedByAdmin;
-
-	@JsonIgnore
-	@Column(name = "user_otp_id", nullable = false)
-	private long userOtpId;
-
-
-	@Transient
-	@JsonProperty("isMPINCreated")
-	private boolean isMPINCreated;
-
-	@JsonProperty("isKYCApplied")
-	private boolean isKYCApplied;
+    @Column(name = "saltKey_pass", nullable = false, updatable = false)
+    @Size(max = 100)
+    @JsonIgnore
+    private String saltKey;
 
 
-	public long getId() {
-		return id;
-	}
+    @Column(name = "isUserActivated", nullable = false)
+    @JsonProperty("isActive")
+    private boolean isActive;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @JsonIgnore
+    @Column(name = "isUserBlocked", nullable = false)
+    private boolean isBlockedByAdmin;
 
-	public String getQrCode() {
-		return qrCode;
-	}
+    @JsonIgnore
+    @Column(name = "user_otp_id", nullable = false)
+    private long userOtpId;
 
-	public void setQrCode(String qrCode) {
-		this.qrCode = qrCode;
-	}
 
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
+    @Transient
+    @JsonProperty("isMPINCreated")
+    private boolean isMPINCreated;
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
+    @JsonProperty("isKYCApplied")
+    private boolean isKYCApplied;
 
-	@JsonProperty("emailId")
-	public String getEmailid() {
-		return emailid;
-	}
 
-	@JsonProperty("emailId")
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
-	}
+    @OneToMany
+    private List<RequestMoneyModel> requestToUserId;
+    @OneToMany
+    private List<RequestMoneyModel> requesterUserId;
 
-	public boolean isIskycDone() {
-		return iskycDone;
-	}
+    @OneToMany
+    private List<UserKYCModel> KycUserId;
 
-	public void setIskycDone(boolean iskycDone) {
-		this.iskycDone = iskycDone;
-	}
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public UserModel() {
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public UserModel(long id) {
+        this.id = id;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Date getDob() {
-		return dob;
-	}
+    public String getQrCode() {
+        return qrCode;
+    }
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-	public String getProfile_image() {
-		return profile_image;
-	}
+    @JsonProperty("emailId")
+    public String getEmailid() {
+        return emailid;
+    }
 
-	public void setProfile_image(String profile_image) {
-		this.profile_image = profile_image;
-	}
+    @JsonProperty("emailId")
+    public void setEmailid(String emailid) {
+        this.emailid = emailid;
+    }
 
-	@JsonProperty("isProfileComplete")
-	public boolean isProfileComplete() {
-		return isProfileComplete;
-	}
+    public boolean isIskycDone() {
+        return iskycDone;
+    }
 
-	@JsonProperty("isProfileComplete")
-	public void setProfileComplete(boolean profileComplete) {
-		isProfileComplete = profileComplete;
-	}
+    public void setIskycDone(boolean iskycDone) {
+        this.iskycDone = iskycDone;
+    }
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getDob() {
+        return dob;
+    }
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
-	@JsonProperty("isMobileVerified")
-	public boolean isMobileVerified() {
-		return isMobileVerified;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	@JsonProperty("isMobileVerified")
-	public void setMobileVerified(boolean mobileVerified) {
-		isMobileVerified = mobileVerified;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	@JsonProperty("isEmailVerified")
-	public boolean isEmailVerified() {
-		return isEmailVerified;
-	}
+    public String getProfile_image() {
+        return profile_image;
+    }
 
-	@JsonProperty("isEmailVerified")
-	public void setEmailVerified(boolean emailVerified) {
-		isEmailVerified = emailVerified;
-	}
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
 
-	public String getSaltKey() {
-		return saltKey;
-	}
+    @JsonProperty("isProfileComplete")
+    public boolean isProfileComplete() {
+        return isProfileComplete;
+    }
 
-	public void setSaltKey(String saltKey) {
-		this.saltKey = saltKey;
-	}
+    @JsonProperty("isProfileComplete")
+    public void setProfileComplete(boolean profileComplete) {
+        isProfileComplete = profileComplete;
+    }
 
-	@JsonProperty("isActive")
-	public boolean isActive() {
-		return isActive;
-	}
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
 
-	@JsonProperty("isActive")
-	public void setActive(boolean active) {
-		isActive = active;
-	}
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
-	@JsonIgnore
-	public boolean isBlockedByAdmin() {
-		return isBlockedByAdmin;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	@JsonIgnore
-	public void setBlockedByAdmin(boolean blockedByAdmin) {
-		isBlockedByAdmin = blockedByAdmin;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public long getUserOtpId() {
-		return userOtpId;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUserOtpId(long userOtpId) {
-		this.userOtpId = userOtpId;
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-	@JsonProperty("isMPINCreated")
-	public boolean isMPINCreated() {
-		return isMPINCreated;
-	}
+    @JsonProperty("isMobileVerified")
+    public boolean isMobileVerified() {
+        return isMobileVerified;
+    }
 
-	@JsonProperty("isMPINCreated")
-	public void setMPINCreated(boolean MPINCreated) {
-		isMPINCreated = MPINCreated;
-	}
+    @JsonProperty("isMobileVerified")
+    public void setMobileVerified(boolean mobileVerified) {
+        isMobileVerified = mobileVerified;
+    }
 
-	public boolean isKYCApplied() {
-		return isKYCApplied;
-	}
+    @JsonProperty("isEmailVerified")
+    public boolean isEmailVerified() {
+        return isEmailVerified;
+    }
 
-	public void setKYCApplied(boolean KYCApplied) {
-		isKYCApplied = KYCApplied;
-	}
+    @JsonProperty("isEmailVerified")
+    public void setEmailVerified(boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
+    public String getSaltKey() {
+        return saltKey;
+    }
+
+    public void setSaltKey(String saltKey) {
+        this.saltKey = saltKey;
+    }
+
+    @JsonProperty("isActive")
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @JsonProperty("isActive")
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @JsonIgnore
+    public boolean isBlockedByAdmin() {
+        return isBlockedByAdmin;
+    }
+
+    @JsonIgnore
+    public void setBlockedByAdmin(boolean blockedByAdmin) {
+        isBlockedByAdmin = blockedByAdmin;
+    }
+
+    public long getUserOtpId() {
+        return userOtpId;
+    }
+
+    public void setUserOtpId(long userOtpId) {
+        this.userOtpId = userOtpId;
+    }
+
+    @JsonProperty("isMPINCreated")
+    public boolean isMPINCreated() {
+        return isMPINCreated;
+    }
+
+    @JsonProperty("isMPINCreated")
+    public void setMPINCreated(boolean MPINCreated) {
+        isMPINCreated = MPINCreated;
+    }
+
+    public boolean isKYCApplied() {
+        return isKYCApplied;
+    }
+
+    public void setKYCApplied(boolean KYCApplied) {
+        isKYCApplied = KYCApplied;
+    }
+
+
 }
