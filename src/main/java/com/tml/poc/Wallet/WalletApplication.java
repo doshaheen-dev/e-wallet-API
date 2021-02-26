@@ -17,12 +17,19 @@ import org.springframework.mail.javamail.JavaMailSender;
 import com.tml.poc.Wallet.components.EmailComponant;
 import com.tml.poc.Wallet.config.AzureBlobProperties;
 
+
+/**
+ * Application Start From this Class
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({AzureBlobProperties.class})
 public class WalletApplication  {
-	
 
 
+	/**
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(WalletApplication.class, args);
 	}

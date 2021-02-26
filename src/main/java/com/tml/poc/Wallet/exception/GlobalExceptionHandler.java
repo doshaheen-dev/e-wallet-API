@@ -22,6 +22,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
+/**
+ * Global Exception Handler for Custom Exception handling
+ * If Exception FOund then it will goes to Responce directly
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 //	
@@ -53,67 +57,134 @@ public class GlobalExceptionHandler {
 //        		false,0);
 //        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
-//    
+//
+
+	/**
+	 * Handled Exception into JSON
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(JsonEOFException.class)
 	public ResponseEntity<?> JsonExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Exception while Parcing into JSON or From JSON
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(JsonParseException.class)
 	public ResponseEntity<?> JsonParceExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * JWT Signature Exception handling
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(SignatureException.class)
 	public ResponseEntity<?> jwtSignatureExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	/**
+	 * userNotFound Exception handling
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public ResponseEntity<?> userNotFoundExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	/**
+	 * Sevlet Call Exception
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(ServletException.class)
 	public ResponseEntity<?> servletExceptionExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	/**
+	 * Input Output Exception handling
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(IOException.class)
 	public ResponseEntity<?> iOExceptionExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * JWT Expiration Exception
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<?> expiredJwtExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	/**
+	 * In-Appropriate JWT Exception
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(MalformedJwtException.class)
 	public ResponseEntity<?> malformedJwtExceptionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 
+	/**
+	 * JWT Exception Handled If it not Consumed in above exceptions
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(JwtException.class)
 	public ResponseEntity<?> jwtExceptionExcpetionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
-	
+
+	/**
+	 * Handled Invalid Input Exception
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(InvalidInputException.class)
 	public ResponseEntity<?> invalidinputExceptionHandler(Exception ex, WebRequest request) {
 		DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Model Method Exception
+	 * @param e
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler( { MethodArgumentNotValidException.class } )
 	public final ResponseEntity handleException( Exception e, WebRequest request )
 	{
@@ -134,6 +205,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Global Exception if aException are not Consumed from above one
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
 	  DataModelResponce errorDetails = new DataModelResponce(null, ex.getMessage(), null, false, 0);

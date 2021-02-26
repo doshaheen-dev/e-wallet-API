@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * JSON Mapper to convert from String to JSON MAP
+ */
 @Converter
 public class JsonToMapConverter
                     implements AttributeConverter<String, Map<String, Object>>

@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	List<UserModel> findAll();
 	Optional<UserModel> findAllById(long id);
+//	Optional<UserModel> findAllByIdAndKYCApplied(long id,boolean ispplied);
 	List<UserModel> findAllByMobileNumberOrEmailidAndIsActive(String mobile,String email,boolean isActive);
 	Optional<UserModel> findByEmailid(String emailid);
 	Optional<UserModel> findByMobileNumber(String mobile);

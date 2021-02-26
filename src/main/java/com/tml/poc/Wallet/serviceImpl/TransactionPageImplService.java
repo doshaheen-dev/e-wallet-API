@@ -19,16 +19,12 @@ public class TransactionPageImplService {
     private TransactionPageRepository transactionPageRepository;
 
 
-    public List<TransactionModel> getAllTransactions(long userID,Integer pageNo, Integer pageSize, String sortBy)
+    public Page<TransactionModel> getAllTransactions(long userID,Integer pageNo, Integer pageSize, String sortBy)
     {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 
         Page<TransactionModel> pagedResult = transactionPageRepository.findAllByUserID(userID,paging);
 
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<TransactionModel>();
-        }
+       return pagedResult;
     }
 }

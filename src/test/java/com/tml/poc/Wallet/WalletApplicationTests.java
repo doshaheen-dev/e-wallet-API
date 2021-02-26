@@ -1,6 +1,13 @@
 package com.tml.poc.Wallet;
 
-import com.tml.poc.Wallet.models.mpin.MPINModel;
+import com.google.gson.Gson;
+import com.tml.poc.Wallet.dao.user.SearchCriteria;
+import com.tml.poc.Wallet.models.kycCenter.KycCenterModel;
+import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
+import com.tml.poc.Wallet.repository.FirebaseRepository;
+import com.tml.poc.Wallet.repository.KycCenterRepository;
+import com.tml.poc.Wallet.services.PushNotificationService;
+import com.tml.poc.Wallet.services.RequestMoneyService;
 import com.tml.poc.Wallet.utils.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,8 +24,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.tml.poc.Wallet.utils.Constants.ENCRYPTION_ALGO;
 import static com.tml.poc.Wallet.utils.Constants.ENCRYPTION_SECRETKEY;
@@ -31,10 +39,52 @@ class WalletApplicationTests {
 
     private String SecretKey;
 
+    @Autowired
+    private FirebaseRepository firebaseRepository;
+
+    @Autowired
+    private PushNotificationService pushNotificationService;
+
     @Test
     void contextLoads() {
         System.out.println(CommonMethods.getDate(Constants.TIME_DATE));
     }
+    @Autowired
+    private RequestMoneyService requestMoneyService;
+    @Test
+    void sendFirebaseNotification(){
+//        List<FirebaseTokenModel> firebaseTokenModelOptional
+//                =firebaseRepository.findAll();
+//        List<String> tokenList=new ArrayList<>();
+//        for(FirebaseTokenModel firebaseTokenModel: firebaseTokenModelOptional) {
+//            tokenList.add(firebaseTokenModel.getFcmToken());
+//
+//
+//        }
+//        Map<String, String> data=new HashMap<String,String>();
+//        data.put("requestFrom", "1");
+//        data.put("requestTo", "2");
+//        PushNotificationRequest pushNotificationRequest=new PushNotificationRequest(
+//                "Request Money",
+//                "You Have Money Request of 100 RM",
+//                "",
+//                tokenList,
+//                data,
+//                "Request Money"
+//        );
+//
+//        pushNotificationService.sendPushNotificationToMultipleUsers(pushNotificationRequest);
+
+//        RequestMoneyModel requestMoneyModel=new RequestMoneyModel();
+//        requestMoneyModel.setRequesterUserId(20);
+//        requestMoneyModel.setRequestToUserId(20);
+//        requestMoneyModel.setTransactionAmount(100);
+//        requestMoneyService.sendNotificationToRequestie(requestMoneyModel);
+
+    }
+
+
+
 //	@Test
 //	void givenObject_whenEncrypt_thenSuccess()
 //			throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException,
@@ -71,13 +121,8 @@ class WalletApplicationTests {
             throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException,
             BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException {
 
-        String input = "{\n" +
-                "  \"senderuserID\" : 20,\n" +
-                "  \"transactionAmount\" : 1000,\n" +
-                "  \"mpin\" : \"96E79218965EB72C92A549DD5A330112\",\n" +
-                "  \"receiveruserID\" : 4\n" +
-                "}";
-		String cipherText = "lqIr9l5wpK9fn9Q8QhZNRdxekCFW62GERbybduodN5LtJLEcfc6Do6ErJn247qhnPKlpzFEBANmHingrli+dIZjlprthZfL9tnsP1H7XBfJ/+3DCZ3fAPBPMh3tCclpg8+cfbpwxFphRfcXpO58ceA==";
+        String input = "{\"requestToUserId\":4,\"requesterUserId\":4,\"transactionAmount\":2.0}";
+		String cipherText = "MGlu7KYLaj9YcLkW/+IUf44qLCepls19EqT+MHGziyb5AO2LHusczJAXEDmg7PDBhnA/tG1ujNmCgwmZX9ZmIh9fudnwsIikckxu7wnw5Bo\u003d";
         SecretKey key = aesUtils.secretKeyToString(ENCRYPTION_SECRETKEY);
         IvParameterSpec ivParameterSpec = aesUtils.generateIvPreloaded();
         System.out.println("Key " + aesUtils.stringToSecretKey(key));
@@ -91,15 +136,28 @@ class WalletApplicationTests {
                 "$2a$10$oWerIkUefGZOZQk9wR8nKeGvrVLB1avpm/APCurap7/HwYFSfDBwS"));
 //        Assertions.assertEquals(input, plainText);
     }
+    @Autowired
+    private KycCenterRepository kycCenterRepository;
+
 
     @Test
-    void decryptText() {
-        String input = "";
-        String ciphertext = "";
-        String secureKey = "";
-        String iv = "";
+    void distanceTest() {
+        double distanceInKM=10000d;
+        double lat=10d;
+        double lon=10d;
+        List<KycCenterModel> kycCenterModelListReturn=new ArrayList<>();
+        List<KycCenterModel> kycCenterModelList=kycCenterRepository.findAll();
 
-//		SecretKey key = AESUtils.generateKey(128);
+        for(KycCenterModel kycCenterModel:kycCenterModelList){
+            if(distance(kycCenterModel.getLatitude(),kycCenterModel.getLongitude(),
+                    lat,lon,"K")<distanceInKM){
+                kycCenterModelListReturn.add(kycCenterModel);
+            }
+        }
+
+        System.out.println("orig"+new Gson().toJson(kycCenterModelList));
+        System.out.println("new list"+new Gson().toJson(kycCenterModelListReturn));
+        System.out.println("Date "+Constants.TIME_DATE+" == "+CommonMethods.getDate(Constants.TIME_DATE));
 
     }
 
@@ -174,6 +232,23 @@ class WalletApplicationTests {
 
     }
 
+    @Test
+    void testRegEx(){
+        List<SearchCriteria> params = new ArrayList<SearchCriteria>();
+        String search="emailID:vaibhavyopmailcom,email:abc ";
+        if (search != null) {
+            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+            Matcher matcher = pattern.matcher(search + ",");
+            while (matcher.find()) {
+                params.add(new SearchCriteria(matcher.group(1),
+                        matcher.group(2), matcher.group(3)));
+
+                System.out.println("matcher boy comming here= "+matcher.group(1)
+                        +" "+matcher.group(2)+" "+matcher.group(3));
+            }
+        }
+    }
+
 //	@Test
 //	void testAES(){
 //		KeyGenerator keyGenerator;
@@ -228,5 +303,25 @@ class WalletApplicationTests {
         return null;
     }
 
+    private  double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            if (unit.equals("K")) {
+                dist = dist * 1.609344;
+            } else if (unit.equals("N")) {
+                dist = dist * 0.8684;
+            }
 
+            System.out.println("distt:"+dist);
+
+            return (dist);
+        }
+    }
 }

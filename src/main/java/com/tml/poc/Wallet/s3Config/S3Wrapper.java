@@ -23,6 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * S3 Wrapper
+ */
 @Service
 public class S3Wrapper {
 

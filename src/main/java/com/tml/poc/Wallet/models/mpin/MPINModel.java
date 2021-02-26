@@ -11,6 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Date;
 
+/**
+ * Wallet MPIN
+ */
 @Entity(name = "mobilePin")
 public class MPINModel {
 

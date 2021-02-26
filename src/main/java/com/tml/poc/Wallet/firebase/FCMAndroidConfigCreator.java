@@ -24,6 +24,7 @@ public class FCMAndroidConfigCreator {
                 .setNotification(AndroidNotification.builder()
                         .setSound(NotificationParameter.SOUND.getValue())
                         .setColor(NotificationParameter.COLOR.getValue())
+                        .setPriority(AndroidNotification.Priority.HIGH)
                         .build())
                 .build();
     }

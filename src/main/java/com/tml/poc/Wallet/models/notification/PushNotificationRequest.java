@@ -3,6 +3,9 @@ package com.tml.poc.Wallet.models.notification;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * From Server to FCM Request Payload
+ */
 public class PushNotificationRequest {
 
     private String title;

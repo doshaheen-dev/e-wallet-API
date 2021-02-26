@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.models.usermodels;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tml.poc.Wallet.utils.Constants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,26 +31,30 @@ public class UserKYCModel {
     @JsonFormat(pattern = Constants.TIME_DATE)
     @Column(name = "kycApplyDateTime",columnDefinition = "TIMESTAMP")
     @CreationTimestamp
-    private Timestamp applyDateTime;
+    private Date applyDateTime;
 
 
-    @Column(name = "user_id")
-    private long userId;
+//    @Column(name = "user_id")
+    @JsonProperty("userId")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
+    @JoinColumn(name = "KycUserId")
+    private UserModel KycUserId;
 
     @Column(name = "is_kyc_approved")
     private boolean isKYCDone;
 
-
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<KycDocumentModel> documentModelList;
-
 
     @Column(name = "kycApprovedBy")
     private long approvedBy;
 
     @JsonFormat(pattern = Constants.TIME_DATE)
     @Column(name = "dateTimeApprove",columnDefinition = "TIMESTAMP")
-    private Timestamp approveDataTime;
+    private Date approveDataTime;
 
     @NotNull
     @NotEmpty
@@ -77,7 +83,6 @@ public class UserKYCModel {
     @Column(name = "longitude")
     private double lon;
 
-
     public long getId() {
         return id;
     }
@@ -86,20 +91,24 @@ public class UserKYCModel {
         this.id = id;
     }
 
-    public Timestamp getApplyDateTime() {
+    public Date getApplyDateTime() {
         return applyDateTime;
     }
 
-    public void setApplyDateTime(Timestamp applyDateTime) {
+    public void setApplyDateTime(Date applyDateTime) {
         this.applyDateTime = applyDateTime;
     }
 
-    public long getUserId() {
-        return userId;
+
+
+    @JsonProperty("userId")
+    public UserModel getKycUserId() {
+        return KycUserId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    @JsonProperty("userId")
+    public void setKycUserId(long kycUserId) {
+        KycUserId =new UserModel(kycUserId);
     }
 
     public boolean isKYCDone() {
@@ -109,7 +118,6 @@ public class UserKYCModel {
     public void setKYCDone(boolean KYCDone) {
         isKYCDone = KYCDone;
     }
-
 
     public List<KycDocumentModel> getDocumentModelList() {
         return documentModelList;
@@ -127,11 +135,11 @@ public class UserKYCModel {
         this.approvedBy = approvedBy;
     }
 
-    public Timestamp getApproveDataTime() {
+    public Date getApproveDataTime() {
         return approveDataTime;
     }
 
-    public void setApproveDataTime(Timestamp approveDataTime) {
+    public void setApproveDataTime(Date approveDataTime) {
         this.approveDataTime = approveDataTime;
     }
 

@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.restController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ import com.tml.poc.Wallet.utils.DataReturnUtil;
 
 import io.swagger.annotations.Api;
 
+/**
+ * Authentication for User and Admin
+ */
 @RestController
 @RequestMapping("/user/auth")
 @Api(value = "Authentication for User and Admin", description = "Authentication for User and Admin")
@@ -50,11 +54,12 @@ public class AuthenticationController {
 	/**
 	 * customer login req for OTP
 	 * 
-	 * @param userRegistrationModel
+	 * @param UserCredModel
 	 * @return
 	 * @throws InvalidInputException
 	 */
 	@PostMapping("/login")
+	@ApiOperation(value = " customer login req for OTP")
 	private ResponseEntity doLoginCall(@RequestBody UserCredModel userLoginModule)
 			throws ResourceNotFoundException, InvalidInputException {
 		return authenticationService.doUserAuthenticationByMobile(userLoginModule);
@@ -67,6 +72,7 @@ public class AuthenticationController {
 	 * @return
 	 */
 	@PostMapping("/verify")
+	@ApiOperation(value = "Customer Verificcation by OTP Note:SMS Gate way is remain")
 	private ResponseEntity doLoginCallVerify(@RequestBody UserLoginModule userRegistrationModel)
 			throws InvalidInputException, ResourceNotFoundException {
 
@@ -75,18 +81,26 @@ public class AuthenticationController {
 	}
 
 	/**
-	 * Employee Verificcation by Emailid password
+	 * Admin Verificcation by Emailid password
 	 * 
 	 * @param webUserRegistrationModel
 	 * @return
 	 */
 	@PostMapping("/webuser/login")
+	@ApiOperation(value = "Admin Verificcation by Emailid password")
 	private Object doMobileLoginCall(@RequestBody WebUserRegistrationModel webUserRegistrationModel)
-			throws ResourceNotFoundException {
+			throws ResourceNotFoundException, InvalidInputException {
 		return authenticationService.doEmployeeAuthentication(webUserRegistrationModel);
 	}
 
+	/**
+	 * Refresh JWT Token
+	 * @param request
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	@RequestMapping(value = "/user/refresh", method = RequestMethod.GET)
+	@ApiOperation(value = "Refresh JWT Token")
 	public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request)
 			throws ResourceNotFoundException {
 		try {

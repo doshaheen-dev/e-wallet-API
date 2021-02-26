@@ -79,6 +79,11 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cacheControl(); //disable caching
     }
 
+    /**
+     * we have to set here Public URL to prevent from JWT
+     * @param webSecurity
+     * @throws Exception
+     */
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
         webSecurity
@@ -124,7 +129,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/verify",
             "/user/auth/**",         
             "/user/otp/resend/**",
-            "/api/user/auth/webuser/login"
+            "/api/user/auth/webuser/login",
+            "/api/config/get"
             };
     
 //    

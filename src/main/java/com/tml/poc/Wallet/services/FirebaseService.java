@@ -48,7 +48,7 @@ public class FirebaseService {
     public ResponseEntity updateFirebaseToken(FirebaseTokenModel firebaseTokenModel){
 
         Optional<FirebaseTokenModel> firebaseTokenModelOptional=firebaseRepository.
-                findByDeviceIDAndFcmToken(firebaseTokenModel.getDeviceID(),firebaseTokenModel.getFcmToken());
+                findByDeviceIDAndUserId(firebaseTokenModel.getDeviceID(),firebaseTokenModel.getUserId());
         if(firebaseTokenModelOptional.isPresent()){
             firebaseTokenModel.setFirebaseTokenModelId(firebaseTokenModelOptional.get().getFirebaseTokenModelId());
             firebaseTokenModel= firebaseRepository.save(firebaseTokenModel);

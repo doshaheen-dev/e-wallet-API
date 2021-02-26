@@ -2,6 +2,9 @@ package com.tml.poc.Wallet.jwt.resorce;
 
 import java.io.Serializable;
 
+/**
+ * JWT Token Request to Create JWT Token
+ */
 public class  JwtTokenRequest implements Serializable {
   
   private static final long serialVersionUID = -5616176897013108345L;

@@ -7,6 +7,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * Send Mail Configuration
+ * TODO: Yet Configure with SMTP of AWS
+ */
 @Component
 public class EmailComponant {
 	@Autowired
