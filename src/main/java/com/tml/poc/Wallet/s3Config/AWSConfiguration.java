@@ -9,15 +9,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * S3 Bucket client Configuration
+ */
 @Configuration
 public class AWSConfiguration {
 
+    /**
+     * Access key for S3
+     */
     @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
 
+    /**
+     * SecretKey Of S3 bucket
+     */
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
+    /**
+     * Region for S3 Bucket
+     */
     @Value("${cloud.aws.region.static}")
     private String region;
 
@@ -26,6 +38,11 @@ public class AWSConfiguration {
         return new BasicAWSCredentials(accessKey, secretKey);
     }
 
+    /**
+     *
+     * @param awsCredentials
+     * @return
+     */
     @Bean
     public AmazonS3Client amazonS3Client(AWSCredentials awsCredentials) {
         AmazonS3Client amazonS3Client = new AmazonS3Client(awsCredentials);

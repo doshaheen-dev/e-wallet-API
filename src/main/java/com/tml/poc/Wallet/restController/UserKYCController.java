@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 
+/**
+ * Mobile USer KYC
+ */
 @RestController
 @RequestMapping("kyc/user")
 public class UserKYCController {
@@ -19,6 +22,13 @@ public class UserKYCController {
     @Autowired
     private UserKYCService userKYCService;
 
+    /**
+     * Mobile User Apply
+     * @param userKYCModel
+     * @return
+     * @throws IOException
+     * @throws ResourceNotFoundException
+     */
     @PostMapping("/apply")
     private ResponseEntity applyUserKYC(
             @RequestBody UserKYCModel userKYCModel) throws IOException, ResourceNotFoundException {
@@ -26,7 +36,11 @@ public class UserKYCController {
     }
 
 
-
+    /**
+     * Mobile User Approval
+     * @param userKYCModel
+     * @return
+     */
     @PutMapping("/approval")
     private ResponseEntity getApprovalUserKYC(
             @Valid @RequestBody UserKYCModel userKYCModel){
@@ -39,6 +53,13 @@ public class UserKYCController {
 //        return userKYCService.getUser(id);
 //    }
 
+    /**
+     * Search and get all not approved
+     * @param pageNo
+     * @param pageSize
+     * @param sortBy
+     * @return
+     */
     @GetMapping("/search/getAll/notApproved")
     private Object getAllApprovalNotApprovedUserKYC(
             @RequestParam(defaultValue = "0", name = "pageNo") int pageNo,

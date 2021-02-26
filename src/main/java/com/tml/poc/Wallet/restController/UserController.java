@@ -14,31 +14,58 @@ import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
 import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.services.UserService;
 
+/**
+ * Mobile User Get and Add Controller
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	/**
+	 * update Mobile User
+	 * @param id
+	 * @param userModule
+	 * @return
+	 */
 	@PutMapping("/{id}/update")
 	public Object getUserUpdate(@PathVariable long id,@RequestBody UserModel userModule) {
 		
 		return ResponseEntity.ok(userService.doUserUpdate(id, userModule,false));
 	}
-	
+
+	/**
+	 * get Moble User By ID
+	 * @param id
+	 * @return
+	 * @throws AuthenticationException
+	 */
 	@GetMapping("/{id}/get")
 	public Object getGivenUser(@PathVariable long id)  throws AuthenticationException {
 		
 		return ResponseEntity.ok((userService.doGetUserById(id)));
 	}
-	
+
+	/**
+	 * delete mobile User By ID
+	 * @param id
+	 * @return
+	 * @throws AuthenticationException
+	 */
 	@DeleteMapping("/delete/{id}")
 	public Object DeleteUser(@PathVariable long id)  throws AuthenticationException {
 		
 		return ResponseEntity.ok((userService.doDeleteUserById(id)));
 	}
-	
+
+	/**
+	 * remove Profile image
+	 * @param id
+	 * @return
+	 * @throws AuthenticationException
+	 */
 	@DeleteMapping("/image/remove/{id}")
 	public Object removeUserImage(@PathVariable long id)  throws AuthenticationException {
 		

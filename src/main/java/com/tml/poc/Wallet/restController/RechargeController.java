@@ -7,6 +7,9 @@ import com.tml.poc.Wallet.services.WalletRechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Mobile user Recharge
+ */
 @RestController
 @RequestMapping("/mobileuser/recharge")
 public class RechargeController {
@@ -14,6 +17,12 @@ public class RechargeController {
     @Autowired
     private WalletRechargeService walletRechargeService;
 
+    /**
+     * get Know mobile user Ballance
+     * @param mobileUserId
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/{mobileUserId}/getBallance")
     public Object getUserBallance(@PathVariable(name = "mobileUserId") long mobileUserId)
             throws ResourceNotFoundException {
@@ -22,6 +31,12 @@ public class RechargeController {
     }
 
 
+    /**
+     * add cash
+     * TODO: Have to add Further Service
+     * @param addCashToWalletModel
+     * @return
+     */
     @PostMapping("/cash/add")
     public Object addCashToWallet(@RequestBody AddCashToWalletModel addCashToWalletModel){
 

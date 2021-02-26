@@ -25,6 +25,19 @@ public class MpinController {
     @Autowired
     private MPinServices mPinServices;
 
+    /**
+     * Create MPIN for New User
+     * @param mpinModel
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     */
     @ApiOperation(value = "Create M-PIN For New User")
     @PostMapping("/create")
     public Object createMpin(@RequestBody MPINModel mpinModel) throws ResourceNotFoundException,
@@ -35,6 +48,20 @@ public class MpinController {
         return mPinServices.createMPin(mpinModel);
     }
 
+    /**
+     * Verify MPIN From NEW User
+     * @param mpinModel
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws InvalidInputException
+     */
     @ApiOperation(value = "Verify M-PIN From New User")
     @PostMapping("/create/otp/verify")
     public Object verifyMpinUser(@RequestBody MPINModel mpinModel) throws ResourceNotFoundException,
@@ -45,6 +72,20 @@ public class MpinController {
         return mPinServices.verifycreateMPinAccount(mpinModel);
     }
 
+    /**
+     * For before transaction verify MPIN
+     * @param mpinModel
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws InvalidInputException
+     */
     @ApiOperation(value = "For before transaction verify MPIN")
     @PostMapping("/verify")
     public Object verifyMpin(@RequestBody MPINModel mpinModel) throws ResourceNotFoundException,
@@ -55,6 +96,20 @@ public class MpinController {
         return mPinServices.checkPrevMPIN(mpinModel);
     }
 
+    /**
+     * to check MPIN is Created or not
+     * @param userId
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws InvalidInputException
+     */
     @ApiOperation(value = "to check MPIN is Created or not")
     @GetMapping("/{userId}/verify")
     public Object isMpinCreated(@PathVariable(name = "userId")long userId) throws ResourceNotFoundException,
@@ -65,6 +120,20 @@ public class MpinController {
         return mPinServices.checkMPiCreatedOrNot(userId);
     }
 
+    /**
+     * To Change MPIN
+     * @param changeMPINModel
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws InvalidInputException
+     */
     @ApiOperation(value = "to Change MPIN")
     @PostMapping("/change")
     public Object changeMPIN(@RequestBody ChangeMPINModel changeMPINModel) throws ResourceNotFoundException,
@@ -75,6 +144,19 @@ public class MpinController {
         return mPinServices.changeMPIN(changeMPINModel);
     }
 
+    /**
+     * If user forgot M-PIN
+     * @param mpinModel
+     * @return
+     * @throws ResourceNotFoundException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     */
     @ApiOperation(value = "if user forgot MPIN")
     @PostMapping("/forgot")
     public Object forgotMpin(@RequestBody MPINModel mpinModel) throws ResourceNotFoundException,

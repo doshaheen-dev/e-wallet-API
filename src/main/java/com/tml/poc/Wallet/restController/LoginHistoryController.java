@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * For Login History this Controller works
+ */
 @RestController
 @RequestMapping("/login/history")
 public class LoginHistoryController {
@@ -17,6 +20,13 @@ public class LoginHistoryController {
     @Autowired
     private LoginHistoryService loginHistoryService;
 
+    /**
+     * get all Login History
+     * @param pageNo
+     * @param pageSize
+     * @param sort
+     * @return
+     */
     @GetMapping("/all")
     private ResponseEntity getAll(@RequestParam(defaultValue = "0", name = "pageNo") int pageNo,
                                   @RequestParam(defaultValue = "20", name = "pageSize") int pageSize,
@@ -24,6 +34,13 @@ public class LoginHistoryController {
         return loginHistoryService.searchAllLoginHistory(pageSize, pageNo, sort);
     }
 
+    /**
+     * get All mobile Users LoginHistory
+     * @param pageNo
+     * @param pageSize
+     * @param sort
+     * @return
+     */
     @GetMapping("/mobile/user")
     private ResponseEntity getAllByMobileUserId(@RequestParam(defaultValue = "0", name = "pageNo") int pageNo,
                                                 @RequestParam(defaultValue = "20", name = "pageSize") int pageSize,
@@ -31,6 +48,13 @@ public class LoginHistoryController {
         return loginHistoryService.searchMobileAllLoginHistory(pageSize, pageNo, sort);
     }
 
+    /**
+     * get All web User Login History
+     * @param pageNo
+     * @param pageSize
+     * @param sort
+     * @return
+     */
     @GetMapping("/web/user")
     private ResponseEntity getAllByWebUserId(@RequestParam(defaultValue = "0", name = "pageNo") int pageNo,
                                              @RequestParam(defaultValue = "20", name = "pageSize") int pageSize,

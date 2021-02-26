@@ -16,6 +16,9 @@ import com.tml.poc.Wallet.utils.DataReturnUtil;
 
 import javax.validation.Valid;
 
+/**
+ * Web User Role Crud
+ */
 @RequestMapping("/webuser/role")
 @RestController
 public class WebUserRoleController {
@@ -27,21 +30,44 @@ public class WebUserRoleController {
 	@Autowired
 	private WebUserRoleService webUserRoleService;
 
+	/**
+	 * add Web User Role
+	 * @param webUserRoleModel
+	 * @return
+	 * @throws InvalidInputException
+	 */
 	@PostMapping("/add")
 	public Object addWebUserRole(@Valid @RequestBody WebUserRoleModel webUserRoleModel ) throws InvalidInputException {
 		return webUserRoleService.addWebUserRole(webUserRoleModel);
 	}
 
+	/**
+	 * Update Web User Role
+	 * @param webUserRoleModel
+	 * @return
+	 * @throws InvalidInputException
+	 */
 	@PutMapping("/update")
 	public Object updateWebUserRole(@Valid @RequestBody WebUserRoleModel webUserRoleModel) throws InvalidInputException {
 		return webUserRoleService.updateWebUserRole(webUserRoleModel);
 	}
 
+	/**
+	 * get Role By Id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/get")
 	public Object getWebUserRole(@QueryParam(value = "id") long id){
 		return webUserRoleService.getWebUserRole(id);
 	}
 
+	/**
+	 * Delete Role by ID
+	 * @param id
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	@DeleteMapping("/delete")
 	public Object deleteWebUserRole(@RequestParam(name = "id") long id) throws ResourceNotFoundException {
 		return webUserRoleService.deleteWebUserRole(id);

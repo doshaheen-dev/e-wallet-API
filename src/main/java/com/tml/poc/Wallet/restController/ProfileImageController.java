@@ -22,6 +22,9 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+/**
+ * To update Profile Image of Mobile User
+ */
 @RestController
 @RequestMapping("/api/blobfile")
 @RequiredArgsConstructor
@@ -46,11 +49,21 @@ public class ProfileImageController {
 //	private ApplicationProperties applicationProperties;
 
 
+	/**
+	 * list of File for POC
+	 * @return
+	 */
 	@GetMapping("/")
 	public List<String> blobitemst() {
 		return myBlobService.listFiles();
 	}
 
+	/**
+	 * Download File from file name
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
 	@GetMapping("/download/{filename}")
 	public Object download(@PathVariable String filename) throws IOException {
 //		return myBlobService.downloadFile(filename).toByteArray();
@@ -63,6 +76,14 @@ public class ProfileImageController {
 		}
 	}
 
+	/**
+	 * Upload Profile Image
+	 * @param fileReq
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ResourceNotFoundException
+	 */
 	@PostMapping("/upload")
 	public Object uploadFile(@Valid @RequestBody FileUploadModelReq fileReq) throws FileNotFoundException, IOException,ResourceNotFoundException {
 		

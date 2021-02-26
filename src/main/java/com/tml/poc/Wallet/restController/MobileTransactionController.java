@@ -41,6 +41,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Mobile Wallet Transactions for Mobile User
+ */
 @RestController
 @RequestMapping("/transactions")
 public class MobileTransactionController {
@@ -58,6 +61,20 @@ public class MobileTransactionController {
     @Autowired
     private TransactionPageImplService transactionPageImplService;
 
+    /**
+     * Send Money requesr from One User To Another
+     * @param encryptedPayload
+     * @return
+     * @throws BadPaddingException
+     * @throws ResourceNotFoundException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws TransactionFailedException
+     */
     @PostMapping("/sendMoney")
     public Object sendMoneyToReceipient(@RequestBody EncryptDataModel encryptedPayload) throws BadPaddingException,
             ResourceNotFoundException, InvalidKeyException,
@@ -71,6 +88,20 @@ public class MobileTransactionController {
         return transactionService.sendMoneyTransaction(sendMoneyModel);
     }
 
+    /**
+     * Request Money from One User  To Another User
+     * @param encryptedPayload
+     * @return
+     * @throws BadPaddingException
+     * @throws ResourceNotFoundException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchPaddingException
+     * @throws InvalidAlgorithmParameterException
+     * @throws InvalidKeySpecException
+     * @throws TransactionFailedException
+     */
     @PostMapping("/requestMoney")
     public Object requestMoneyToReceipient(@RequestBody EncryptDataModel encryptedPayload) throws BadPaddingException,
             ResourceNotFoundException, InvalidKeyException,
@@ -78,10 +109,6 @@ public class MobileTransactionController {
             NoSuchPaddingException, InvalidAlgorithmParameterException,
             InvalidKeySpecException, TransactionFailedException {
 
-
-
-//        JsonObject jsonpObject=new JsonObject(commonMethods.encryptionStringToJson(
-//                encryptedPayload.getEncryptedData()));
         RequestMoneyReqModel requestMoneyModel
                 = new Gson().fromJson(
                 commonMethods.encryptionStringToJson(
@@ -97,6 +124,13 @@ public class MobileTransactionController {
         return requestMoneyService.requestMoney(requestMoneyModel1);
     }
 
+    /**
+     * Search Mobile user Transactions by user ID
+     * @param userid
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/search/mobileUser")
     public Object getTransactionSearch(
             @RequestParam(defaultValue = "0", name = "userId") long userid,
@@ -112,6 +146,16 @@ public class MobileTransactionController {
     }
 
 
+    /**
+     * List of Requested Money by User ID which are Send
+     * @param fromDate
+     * @param toDate
+     * @param userid
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/requestMoney/sent/getAll")
     public Object getRequestMoneyAll(
             @RequestParam( name = "fromDate",required = false)@DateTimeFormat(pattern= Constants.TIME_DATE) Date fromDate,
@@ -133,6 +177,16 @@ public class MobileTransactionController {
                                 "id")));
     }
 
+    /**
+     * List of Requested Money by User ID which are Requested to Given user
+     * @param fromDate
+     * @param toDate
+     * @param userid
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/requestMoney/get/getAll")
     public Object getAllRequestMoneyFromAnotherUser(
             @RequestParam( name = "fromDate",required = false)

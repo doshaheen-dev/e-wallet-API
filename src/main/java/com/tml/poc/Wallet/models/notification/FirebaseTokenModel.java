@@ -2,6 +2,9 @@ package com.tml.poc.Wallet.models.notification;
 
 import javax.persistence.*;
 
+/**
+ * firebase token update for Mobile user
+ */
 @Entity
 @Table(name = "FirebaseTokenTable")
 public class FirebaseTokenModel {
