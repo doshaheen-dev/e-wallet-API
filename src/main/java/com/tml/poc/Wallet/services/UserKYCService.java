@@ -1,6 +1,7 @@
 package com.tml.poc.Wallet.services;
 
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
+import com.tml.poc.Wallet.models.usermodels.KycDocumentModel;
 import com.tml.poc.Wallet.models.usermodels.UserKYCModel;
 import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.UserKYCRepository;
@@ -37,18 +38,18 @@ public class UserKYCService {
             if (userModelOptional.isPresent()) {
                 UserModel userModel=userModelOptional.get();
                 userKYCModel.setId(0);
-                if(userKYCModel.getKycDocument()!=null&& !userKYCModel.getKycDocument().isEmpty()) {
-                    userKYCModel.setKycDocument(s3Wrapper.uploadPrev("kyc-" + userKYCModel.getKycDocumentType() + userKYCModel.getUserId(),
-                            userKYCModel.getKycDocument(),
-                            userKYCModel.getKycDocumentExt()));
-                }else
-                {
+                if(userKYCModel.getDocumentModelList().size()==0){
                     throw new ResourceNotFoundException(KYC_DOCUMENT_NOT_FOUND);
                 }
-                if(userKYCModel.getKycPassportPhoto()!=null&& !userKYCModel.getKycPassportPhoto().isEmpty()) {
-                    userKYCModel.setKycPassportPhoto(s3Wrapper.uploadPrev("kycPassport" + userKYCModel.getUserId(),
-                            userKYCModel.getKycPassportPhoto(),
-                            userKYCModel.getKycPassportPhotoExt()));
+                for(KycDocumentModel kycDocumentModel:userKYCModel.getDocumentModelList()) {
+                    if (kycDocumentModel.getDocumentName() != null && !kycDocumentModel.getDocumentName().isEmpty()
+                        &&kycDocumentModel.getDocument() != null && !kycDocumentModel.getDocument().isEmpty()){
+                        kycDocumentModel.setDocument(s3Wrapper.uploadPrev(kycDocumentModel.getDocumentName()+"-" + userKYCModel.getUserId(),
+                                kycDocumentModel.getDocument(),
+                                kycDocumentModel.getDocumentExt()));
+                    } else {
+                        throw new ResourceNotFoundException(KYC_DOCUMENT_NOT_FOUND);
+                    }
                 }
                 userKYCModel.setKYCDone(false);
                 userModel.setKYCApplied(true);

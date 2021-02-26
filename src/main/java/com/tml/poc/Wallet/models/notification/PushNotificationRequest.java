@@ -8,9 +8,26 @@ public class PushNotificationRequest {
     private String title;
     private String message;
     private String imageUrl;
+    /**
+     * fcm Token(s)
+     */
     private List<String> tokenList;
     private Map<String, String> data;
     private String topic;
+
+    public PushNotificationRequest(String title,
+                                   String message,
+                                   String imageUrl,
+                                   List<String> tokenList,
+                                   Map<String, String> data,
+                                   String topic) {
+        this.title = title;
+        this.message = message;
+        this.imageUrl = imageUrl;
+        this.tokenList = tokenList;
+        this.data = data;
+        this.topic = topic;
+    }
 
     public String getTitle() {
         return title;

@@ -54,7 +54,7 @@ public class WebUserRoleModel {
 	@OneToMany
 	private List<WebUserModel> webuser;
 
-	@Column(name = "access_module")
+	@Column(name = "access_module",length = 500)
 	private String accessLayerModule;
 
 	@JsonIgnore

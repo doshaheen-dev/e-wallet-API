@@ -3,10 +3,12 @@ package com.tml.poc.Wallet.firebase;
 import com.google.firebase.messaging.ApnsConfig;
 import com.google.firebase.messaging.Aps;
 import com.google.firebase.messaging.CriticalSound;
+import org.springframework.stereotype.Service;
 
 /**
  * Class responsible for creating APNS configurations to be used by @{@link FCMMessageBuilder}
  */
+@Service
 public class FCMAppleConfigCreator {
 
     /**
