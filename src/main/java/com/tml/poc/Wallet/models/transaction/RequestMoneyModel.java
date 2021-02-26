@@ -28,7 +28,7 @@ public class RequestMoneyModel {
             CascadeType.REFRESH
     })
     @JoinColumn(name = "requesterUserId")
-    private UserModel requesterUserId;
+    public UserModel requesterUserId;
 
 //    @Column(name = "request_to_user_id")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {
@@ -36,7 +36,7 @@ public class RequestMoneyModel {
             CascadeType.REFRESH
     })
     @JoinColumn(name = "requestToUserId")
-    private UserModel requestToUserId;
+    public UserModel requestToUserId;
 
     @Column(name = "req_money_amount")
     private float transactionAmount;

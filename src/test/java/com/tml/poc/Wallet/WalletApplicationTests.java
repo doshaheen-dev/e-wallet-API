@@ -3,12 +3,11 @@ package com.tml.poc.Wallet;
 import com.google.gson.Gson;
 import com.tml.poc.Wallet.dao.user.SearchCriteria;
 import com.tml.poc.Wallet.models.kycCenter.KycCenterModel;
-import com.tml.poc.Wallet.models.mpin.MPINModel;
-import com.tml.poc.Wallet.models.notification.FirebaseTokenModel;
-import com.tml.poc.Wallet.models.notification.PushNotificationRequest;
+import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
 import com.tml.poc.Wallet.repository.FirebaseRepository;
 import com.tml.poc.Wallet.repository.KycCenterRepository;
 import com.tml.poc.Wallet.services.PushNotificationService;
+import com.tml.poc.Wallet.services.RequestMoneyService;
 import com.tml.poc.Wallet.utils.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,9 +49,10 @@ class WalletApplicationTests {
     void contextLoads() {
         System.out.println(CommonMethods.getDate(Constants.TIME_DATE));
     }
-
-//    @Test
-//    void sendFirebaseNotification(){
+    @Autowired
+    private RequestMoneyService requestMoneyService;
+    @Test
+    void sendFirebaseNotification(){
 //        List<FirebaseTokenModel> firebaseTokenModelOptional
 //                =firebaseRepository.findAll();
 //        List<String> tokenList=new ArrayList<>();
@@ -74,7 +74,14 @@ class WalletApplicationTests {
 //        );
 //
 //        pushNotificationService.sendPushNotificationToMultipleUsers(pushNotificationRequest);
-//    }
+
+//        RequestMoneyModel requestMoneyModel=new RequestMoneyModel();
+//        requestMoneyModel.setRequesterUserId(20);
+//        requestMoneyModel.setRequestToUserId(20);
+//        requestMoneyModel.setTransactionAmount(100);
+//        requestMoneyService.sendNotificationToRequestie(requestMoneyModel);
+
+    }
 
 
 

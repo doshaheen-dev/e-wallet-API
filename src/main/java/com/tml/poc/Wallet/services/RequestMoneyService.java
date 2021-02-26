@@ -49,12 +49,12 @@ public class RequestMoneyService {
         /**
          * TODO: requester ID check
          */
-        requesterUserPresent(requestMoneyModel.getRequesterUserId().getId());
+        UserModel reqFrom=requesterUserPresent(requestMoneyModel.getRequesterUserId().getId());
 
         /**
          * TODO: Check Requestie ID
          */
-        requestToUserPresent(requestMoneyModel.getRequestToUserId().getId());
+        UserModel reqTo=requestToUserPresent(requestMoneyModel.getRequestToUserId().getId());
 
         /**
          * TODO:Save Request Money
@@ -64,7 +64,9 @@ public class RequestMoneyService {
         /**
          * TODO: send request now by Firebase
          */
-        sendNotificationToRequestie(requestMoneyModel);
+        requestMoneyModelSave.requesterUserId=reqFrom;
+        requestMoneyModelSave.requestToUserId=reqTo;
+        sendNotificationToRequestie(requestMoneyModelSave);
 
 
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
@@ -100,17 +102,19 @@ public class RequestMoneyService {
      * @param requestMoneyModel
      * @return
      */
-    private Object sendNotificationToRequestie(RequestMoneyModel requestMoneyModel){
+    public Object sendNotificationToRequestie(RequestMoneyModel requestMoneyModel){
         try {
             List<FirebaseTokenModel> firebaseTokenModelOptional
-                    =firebaseRepository.findAllByUserId(String.valueOf(requestMoneyModel.getRequestToUserId()));
+                    =firebaseRepository.findAllByUserId(
+                            String.valueOf(requestMoneyModel.getRequestToUserId().getId()),Sort.by("firebaseTokenModelId").descending());
             List<String> tokenList=new ArrayList<>();
+            System.out.println("requestMoneyModel.getRequestToUserId().getId()="+requestMoneyModel.getRequestToUserId().getId());
             for(FirebaseTokenModel firebaseTokenModel: firebaseTokenModelOptional) {
                 tokenList.add(firebaseTokenModel.getFcmToken());
             }
             Map<String, String> data=new HashMap<String,String>();
-            data.put("requestFrom", String.valueOf(requestMoneyModel.getRequesterUserId()));
-            data.put("requestTo", String.valueOf(requestMoneyModel.getRequestToUserId()));
+            data.put("requestFrom", String.valueOf(requestMoneyModel.getRequesterUserId().getId()));
+            data.put("requestTo", String.valueOf(requestMoneyModel.getRequestToUserId().getId()));
             data.put("requestPayload", new Gson().toJson(requestMoneyModel));
             PushNotificationRequest pushNotificationRequest=new PushNotificationRequest(
                     "Request Money",
@@ -121,7 +125,7 @@ public class RequestMoneyService {
                     "Request Money"
                     );
 
-            pushNotificationService.sendPushNotificationToSingleUser(pushNotificationRequest);
+            pushNotificationService.sendPushNotificationToMultipleUsers(pushNotificationRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
