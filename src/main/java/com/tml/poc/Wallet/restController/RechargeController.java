@@ -40,6 +40,6 @@ public class RechargeController {
     @PostMapping("/cash/add")
     public Object addCashToWallet(@RequestBody AddCashToWalletModel addCashToWalletModel){
 
-        return addCashToWalletModel;
+        return walletRechargeService.addCashToMobileUserWallet(addCashToWalletModel);
     }
 }

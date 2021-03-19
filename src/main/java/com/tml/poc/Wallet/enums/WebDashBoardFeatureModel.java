@@ -18,6 +18,7 @@ public class WebDashBoardFeatureModel {
             "WRITE_E_KYC",
             "WRITE_KYC_CENTER",
             "WRITE_LOGIN_HISTORY",
+            "WRITE_WALLET_RECHARGE",
 
             "REPORT_MOBILE_USER",
             "REPORT_MOBILE_USER_TRANSACTION",

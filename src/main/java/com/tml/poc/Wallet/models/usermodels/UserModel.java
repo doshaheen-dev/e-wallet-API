@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tml.poc.Wallet.models.transaction.RequestMoneyModel;
+import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
 import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import com.tml.poc.Wallet.utils.Constants;
 import org.hibernate.annotations.CreationTimestamp;

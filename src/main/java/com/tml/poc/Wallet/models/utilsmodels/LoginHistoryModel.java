@@ -29,10 +29,31 @@ public class LoginHistoryModel {
     @Column(name = "login_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
     private Date loginDate;
 
-    public LoginHistoryModel(long id, long mobileUserId, long webUserId) {
+
+    @Column(name = "name",length = 50)
+    private String nameOfUser;
+
+    @Column(name = "mobile",length = 20)
+    private String mobile;
+    @Column(name = "emailid",length = 50)
+    private String emailid;
+
+//    public LoginHistoryModel(long id, long mobileUserId, long webUserId,String nameOfUser) {
+//        this.id = id;
+//        this.mobileUserId = mobileUserId;
+//        this.webUserId = webUserId;
+//        this.nameOfUser=nameOfUser;
+//    }
+
+    public LoginHistoryModel(long id, long mobileUserId,
+                             long webUserId,  String nameOfUser,
+                             String mobile, String emailid) {
         this.id = id;
         this.mobileUserId = mobileUserId;
         this.webUserId = webUserId;
+        this.nameOfUser = nameOfUser;
+        this.mobile = mobile;
+        this.emailid = emailid;
     }
 
     public LoginHistoryModel() {
@@ -69,5 +90,29 @@ public class LoginHistoryModel {
 
     public void setWebUserId(long webUserId) {
         this.webUserId = webUserId;
+    }
+
+    public String getNameOfUser() {
+        return nameOfUser;
+    }
+
+    public void setNameOfUser(String nameOfUser) {
+        this.nameOfUser = nameOfUser;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmailid() {
+        return emailid;
+    }
+
+    public void setEmailid(String emailid) {
+        this.emailid = emailid;
     }
 }

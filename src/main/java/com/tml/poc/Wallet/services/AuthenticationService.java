@@ -133,7 +133,11 @@ public class AuthenticationService {
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
 
 				LoginHistoryModel loginHistoryModel=new LoginHistoryModel(0,
-						userOptional.get().getId(),0);
+						userOptional.get().getId(),
+						0l,
+						usermodel.getFirstname()+" "+ usermodel.getLastname(),
+						usermodel.getMobileNumber(),
+						usermodel.getEmailid());
 				loginHistoryRepository.save(loginHistoryModel);
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
@@ -168,7 +172,10 @@ public class AuthenticationService {
 
 						LoginHistoryModel loginHistoryModel=new LoginHistoryModel(0,
 								0,
-								employeeModel.get().getId());
+								employeeModel.get().getId(),
+								employeeModel.get().getFirstname() +" "+employeeModel.get().getLastname(),
+								employeeModel.get().getMobileNumber(),
+								employeeModel.get().getEmailid());
 
 						loginHistoryRepository.save(loginHistoryModel);
 						return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
