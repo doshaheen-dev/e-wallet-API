@@ -1,6 +1,7 @@
 package com.tml.poc.Wallet.restController;
 
 import com.tml.poc.Wallet.models.utilsmodels.AppConfigModel;
+import com.tml.poc.Wallet.models.utilsmodels.AppUpdateModel;
 import com.tml.poc.Wallet.repository.ConfigRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +56,19 @@ public class ConfigController {
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
                 configRepository.findAll().get(0)
                 ,"Success"));
+    }
+
+
+    /**
+     * get version
+     * temp for FMCG
+     */
+    @GetMapping("/get/app/update")
+    @ApiOperation("for new App update")
+    public Object  getAppUpdate(){
+        return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseSuccess(
+                new AppUpdateModel()
+                ,"You have new Update, Please compare with your current one"));
     }
 
 

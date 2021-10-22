@@ -5,6 +5,7 @@ import com.tml.poc.Wallet.dao.user.SearchCriteria;
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
 import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import com.tml.poc.Wallet.repository.LoginHistoryRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class LoginHistoryService {
     {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
 
-        Page<LoginHistoryModel> pagedResult = loginHistoryRepository.findAllByWebUserId(0,paging);
+        Page<LoginHistoryModel> pagedResult = loginHistoryRepository.findAllByWebUserId(new WebUserModel(0),paging);
 
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(
                 pagedResult));
@@ -62,7 +63,7 @@ public class LoginHistoryService {
     {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sort).descending());
 
-        Page<LoginHistoryModel> pagedResult = loginHistoryRepository.findAllByMobileUserId(0,paging);
+        Page<LoginHistoryModel> pagedResult = loginHistoryRepository.findAllByMobileUserId(new UserModel(0),paging);
 
         return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(
                 pagedResult));

@@ -51,6 +51,9 @@ class WalletApplicationTests {
     }
     @Autowired
     private RequestMoneyService requestMoneyService;
+
+
+
     @Test
     void sendFirebaseNotification(){
 //        List<FirebaseTokenModel> firebaseTokenModelOptional
