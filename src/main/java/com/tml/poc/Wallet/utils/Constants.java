@@ -1,6 +1,8 @@
 package com.tml.poc.Wallet.utils;
 
 public class Constants {
+	
+	public static final String CORS_CONST="https://dityqxbnvhkm5.cloudfront.net";
 
 	/** generic Constants
 	 */

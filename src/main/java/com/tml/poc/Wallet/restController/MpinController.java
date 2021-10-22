@@ -6,6 +6,8 @@ import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.mpin.MPINModel;
 import com.tml.poc.Wallet.models.request.ChangeMPINModel;
 import com.tml.poc.Wallet.services.MPinServices;
+import com.tml.poc.Wallet.utils.Constants;
+
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("api/mpin")
 public class MpinController {

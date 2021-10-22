@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import com.tml.poc.Wallet.models.webuser.WebUserRegistrationModel;
 import com.tml.poc.Wallet.models.usermodels.UserCredModel;
 import com.tml.poc.Wallet.models.usermodels.UserLoginModule;
 import com.tml.poc.Wallet.services.AuthenticationService;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 
 import io.swagger.annotations.Api;
@@ -28,6 +30,7 @@ import io.swagger.annotations.Api;
 /**
  * Authentication for User and Admin
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/user/auth")
 @Api(value = "Authentication for User and Admin", description = "Authentication for User and Admin")

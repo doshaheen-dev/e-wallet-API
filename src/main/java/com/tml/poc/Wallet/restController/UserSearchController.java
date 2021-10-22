@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Search Mobile USer
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("user/search")
 public class UserSearchController {

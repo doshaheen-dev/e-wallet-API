@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.restController;
 
 import com.tml.poc.Wallet.models.utilsmodels.AppConfigModel;
 import com.tml.poc.Wallet.repository.ConfigRepository;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Application Configuration Crud
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/config")
 public class ConfigController {

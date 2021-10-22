@@ -1,5 +1,6 @@
 package com.tml.poc.Wallet.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,9 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 	Optional<UserModel> findByEmailid(String emailid);
 	Optional<UserModel> findByMobileNumber(String mobile);
 	Optional<UserModel> findByQrCode(String qrCode);
-
 	Optional<UserModel> findByEmailidAndIsActive(String emailid,boolean isactive);
 	Optional<UserModel> findByMobileNumberAndIsActive(String mobile,boolean isactive);
 
+	long countAllByCreatedAtAfter(Date date);
 
 }

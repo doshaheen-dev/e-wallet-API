@@ -4,12 +4,15 @@ package com.tml.poc.Wallet.restController;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.recharge.AddCashToWalletModel;
 import com.tml.poc.Wallet.services.WalletRechargeService;
+import com.tml.poc.Wallet.utils.Constants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * Mobile user Recharge
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/mobileuser/recharge")
 public class RechargeController {

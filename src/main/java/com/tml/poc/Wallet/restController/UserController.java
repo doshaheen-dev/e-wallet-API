@@ -2,6 +2,7 @@ package com.tml.poc.Wallet.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tml.poc.Wallet.jwt.resorce.AuthenticationException;
 import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.services.UserService;
+import com.tml.poc.Wallet.utils.Constants;
 
 /**
  * Mobile User Get and Add Controller
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController {

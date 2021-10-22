@@ -106,7 +106,6 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity.ignoring().antMatchers(HttpMethod.GET,"/webjars/**");
         webSecurity.ignoring().antMatchers(HttpMethod.POST,AUTH_WHITELIST_API);
 
-        
         webSecurity.ignoring().antMatchers(AUTH_WHITELIST_API);
 
         

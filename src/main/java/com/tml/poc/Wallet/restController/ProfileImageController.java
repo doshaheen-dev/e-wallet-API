@@ -1,6 +1,6 @@
 package com.tml.poc.Wallet.restController;
 
-import com.tml.poc.Wallet.s3Config.S3Wrapper;
+import com.tml.poc.Wallet.s3Config.S3Wrapper; 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.tml.poc.Wallet.config.MyBlobService;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.utilsmodels.FileUploadModelReq;
 import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.UserRepository;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import com.tml.poc.Wallet.utils.Fileutils;
 
@@ -25,13 +25,13 @@ import javax.validation.Valid;
 /**
  * To update Profile Image of Mobile User
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/blobfile")
 @RequiredArgsConstructor
 @Slf4j
 public class ProfileImageController {
-	@Autowired
-	private MyBlobService myBlobService;
+	
 
 	@Autowired
 	private Fileutils fileutils;
@@ -49,15 +49,7 @@ public class ProfileImageController {
 //	private ApplicationProperties applicationProperties;
 
 
-	/**
-	 * list of File for POC
-	 * @return
-	 */
-	@GetMapping("/")
-	public List<String> blobitemst() {
-		return myBlobService.listFiles();
-	}
-
+	
 	/**
 	 * Download File from file name
 	 * @param filename

@@ -4,6 +4,7 @@ import com.azure.core.annotation.QueryParam;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.usermodels.UserKYCModel;
 import com.tml.poc.Wallet.services.UserKYCService;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.io.IOException;
 /**
  * Mobile USer KYC
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("kyc/user")
 public class UserKYCController {

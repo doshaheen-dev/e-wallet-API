@@ -65,12 +65,12 @@ public class TransactionService {
 
         try {
             UserModel userModelSender=isSenderUserPresent(sendMoneyModel.getSenderuserID());
-            UserModel userModelReceiver=isReceiverUserPresent(sendMoneyModel.getSenderuserID());
-
+            UserModel userModelReceiver=isReceiverUserPresent(sendMoneyModel.getReceiveruserID());
+            	
             isMPINCorrect(sendMoneyModel.getSenderuserID(), sendMoneyModel.getMpin());
             float availableBalance = senderBalanceIsSufficient(sendMoneyModel.getSenderuserID(), sendMoneyModel.getTransactionAmount());
-            TransactionModel transactionModelDebited = debitAmount(sendMoneyModel,userModelSender);
-            TransactionModel transactionModelCredited = creditAmount(sendMoneyModel,userModelSender);
+            TransactionModel transactionModelDebited = debitAmount(sendMoneyModel,userModelSender,userModelReceiver);
+            TransactionModel transactionModelCredited = creditAmount(sendMoneyModel,userModelReceiver,userModelSender);
 
             UpdateBallanceOfDebitUser(transactionModelDebited);
             UpdateBallanceOfCreditUser(transactionModelCredited);
@@ -127,13 +127,13 @@ public class TransactionService {
         }
     }
 
-    public TransactionModel debitAmount(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
-        TransactionModel transactionModelDebit = transactionImplService.debitTransaction(sendMoneyModel,userModelSender);
+    public TransactionModel debitAmount(SendMoneyModel sendMoneyModel, UserModel userModelSender, UserModel userModelReceiver) throws TransactionFailedException {
+        TransactionModel transactionModelDebit = transactionImplService.debitTransaction(sendMoneyModel,userModelSender,userModelReceiver);
         return transactionModelDebit;
     }
 
-    public TransactionModel creditAmount(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
-        TransactionModel transactionModelDebit = transactionImplService.creditTransaction(sendMoneyModel,userModelSender);
+    public TransactionModel creditAmount(SendMoneyModel sendMoneyModel, UserModel userModelReceiver, UserModel userModelSender) throws TransactionFailedException {
+        TransactionModel transactionModelDebit = transactionImplService.creditTransaction(sendMoneyModel,userModelReceiver,userModelSender);
         return transactionModelDebit;
     }
 

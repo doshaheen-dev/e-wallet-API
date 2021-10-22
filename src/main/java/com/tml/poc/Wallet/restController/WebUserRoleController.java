@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tml.poc.Wallet.models.rolePrevilage.WebUserRoleModel;
 import com.tml.poc.Wallet.repository.WebUserRoleRepository;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 /**
  * Web User Role Crud
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/webuser/role")
 @RestController
 public class WebUserRoleController {

@@ -33,10 +33,11 @@ public class TransactionImplService {
      * debit amount and update into Transaction
      * @param sendMoneyModel
      * @param userModelSender
+     * @param userModelReceiver 
      * @return
      * @throws TransactionFailedException
      */
-    public TransactionModel debitTransaction(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
+    public TransactionModel debitTransaction(SendMoneyModel sendMoneyModel, UserModel userModelSender, UserModel userModelReceiver) throws TransactionFailedException {
         UserBallanceModel userBallanceModel=mobileUserBallanceService.getUserBallanceByUserID(sendMoneyModel.getSenderuserID());
         float debitorBalance=debit(sendMoneyModel.getTransactionAmount(),userBallanceModel.getAvailableBalance());
         TransactionModel transactionModel=new TransactionModel(0,
@@ -44,7 +45,7 @@ public class TransactionImplService {
                 sendMoneyModel.getTransactionType(),
                 0,sendMoneyModel.getTransactionAmount(),
                 0,
-                null,
+                userModelReceiver.getFirstname()+" "+userModelReceiver.getLastname(),
                 userModelSender.getId(),
                 userModelSender.getFirstname()+" "+userModelSender.getLastname()
                 );
@@ -62,11 +63,12 @@ public class TransactionImplService {
     /**
      * credit amount into transaction
      * @param sendMoneyModel
-     * @param userModelSender
+     * @param userModelReceiver
+     * @param userModelSender2 
      * @return
      * @throws TransactionFailedException
      */
-    public TransactionModel creditTransaction(SendMoneyModel sendMoneyModel, UserModel userModelSender) throws TransactionFailedException {
+    public TransactionModel creditTransaction(SendMoneyModel sendMoneyModel, UserModel userModelReceiver, UserModel userModelSender) throws TransactionFailedException {
         UserBallanceModel userBallanceModel=mobileUserBallanceService.getUserBallanceByUserID(sendMoneyModel.getReceiveruserID());
         float creditorBalance=credit(sendMoneyModel.getTransactionAmount(),userBallanceModel.getAvailableBalance());
         TransactionModel transactionModel=new TransactionModel(0,
@@ -74,10 +76,10 @@ public class TransactionImplService {
                 sendMoneyModel.getTransactionType(),
                 sendMoneyModel.getTransactionAmount(),
                 0,
-                userModelSender.getId(),
-                userModelSender.getFirstname()+" "+userModelSender.getLastname(),
+                userModelReceiver.getId(),
+                userModelReceiver.getFirstname()+" "+userModelReceiver.getLastname(),
                 0,
-                null);
+                userModelSender.getFirstname()+" "+userModelSender.getLastname());
         TransactionModel transactionModelSaved=transactionRepository.save(transactionModel);
         transactionModel.setAvailableBalance(creditorBalance);
 

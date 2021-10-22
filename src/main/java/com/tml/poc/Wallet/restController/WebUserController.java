@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
 import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import com.tml.poc.Wallet.services.WebUserService;
+import com.tml.poc.Wallet.utils.Constants;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 
 /**
  * Web User Crud
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/webuser")
 @RestController
 public class WebUserController {

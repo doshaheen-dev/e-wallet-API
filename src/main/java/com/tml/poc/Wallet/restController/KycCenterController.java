@@ -2,6 +2,8 @@ package com.tml.poc.Wallet.restController;
 
 import com.tml.poc.Wallet.models.kycCenter.KycCenterModel;
 import com.tml.poc.Wallet.services.KycCenterService;
+import com.tml.poc.Wallet.utils.Constants;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import javax.validation.Valid;
 /**
  * For Physical KYC Center
  */
+@CrossOrigin(origins = Constants.CORS_CONST)
 @RestController
 @RequestMapping("/kyc/center")
 public class KycCenterController {

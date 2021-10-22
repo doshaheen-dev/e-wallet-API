@@ -44,6 +44,7 @@ import java.util.HashMap;
 /**
  * Mobile Wallet Transactions for Mobile User
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/transactions")
 public class MobileTransactionController {
