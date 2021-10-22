@@ -15,4 +15,5 @@ public interface TransactionRepository extends JpaRepository<TransactionModel, L
 	Optional<TransactionModel> findAllById(long id);
 	Optional<TransactionModel> findAllByUserID(long userid);
 	long countAllByCreatedAtAfter(Date date);
+
 }

@@ -3,18 +3,9 @@ package com.tml.poc.Wallet.models.webuser;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -22,6 +13,7 @@ import javax.validation.constraints.Pattern.Flag;
 import javax.validation.constraints.Size;
 
 import com.tml.poc.Wallet.models.rolePrevilage.WebUserRoleModel;
+import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -101,8 +93,14 @@ public class WebUserModel {
     private String jwToken;
 
 
+
     public WebUserModel() {
         super();
+    }
+
+    public WebUserModel(long id){
+        super();
+        this.id=id;
     }
 
     public long getId() {

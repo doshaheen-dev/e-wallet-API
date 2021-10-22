@@ -25,4 +25,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	long countAllByCreatedAtAfter(Date date);
 
+
 }

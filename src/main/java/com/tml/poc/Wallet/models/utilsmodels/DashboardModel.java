@@ -39,4 +39,5 @@ public class DashboardModel {
     public void setTotalUserCount(Object totalUserCount) {
         this.totalUserCount = totalUserCount;
     }
+
 }

@@ -1,7 +1,9 @@
 package com.tml.poc.Wallet.repository;
 
 import com.tml.poc.Wallet.models.transaction.TransactionModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +25,9 @@ public interface LoginHistoryRepository extends PagingAndSortingRepository<Login
 
 	Page<LoginHistoryModel> findAll(Pageable pageable);
 	Page<LoginHistoryModel> findAllByMobileUserId(long userId, Pageable pageable);
+	Page<LoginHistoryModel> findAllByMobileUserId(UserModel userId, Pageable pageable);
 	Page<LoginHistoryModel> findAllByWebUserId(long userId, Pageable pageable);
+	Page<LoginHistoryModel> findAllByWebUserId(WebUserModel userId, Pageable pageable);
 
 
 }

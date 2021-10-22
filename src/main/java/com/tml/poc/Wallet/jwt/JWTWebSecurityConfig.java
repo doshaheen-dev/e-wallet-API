@@ -129,7 +129,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/auth/**",         
             "/user/otp/resend/**",
             "/api/user/auth/webuser/login",
-            "/api/config/get"
+            "/api/config/**"
             };
     
 //    
