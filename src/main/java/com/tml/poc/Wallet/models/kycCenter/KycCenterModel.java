@@ -12,6 +12,10 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * KYC Center Model Entity
+ * with table
+ */
 @Entity
 @Table(name = "kyc_center")
 public class KycCenterModel {

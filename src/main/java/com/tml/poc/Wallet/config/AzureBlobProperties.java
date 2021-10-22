@@ -2,6 +2,10 @@ package com.tml.poc.Wallet.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Azure Blob Property Configured
+ * TODO: Not in Work Now Configured for Azure onlu
+ */
 @Data
 @ConfigurationProperties("azure.myblob")
 public class AzureBlobProperties {

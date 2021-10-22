@@ -2,8 +2,7 @@ package com.tml.poc.Wallet.services;
 
 import com.tml.poc.Wallet.exception.InvalidInputException;
 import com.tml.poc.Wallet.exception.ResourceNotFoundException;
-import com.tml.poc.Wallet.models.OTPModel;
-import com.tml.poc.Wallet.models.mpin.MPINModel;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
 import com.tml.poc.Wallet.repository.UserOTPRepository;
 import com.tml.poc.Wallet.utils.CommonMethods;
 import org.springframework.beans.factory.annotation.Autowired;

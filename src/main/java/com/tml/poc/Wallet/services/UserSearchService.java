@@ -1,6 +1,6 @@
 package com.tml.poc.Wallet.services;
 
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import com.tml.poc.Wallet.repository.UserRepository;
 import com.tml.poc.Wallet.utils.DataReturnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,14 @@ public class UserSearchService {
         }else{
             throw new UsernameNotFoundException("Mobile number is not linked");
         }
+    }
+
+
+
+    public ResponseEntity getAllUser(){
+        List<UserModel> userModelList=userRepository.findAll();
+            return ResponseEntity.ok(new DataReturnUtil().setDataAndReturnResponseForRestAPI(userModelList));
+
     }
 
 }

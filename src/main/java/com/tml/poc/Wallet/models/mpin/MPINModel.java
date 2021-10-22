@@ -2,8 +2,6 @@ package com.tml.poc.Wallet.models.mpin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.SwaggerDefinition;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,9 +10,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
+/**
+ * Wallet MPIN
+ */
 @Entity(name = "mobilePin")
 public class MPINModel {
 
@@ -23,19 +22,20 @@ public class MPINModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(notes = "id of M-PIN")
     private long id;
+
     @ApiModelProperty(notes = "M-PIN from user")
     @Size(max = 250)
-    @Column(name = "m_pin", length = 250)
+    @Column(name = "m_pin", length = 500)
     private String mPin;
+
     @ApiModelProperty(notes = "UUID from Client side  RequestID")
     @Size(max = 100)
     @Column(name = "request_id", length = 100)
     private String requestID;
+
     @ApiModelProperty(notes = "userID of user who is trying")
     private long userID;
 
-    @JsonIgnore
-    private String secretkey;
 
     @CreatedDate
     @CreationTimestamp
@@ -118,13 +118,6 @@ public class MPINModel {
         isActive = active;
     }
 
-    public String getSecretkey() {
-        return secretkey;
-    }
-
-    public void setSecretkey(String secretkey) {
-        this.secretkey = secretkey;
-    }
 
     public String getOtp() {
         return otp;

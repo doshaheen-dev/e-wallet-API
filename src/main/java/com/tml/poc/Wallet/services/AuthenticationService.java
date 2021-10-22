@@ -4,7 +4,14 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.tml.poc.Wallet.models.*;
+import com.tml.poc.Wallet.models.usermodels.UserCredModel;
+import com.tml.poc.Wallet.models.usermodels.UserLoginModule;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
+import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
+import com.tml.poc.Wallet.models.webuser.WebUserModel;
+import com.tml.poc.Wallet.models.webuser.WebUserRegistrationModel;
+import com.tml.poc.Wallet.repository.LoginHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +69,9 @@ public class AuthenticationService {
 
 	@Autowired
 	private MPinServices mPinServices;
+
+	@Autowired
+	private LoginHistoryRepository loginHistoryRepository;
 
 	/**
 	 * here new User Registration is going to be done only access to mobile Number
@@ -121,6 +131,14 @@ public class AuthenticationService {
 			if(otpService.verifyOTP(usermodel.getUserOtpId(), userLoginModule.getOtp())) {
 				usermodel.setMPINCreated(mPinServices.isMPINCreated(usermodel.getId()));
 				final String token = jwtTokenUtil.generateToken1(usermodel.getQrCode());
+
+				LoginHistoryModel loginHistoryModel=new LoginHistoryModel(0,
+						userOptional.get().getId(),
+						0l,
+						usermodel.getFirstname()+" "+ usermodel.getLastname(),
+						usermodel.getMobileNumber(),
+						usermodel.getEmailid());
+				loginHistoryRepository.save(loginHistoryModel);
 				return ResponseEntity.ok(dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(usermodel, token));
 			}
 		}else {
@@ -138,19 +156,32 @@ public class AuthenticationService {
 
 
 
+
 	public Object doEmployeeAuthentication(WebUserRegistrationModel webUserRegistrationModel)
-			throws ResourceNotFoundException {
-		DataModelAuthResponce dataModelResponce = new DataModelAuthResponce();
+			throws ResourceNotFoundException, InvalidInputException {
 		if (webUserRegistrationModel != null) {
 			Optional<WebUserModel> employeeModel;
 			employeeModel = emplRepository.findAllByEmailid(webUserRegistrationModel.getEmailid());
 			if (employeeModel.isPresent()) {
 				WebUserModel empModel = employeeModel.get();
 				if (empModel.isActive()) {
-					final String token = jwtTokenUtil.generateToken(empModel.getEmailid(),
-							empModel.getPassword(),
-							empModel.getRoleId().getRoleName());
-					return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
+					if(webUserRegistrationModel.getPassword().equals(empModel.getPassword())) {
+						final String token = jwtTokenUtil.generateToken(empModel.getEmailid(),
+								empModel.getPassword(),
+								empModel.getRoleId().getRoleName());
+
+						LoginHistoryModel loginHistoryModel=new LoginHistoryModel(0,
+								0,
+								employeeModel.get().getId(),
+								employeeModel.get().getFirstname() +" "+employeeModel.get().getLastname(),
+								employeeModel.get().getMobileNumber(),
+								employeeModel.get().getEmailid());
+
+						loginHistoryRepository.save(loginHistoryModel);
+						return dataReturnUtils.setDataAndReturnResponseForAuthRestAPI(empModel, token);
+					}else{
+						throw new InvalidInputException("Username/Password not Matched");
+					}
 				} else {
 					throw new ResourceNotFoundException("WebUser is not Active");
 				}

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * FCm Token Update
+ */
 @RestController
 @RequestMapping("notification/")
 public class NotificationController {

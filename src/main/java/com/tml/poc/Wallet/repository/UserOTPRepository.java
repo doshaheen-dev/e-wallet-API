@@ -1,8 +1,6 @@
 package com.tml.poc.Wallet.repository;
 
-import com.tml.poc.Wallet.models.OTPModel;
-import com.tml.poc.Wallet.models.transaction.TransactionModel;
-import org.springframework.data.domain.Sort;
+import com.tml.poc.Wallet.models.utilsmodels.OTPModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

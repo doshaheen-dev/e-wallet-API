@@ -1,20 +1,11 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.webuser;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -22,6 +13,7 @@ import javax.validation.constraints.Pattern.Flag;
 import javax.validation.constraints.Size;
 
 import com.tml.poc.Wallet.models.rolePrevilage.WebUserRoleModel;
+import com.tml.poc.Wallet.models.utilsmodels.LoginHistoryModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,6 +23,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tml.poc.Wallet.utils.Constants;
 
+import static com.tml.poc.Wallet.utils.Constants.ENTER_VALUE;
+import static com.tml.poc.Wallet.utils.Constants.VALID_EMAILID;
+
 @Entity
 @Table(name = "web_user")
 public class WebUserModel {
@@ -39,14 +34,14 @@ public class WebUserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int countrycode;
+    private String countrycode;
     private String mobileNumber;
 
-    @NotEmpty
+    @NotEmpty(message =ENTER_VALUE)
     @Email
     @Size(max = 100)
-    @Column(unique = true)
-    @Pattern(regexp = Constants.EMAIL_REGEX, flags = Flag.UNICODE_CASE)
+    @Pattern(regexp = Constants.EMAIL_REGEX, flags = Flag.UNICODE_CASE, message =VALID_EMAILID)
+    @Column(name="email_id", unique = true)
     private String emailid;
 
     @Column(name = "first_name", length = 50)
@@ -54,7 +49,7 @@ public class WebUserModel {
     @Column(name = "last_name", length = 50)
     private String lastname;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -69,7 +64,6 @@ public class WebUserModel {
     })
     @JoinColumn(name = "webuser")
     private WebUserRoleModel roleId;
-
 
     @Column(name="role_code")
     private String roleCode;
@@ -99,8 +93,14 @@ public class WebUserModel {
     private String jwToken;
 
 
+
     public WebUserModel() {
         super();
+    }
+
+    public WebUserModel(long id){
+        super();
+        this.id=id;
     }
 
     public long getId() {
@@ -111,11 +111,11 @@ public class WebUserModel {
         this.id = id;
     }
 
-    public int getCountrycode() {
+    public String getCountrycode() {
         return countrycode;
     }
 
-    public void setCountrycode(int countrycode) {
+    public void setCountrycode(String countrycode) {
         this.countrycode = countrycode;
     }
 
@@ -189,6 +189,10 @@ public class WebUserModel {
 
     public void setRoleId(long roleId) {
         this.roleId = new WebUserRoleModel(roleId);
+    }
+
+    public void setRoleIdModel(WebUserRoleModel roleId) {
+        this.roleId = roleId;
     }
 
     public String getCreatedBy() {

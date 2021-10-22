@@ -1,11 +1,12 @@
 package com.tml.poc.Wallet.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tml.poc.Wallet.models.UserModel;
+import com.tml.poc.Wallet.models.usermodels.UserModel;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,6 +15,7 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	List<UserModel> findAll();
 	Optional<UserModel> findAllById(long id);
+//	Optional<UserModel> findAllByIdAndKYCApplied(long id,boolean ispplied);
 	List<UserModel> findAllByMobileNumberOrEmailidAndIsActive(String mobile,String email,boolean isActive);
 	Optional<UserModel> findByEmailid(String emailid);
 	Optional<UserModel> findByMobileNumber(String mobile);
@@ -21,6 +23,8 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	Optional<UserModel> findByEmailidAndIsActive(String emailid,boolean isactive);
 	Optional<UserModel> findByMobileNumberAndIsActive(String mobile,boolean isactive);
+
+	long countAllByCreatedAtAfter(Date date);
 
 
 }

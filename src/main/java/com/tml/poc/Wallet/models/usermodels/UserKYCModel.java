@@ -1,7 +1,8 @@
-package com.tml.poc.Wallet.models;
+package com.tml.poc.Wallet.models.usermodels;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tml.poc.Wallet.utils.Constants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,13 +10,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
+
 
 @Entity
 @Table(name = "mobile_users_kyc")
@@ -29,41 +31,30 @@ public class UserKYCModel {
     @JsonFormat(pattern = Constants.TIME_DATE)
     @Column(name = "kycApplyDateTime",columnDefinition = "TIMESTAMP")
     @CreationTimestamp
-    private Timestamp applyDateTime;
+    private Date applyDateTime;
 
 
-    @Column(name = "user_id")
-    private long userId;
+//    @Column(name = "user_id")
+    @JsonProperty("userId")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
+    @JoinColumn(name = "KycUserId")
+    private UserModel KycUserId;
 
     @Column(name = "is_kyc_approved")
     private boolean isKYCDone;
 
-    @NotNull
-    @NotEmpty
-    @Column(name = "documentType")
-    @Size( max = 20)
-    private String kycDocumentType;
-
-    @NotNull
-    @NotEmpty
-    @Column(name = "documentUrl")
-    private String kycDocument;
-
-    @Transient
-    private String kycDocumentExt;
-
-    @Column(name = "passportPhotoUrl")
-    private String kycPassportPhoto;
-
-    @Transient
-    private String kycPassportPhotoExt;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<KycDocumentModel> documentModelList;
 
     @Column(name = "kycApprovedBy")
     private long approvedBy;
 
     @JsonFormat(pattern = Constants.TIME_DATE)
     @Column(name = "dateTimeApprove",columnDefinition = "TIMESTAMP")
-    private Timestamp approveDataTime;
+    private Date approveDataTime;
 
     @NotNull
     @NotEmpty
@@ -74,10 +65,6 @@ public class UserKYCModel {
     @NotEmpty
     @Column(name = "updatedBy")
     private String updatedBy;
-
-    @Column(name = "zipCode")
-    @Size( max = 10)
-    private String postalCode;
 
     @CreatedDate
     @CreationTimestamp
@@ -104,20 +91,24 @@ public class UserKYCModel {
         this.id = id;
     }
 
-    public Timestamp getApplyDateTime() {
+    public Date getApplyDateTime() {
         return applyDateTime;
     }
 
-    public void setApplyDateTime(Timestamp applyDateTime) {
+    public void setApplyDateTime(Date applyDateTime) {
         this.applyDateTime = applyDateTime;
     }
 
-    public long getUserId() {
-        return userId;
+
+
+    @JsonProperty("userId")
+    public UserModel getKycUserId() {
+        return KycUserId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    @JsonProperty("userId")
+    public void setKycUserId(long kycUserId) {
+        KycUserId =new UserModel(kycUserId);
     }
 
     public boolean isKYCDone() {
@@ -128,44 +119,12 @@ public class UserKYCModel {
         isKYCDone = KYCDone;
     }
 
-    public String getKycDocumentType() {
-        return kycDocumentType;
+    public List<KycDocumentModel> getDocumentModelList() {
+        return documentModelList;
     }
 
-    public void setKycDocumentType(String kycDocumentType) {
-        this.kycDocumentType = kycDocumentType;
-    }
-
-    public String getKycDocument() {
-        return kycDocument;
-    }
-
-    public void setKycDocument(String kycDocument) {
-        this.kycDocument = kycDocument;
-    }
-
-    public String getKycDocumentExt() {
-        return kycDocumentExt;
-    }
-
-    public void setKycDocumentExt(String kycDocumentExt) {
-        this.kycDocumentExt = kycDocumentExt;
-    }
-
-    public String getKycPassportPhoto() {
-        return kycPassportPhoto;
-    }
-
-    public void setKycPassportPhoto(String kycPassportPhoto) {
-        this.kycPassportPhoto = kycPassportPhoto;
-    }
-
-    public String getKycPassportPhotoExt() {
-        return kycPassportPhotoExt;
-    }
-
-    public void setKycPassportPhotoExt(String kycPassportPhotoExt) {
-        this.kycPassportPhotoExt = kycPassportPhotoExt;
+    public void setDocumentModelList(List<KycDocumentModel> documentModelList) {
+        this.documentModelList = documentModelList;
     }
 
     public long getApprovedBy() {
@@ -176,11 +135,11 @@ public class UserKYCModel {
         this.approvedBy = approvedBy;
     }
 
-    public Timestamp getApproveDataTime() {
+    public Date getApproveDataTime() {
         return approveDataTime;
     }
 
-    public void setApproveDataTime(Timestamp approveDataTime) {
+    public void setApproveDataTime(Date approveDataTime) {
         this.approveDataTime = approveDataTime;
     }
 
@@ -198,14 +157,6 @@ public class UserKYCModel {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
     }
 
     public Timestamp getCreatedAt() {
@@ -239,4 +190,5 @@ public class UserKYCModel {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
 }

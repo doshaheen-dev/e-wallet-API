@@ -5,6 +5,10 @@ import javax.mail.PasswordAuthentication;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * Configuration of
+ * SMTP Authentication For Email
+ */
 @Component
 public class SMTPAuthenticator extends javax.mail.Authenticator {
 	private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
